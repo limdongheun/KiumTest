@@ -415,6 +415,11 @@ namespace KOASampleCS
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
                                 int nMinusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.02);
 
+                                if (nHour == 9 && nMinute < 11)
+                                {
+                                    nMinusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
+                                }
+
                                 if (nNowPrice < stTradeData.nBuyPrice[i] - nMinusPrice)
                                 {
                                     LogManager.WriteLine("손절 :\t" + stTradeData.sCode[i]);
@@ -702,7 +707,7 @@ namespace KOASampleCS
                     int nQty = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "보유수량"));
 
                     int lSellPrice = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "평균단가"));
-                    int nPlusPrice = Convert.ToInt32(lSellPrice * 0.055);
+                    int nPlusPrice = Convert.ToInt32(lSellPrice * 0.045);
 
                     lSellPrice = lSellPrice + nPlusPrice;
 
