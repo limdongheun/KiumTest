@@ -771,7 +771,7 @@ namespace KOASampleCS
                     }
                 }
                 
-                if (nHighPrice - nLsatPrice > nLsatPrice * 0.05 && m_nCloseSellCount < 5)
+                if (nHighPrice - nLsatPrice > nLsatPrice * 0.05 && m_nCloseSellCount < 10)
                 {
                     int nQty = 1;
 
