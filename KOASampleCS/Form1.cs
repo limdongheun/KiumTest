@@ -302,6 +302,8 @@ namespace KOASampleCS
                                 axKHOpenAPI.SetInputValue("수정주가구분", "1");
 
                                 int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+                                if(nRet == 0)
+                                    LogManager.WriteLine(stTradeData.sCode[i]);
 
                                 System.Threading.Thread.Sleep(4000);
                             }
@@ -731,11 +733,14 @@ namespace KOASampleCS
             }
             else if (e.sRQName == "주식분봉차트조회")
             {
+                LogManager.WriteLine("주식분봉차트조회 시작");
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
                 string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
                 sCode = sCode.Replace(" ", "");
                 string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
                 int nLsatPrice = Convert.ToInt32(sLastPrice);
+
+                LogManager.WriteLine("주식분봉차트조회 : " + sCode);
 
                 string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "09";
                 int nHighPrice = 0;
@@ -785,6 +790,8 @@ namespace KOASampleCS
                     }
 
                     int lRet = SendOrder(sCode, nQty, 1, "03", 0, "");
+                    if(lRet == 0)
+                        LogManager.WriteLine("주식분봉차트조회 매수 : " + sCode);
                     m_nCloseSellCount++;
                 }
             }
@@ -1385,20 +1392,20 @@ namespace KOASampleCS
             //aa = axKHOpenAPI.GetMasterLastPrice("019550");
             //string sNowPrice = axKHOpenAPI.GetCommRealData("019550", 10).Trim();
 
-            axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
-            axKHOpenAPI.SetInputValue("비밀번호", "");
-            axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
-            axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
+            //axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
+            //axKHOpenAPI.SetInputValue("비밀번호", "");
+            //axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
+            //axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
             //axKHOpenAPI.SetInputValue("종목번호", "008700");
             //axKHOpenAPI.SetInputValue("매수가격", "3600");
 
-            axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
+            //axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
             //axKHOpenAPI.CommRqData("체결잔고요청", "opw00005", 0, GetScrNum());
 
             //axKHOpenAPI.SetInputValue("종목코드", "019550");
             //int nRet = axKHOpenAPI.CommRqData("주식기본정보", "OPT10001", 0, GetScrNum());
 
-            //AddTradeList("019550;064520;071460;");
+            AddTradeList("032820;010820;101390;078130;001510;002100;039610;054780;008350;");
 
             return;
 
