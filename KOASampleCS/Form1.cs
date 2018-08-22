@@ -462,6 +462,7 @@ namespace KOASampleCS
                                 }
                                 else if(stTradeData.bEndSell[i] == true && nNowTime > 930)
                                 {
+                                    /*
                                     int nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
                                     int lSellPrice = stTradeData.nBuyPrice[i] + nPlusPrice;
 
@@ -475,8 +476,9 @@ namespace KOASampleCS
                                         lSellPrice = lSellPrice - (lSellPrice % 100);
                                     else if (lSellPrice >= 100000 && lSellPrice < 500000)
                                         lSellPrice = lSellPrice - (lSellPrice % 500);
+                                    */
 
-                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "00", lSellPrice, stTradeData.sOrderNo[i]);
+                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "00", stTradeData.nHighPrice[i], stTradeData.sOrderNo[i]);
                                     if (lRet == 0)
                                     {
                                         stTradeData.bEndSell[i] = false;
