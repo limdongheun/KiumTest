@@ -285,9 +285,10 @@ namespace KOASampleCS
 
                     int nHour = Convert.ToInt32(System.DateTime.Now.ToString("HH"));
                     int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
+                    int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                     int nNowTime = nHour * 100 + nMinute;
 
-                    if (nHour == 9 && nMinute == 0 && m_bStartSell == false)
+                    if (nHour == 9 && nMinute == 0 && nSecond > 10 && m_bStartSell == false)
                     {
                         m_bStartSell = true;
 
@@ -416,11 +417,11 @@ namespace KOASampleCS
                         {
                             int nPlusPrice = 0;
                             
-                            if(nHour == 9 && nMinute < 10)
+                            if(nHour == 9 && nMinute <= 10)
                             {
-                                nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.035);
+                                nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
                             }
-                            else if (nHour == 9 && nMinute > 10)
+                            else if (nHour == 9 && nMinute > 10 && nMinute <= 30)
                             {
                                 nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.02);
                             }
@@ -460,7 +461,18 @@ namespace KOASampleCS
                                 {
                                     nMinusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
                                 }
-                                else if(stTradeData.bEndSell[i] == true && nNowTime > 930)
+                                
+                                if (nNowPrice < stTradeData.nBuyPrice[i] - nMinusPrice)
+                                {
+                                    LogManager.WriteLine("손절 :\t" + stTradeData.sCode[i]);
+                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", nNowPrice, stTradeData.sOrderNo[i]);
+
+                                    if (lRet == 0)
+                                    {
+                                        stTradeData.nState[i] = 6;
+                                    }
+                                }
+                                else if (stTradeData.bEndSell[i] == true && nNowTime > 930)
                                 {
                                     /*
                                     int nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
@@ -481,18 +493,8 @@ namespace KOASampleCS
                                     int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "00", stTradeData.nHighPrice[i], stTradeData.sOrderNo[i]);
                                     if (lRet == 0)
                                     {
+                                        LogManager.WriteLine("가격조정 :\t" + stTradeData.sCode[i]);
                                         stTradeData.bEndSell[i] = false;
-                                    }
-                                }
-
-                                if (nNowPrice < stTradeData.nBuyPrice[i] - nMinusPrice)
-                                {
-                                    LogManager.WriteLine("손절 :\t" + stTradeData.sCode[i]);
-                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", nNowPrice, stTradeData.sOrderNo[i]);
-
-                                    if (lRet == 0)
-                                    {
-                                        stTradeData.nState[i] = 6;
                                     }
                                 }
                                 else if (nHour == 15 && nMinute > 14)
@@ -788,9 +790,25 @@ namespace KOASampleCS
                         lSellPrice = lSellPrice - (lSellPrice % 500);
 
                     AddTradeList(sCode + ";", 4, nQty);
-                    m_nStartSellCount++;
-                    int lRet = SendOrder(sCode, nQty, 2, "00", lSellPrice, "");
                     System.Threading.Thread.Sleep(1000);
+                    m_nStartSellCount++;
+
+                    int waitCount = 0;
+                    while(true)
+                    {
+                        if (stTradeData.nNowPrice[i] != 0 || waitCount == 5)
+                            break;
+
+                        waitCount++;
+                        System.Threading.Thread.Sleep(1000);
+                    }
+
+                    if(stTradeData.nNowPrice[i] != 0 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i])
+                    {
+                        lSellPrice = stTradeData.nNowPrice[i];
+                    }
+
+                    int lRet = SendOrder(sCode, nQty, 2, "00", lSellPrice, "");
                 }
 
             }
@@ -964,6 +982,7 @@ namespace KOASampleCS
         {
             Logger(Log.조회, "===================================================");
             Logger(Log.조회, "화면번호:{0} | RQName:{1} | TRCode:{2} | 메세지:{3}", e.sScrNo, e.sRQName, e.sTrCode, e.sMsg);
+            LogManager.WriteLine("RQName: " + e.sRQName + "TRCode: " + e.sTrCode + "메세지: " + e.sMsg);
         }
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
