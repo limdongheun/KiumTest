@@ -326,7 +326,7 @@ namespace KOASampleCS
                                 {
                                     int nPlusPrice = stTradeData.nClosePrice[i] + Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
 
-                                    if(stTradeData.nHighPrice[i] > nPlusPrice && m_nCloseSellCount < 10)
+                                    if(stTradeData.nHighPrice[i] > nPlusPrice && m_nCloseSellCount < 10 && stTradeData.nNowPrice[i] != 0)
                                     {
                                         int nQty = 1;
 
@@ -341,8 +341,11 @@ namespace KOASampleCS
 
                                         int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                                         if (lRet == 0)
+                                        {
                                             LogManager.WriteLine("주식분봉차트조회 매수 : " + stTradeData.sCode[i]);
-                                        m_nCloseSellCount++;
+                                            m_nCloseSellCount++;
+                                        }
+                                        
                                         System.Threading.Thread.Sleep(1000);
                                     }
                                 }
@@ -796,11 +799,11 @@ namespace KOASampleCS
                     int waitCount = 0;
                     while(true)
                     {
-                        if (stTradeData.nNowPrice[i] != 0 || waitCount == 5)
+                        if (stTradeData.nNowPrice[i] != 0 || waitCount == 50)
                             break;
 
                         waitCount++;
-                        System.Threading.Thread.Sleep(1000);
+                        System.Threading.Thread.Sleep(100);
                     }
 
                     if(stTradeData.nNowPrice[i] != 0 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i])
@@ -982,7 +985,7 @@ namespace KOASampleCS
         {
             Logger(Log.조회, "===================================================");
             Logger(Log.조회, "화면번호:{0} | RQName:{1} | TRCode:{2} | 메세지:{3}", e.sScrNo, e.sRQName, e.sTrCode, e.sMsg);
-            LogManager.WriteLine("RQName: " + e.sRQName + "TRCode: " + e.sTrCode + "메세지: " + e.sMsg);
+            LogManager.WriteLine("RQName: " + e.sRQName + " TRCode: " + e.sTrCode + " 메세지: " + e.sMsg);
         }
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
