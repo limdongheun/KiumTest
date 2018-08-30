@@ -535,6 +535,14 @@ namespace KOASampleCS
                                         stTradeData.nState[i] = 6;
                                     }
                                 }
+                                else if (nHour == 15 && nMinute < 6 && stTradeData.n3HourStartPrice[i] < stTradeData.nNowPrice[i])
+                                {
+                                    stTradeData.n3HourStartPrice[i] = stTradeData.nNowPrice[i];
+                                }
+                                else if (nHour == 15 && nMinute == 19 && stTradeData.n3HourLastPrice[i] < stTradeData.nNowPrice[i])
+                                {
+                                    stTradeData.n3HourLastPrice[i] = stTradeData.nNowPrice[i];
+                                }
                             }
                         }
                     }
