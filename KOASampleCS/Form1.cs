@@ -37,6 +37,8 @@ namespace KOASampleCS
             public int[] nBuyTime;          //매수주문시간
             public int[] nHighPrice;        //최고금액
             public bool[] bEndSell;         //마감구매종목
+            public int[] n3HourStartPrice;        //3시 초반금액
+            public int[] n3HourLastPrice;        //3시 마감금액
         };
 
         public struct PRICE
@@ -110,6 +112,8 @@ namespace KOASampleCS
             stTradeData.nBuyTime = new int[200];
             stTradeData.nHighPrice = new int[200];
             stTradeData.bEndSell = new bool[200];
+            stTradeData.n3HourStartPrice = new int[200];
+            stTradeData.n3HourLastPrice = new int[200];
 
             for (int i = 0; i < 200; i++)
             {
@@ -126,6 +130,8 @@ namespace KOASampleCS
                 stTradeData.nBuyTime[i] = 0;
                 stTradeData.nHighPrice[i] = 0;
                 stTradeData.bEndSell[i] = false;
+                stTradeData.n3HourStartPrice[i] = 0;
+                stTradeData.n3HourLastPrice[i] = 0;
             }
 
             m_bTradeDataCheckThread = true;
@@ -326,7 +332,7 @@ namespace KOASampleCS
                                 {
                                     int nPlusPrice = stTradeData.nClosePrice[i] + Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
 
-                                    if(stTradeData.nHighPrice[i] > nPlusPrice && m_nCloseSellCount < 10 && stTradeData.nNowPrice[i] != 0)
+                                    if(stTradeData.nHighPrice[i] > nPlusPrice && stTradeData.n3HourStartPrice[i] < stTradeData.n3HourLastPrice[i] && m_nCloseSellCount < 10 && stTradeData.nNowPrice[i] != 0)
                                     {
                                         int nQty = 1;
 
@@ -1002,10 +1008,19 @@ namespace KOASampleCS
                         stTradeData.nNowPrice[i] = Convert.ToInt32(sNowPrice);
 
                         int nHour = Convert.ToInt32(System.DateTime.Now.ToString("HH"));
+                        int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
 
                         if (nHour < 10 && stTradeData.nHighPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nHighPrice[i] = stTradeData.nNowPrice[i];
+                        }
+                        else if(nHour == 15 && nMinute < 6 && stTradeData.n3HourStartPrice[i] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.n3HourStartPrice[i] = stTradeData.nNowPrice[i];
+                        }
+                        else if (nHour == 15 && nMinute == 19 && stTradeData.n3HourLastPrice[i] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.n3HourLastPrice[i] = stTradeData.nNowPrice[i];
                         }
                     }
                 }
