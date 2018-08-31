@@ -372,7 +372,7 @@ namespace KOASampleCS
                     {
                         if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0)
                         {
-                            if (stTradeData.nNowPrice[i] != 0 && nHour < 10)
+                            if (stTradeData.nNowPrice[i] != 0 && (nHour < 10 || nHour > 12))
                             {
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
@@ -387,15 +387,15 @@ namespace KOASampleCS
                                     int nBuyPrice = 0;
 
                                     if (nNowPrice >= 1000 && nNowPrice < 5000)
-                                        nBuyPrice = nNowPrice - 15;
+                                        nBuyPrice = nNowPrice - 5;
                                     else if (nNowPrice >= 5000 && nNowPrice < 10000)
-                                        nBuyPrice = nNowPrice - 30;
+                                        nBuyPrice = nNowPrice - 10;
                                     else if (nNowPrice >= 10000 && nNowPrice < 50000)
-                                        nBuyPrice = nNowPrice - 150;
+                                        nBuyPrice = nNowPrice - 50;
                                     else if (nNowPrice >= 50000 && nNowPrice < 100000)
-                                        nBuyPrice = nNowPrice - 300;
+                                        nBuyPrice = nNowPrice - 100;
                                     else if (nNowPrice >= 100000 && nNowPrice < 500000)
-                                        nBuyPrice = nNowPrice - 1500;
+                                        nBuyPrice = nNowPrice - 500;
 
                                     if (nBuyPrice > 10000)
                                     {
@@ -485,7 +485,14 @@ namespace KOASampleCS
 
                                 if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 30 < (nHour * 10000) + (nMinute * 100) + nSecond)
                                 {
-                                    lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
+                                    if(stTradeData.sOrderNo[i] == "")
+                                    {
+                                        lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "06", stTradeData.nNowPrice[i], "");
+                                    }
+                                    else
+                                    {
+                                        lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
+                                    }                                
                                 }
 
                                 if (lRet == 0)
