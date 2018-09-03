@@ -30,6 +30,7 @@ namespace KOASampleCS
             public int[] nNowPrice;      //현재 가격
             public int[] nState;            //상태 0-매수대기, 1-매수접수, 2-매수확인, 3-매수완료, 4-매도접수, 5-매도확인, 6-매도완료
             public string[] sOrderNo;       //주문번호
+            public int[] nOrderQty;             //매수수량
             public int[] nBuyQty;             //매수수량
             public int[] nBuyPrice;           //매수단가
             public int[] nSellQty;             //매도수량
@@ -107,6 +108,7 @@ namespace KOASampleCS
             stTradeData.nNowPrice = new int[200];
             stTradeData.nState = new int[200];
             stTradeData.sOrderNo = new string[200];
+            stTradeData.nOrderQty = new int[200];
             stTradeData.nBuyQty = new int[200];
             stTradeData.nBuyPrice = new int[200];
             stTradeData.nSellQty = new int[200];
@@ -127,6 +129,7 @@ namespace KOASampleCS
                 stTradeData.nNowPrice[i] = 0;
                 stTradeData.nState[i] = 0;
                 stTradeData.sOrderNo[i] = "";
+                stTradeData.nOrderQty[i] = 0;
                 stTradeData.nBuyQty[i] = 0;
                 stTradeData.nBuyPrice[i] = 0;
                 stTradeData.nSellQty[i] = 0;
@@ -270,6 +273,9 @@ namespace KOASampleCS
                     {
                         stTradeData.nBuyQty[i] = nBuyQty;
                         stTradeData.nBuyPrice[i] = nBuyPrice;
+
+                        if (stTradeData.nOrderQty[i] != stTradeData.nBuyQty[i])
+                            stTradeData.nState[i] = 1;
                     }
                     else if (nState > 3)
                     {
@@ -307,7 +313,7 @@ namespace KOASampleCS
 
                         axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
                         axKHOpenAPI.SetInputValue("비밀번호", "");
-                        axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
+                        axKHOpenAPI.SetInputValue("상장폐지조회구Z분", "0");
                         axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
 
                         axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
@@ -413,6 +419,7 @@ namespace KOASampleCS
                                     if (lRet == 0)
                                     {
                                         stTradeData.nState[i] = 1;
+                                        stTradeData.nOrderQty[i] = nQty;
                                         stTradeData.nBuyTime[i] = nNowTime;
                                     }
                                 }
@@ -429,7 +436,7 @@ namespace KOASampleCS
                                 stTradeData.nState[i] = 7;
                             }
                         }
-                        else if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 3)
+                        else if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 3 && stTradeData.nNowPrice[i] != 0)
                         {
                             /*
                             int nPlusPrice = 0;
@@ -463,12 +470,20 @@ namespace KOASampleCS
 
                             int lRet = 10;
 
-                            if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 30 < (nHour * 10000) + (nMinute * 100) + nSecond)
+                            if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 60 < (nHour * 10000) + (nMinute * 100) + nSecond)
                             {
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "06", Convert.ToInt32(stTradeData.nNowPrice[i]), "");
+                                //lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", Convert.ToInt32(stTradeData.nNowPrice[i]), "");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "00", Convert.ToInt32(stTradeData.nNowPrice[i]), "");
                             }
 
                             //int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "00", lSellPrice, "");
+
+                            if(stTradeData.nStandardPrice[i] == 0)
+                            {
+                                stTradeData.nState[i] = 4;
+                                stTradeData.nStandardPrice[i] = stTradeData.nNowPrice[i];
+                                stTradeData.nStandardTime[i] = (nHour * 10000) + (nMinute * 100) + nSecond;
+                            }
 
                             if (lRet == 0)
                             {
@@ -487,7 +502,8 @@ namespace KOASampleCS
                                 {
                                     if(stTradeData.sOrderNo[i] == "")
                                     {
-                                        lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "06", stTradeData.nNowPrice[i], "");
+                                        //lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "06", 0, "");
+                                        lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "00", Convert.ToInt32(stTradeData.nNowPrice[i]), "");
                                     }
                                     else
                                     {
@@ -811,13 +827,18 @@ namespace KOASampleCS
                 for (int i = 0; i < nCnt; i++)
                 {
                     string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "종목코드");
-                    sCode = sCode.Substring(1, sCode.Length - 1);
-                    sCode = sCode.TrimEnd(' ');
 
-                    int nQty = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "보유수량"));
+                    if(sCode != "")
+                    {
+                        sCode = sCode.Substring(1, sCode.Length - 1);
+                        sCode = sCode.TrimEnd(' ');
 
-                    AddTradeList(sCode + ";", 4, nQty);
-                    System.Threading.Thread.Sleep(500);
+                        int nQty = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "보유수량"));
+
+                        AddTradeList(sCode + ";", 4, nQty);
+                        System.Threading.Thread.Sleep(500);
+                    }
+                    
                     //m_nStartSellCount++;
 
                     /*
@@ -1551,7 +1572,10 @@ namespace KOASampleCS
             //axKHOpenAPI.SetInputValue("종목코드", "019550");
             //int nRet = axKHOpenAPI.CommRqData("주식기본정보", "OPT10001", 0, GetScrNum());
 
-            AddTradeList("032820;010820;101390;078130;001510;002100;039610;054780;008350;");
+            //AddTradeList("032820;010820;101390;078130;001510;002100;039610;054780;008350;");
+
+            System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
+            TradeThread.Start();
 
             return;
 
