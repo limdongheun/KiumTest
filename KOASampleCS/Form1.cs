@@ -144,8 +144,8 @@ namespace KOASampleCS
             }
 
             m_bTradeDataCheckThread = true;
-            System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
-            TradeThread.Start();
+            //System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
+            //TradeThread.Start();
 
             //System.Threading.Thread LiveCheckThread = new System.Threading.Thread(new System.Threading.ThreadStart(CheckLiveStock));
             //LiveCheckThread.Start();
@@ -313,7 +313,7 @@ namespace KOASampleCS
 
                         axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
                         axKHOpenAPI.SetInputValue("비밀번호", "");
-                        axKHOpenAPI.SetInputValue("상장폐지조회구Z분", "0");
+                        axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
                         axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
 
                         axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
@@ -498,7 +498,7 @@ namespace KOASampleCS
                             {
                                 int lRet = 10;
 
-                                if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 30 < (nHour * 10000) + (nMinute * 100) + nSecond)
+                                if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 60 < (nHour * 10000) + (nMinute * 100) + nSecond)
                                 {
                                     if(stTradeData.sOrderNo[i] == "")
                                     {
