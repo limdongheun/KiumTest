@@ -416,7 +416,7 @@ namespace KOASampleCS
                     {
                         if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0)
                         {
-                            if (stTradeData.nNowPrice[i] >= stTradeData.nHighPrice[i] && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 10 < nHour*100 + nMinute && m_nTradeCount < 9/*(nHour < 10 || nHour > 12)*/)
+                            if (stTradeData.nNowPrice[i] >= stTradeData.nHighPrice[i] && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && m_nTradeCount < 9/*(nHour < 10 || nHour > 12)*/)
                             {
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
@@ -435,15 +435,19 @@ namespace KOASampleCS
                                 else if (nNowPrice >= 100000 && nNowPrice < 500000)
                                     nBuyPrice = nNowPrice - 500;
 
-                                if (nBuyPrice > 10000)
+                                if(m_nTradeCount < 0)
+                                {
+                                    m_nTradeCount = 0;
+                                }
+                                else if (nBuyPrice > 10000)
                                 {
                                     nQty = 20000 / nBuyPrice;
-                                    //m_nTradeCount += 2;
+                                    m_nTradeCount += 2;
                                 }
                                 else
                                 {
                                     nQty = 10000 / nBuyPrice;
-                                    //m_nTradeCount++;
+                                    m_nTradeCount++;
                                 }
 
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
@@ -1083,10 +1087,12 @@ namespace KOASampleCS
                         nBuyQty = Convert.ToInt32(axKHOpenAPI.GetChejanData(911).Trim());
                         nBuyPrice = Convert.ToInt32(axKHOpenAPI.GetChejanData(910).Trim());
 
+                        /*
                         if (nBuyPrice > 20000)
                             m_nTradeCount += 2;
                         else
                             m_nTradeCount++;
+                        */
                     }
 
                     ChangeTradeList(axKHOpenAPI.GetChejanData(302).Trim(), nState, axKHOpenAPI.GetChejanData(9203).Trim(), nBuyQty, nBuyPrice, 0, 0);
@@ -1116,11 +1122,18 @@ namespace KOASampleCS
                         nSellPrice = Convert.ToInt32(axKHOpenAPI.GetChejanData(910).Trim());
 
                         //m_nAllAsset = m_nAllAsset + (nSellQty * nSellPrice);
+                        
 
                         if (nSellPrice > 20000)
                             m_nTradeCount -= 2;
                         else
                             m_nTradeCount--;
+
+                        if (m_nTradeCount < 0)
+                        {
+                            m_nTradeCount = 0;
+                        }
+                        
                     }
 
                     ChangeTradeList(axKHOpenAPI.GetChejanData(302).Trim(), nState, axKHOpenAPI.GetChejanData(9203).Trim(), 0, 0, nSellQty, nSellPrice);
