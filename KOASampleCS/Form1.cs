@@ -38,6 +38,8 @@ namespace KOASampleCS
             public int[] nBuyTime;          //매수주문시간
             public int[] nHighPrice;        //최고금액
             public int[] nHighTime;        //최고시간
+            public int[] nLowPrice;        //최저금액
+            public int[] nLowTime;        //최저시간
             public int[] nStandardPrice;        //기준금액
             public int[] nStandardTime;        //기준시간
             public bool[] bEndSell;         //마감구매종목
@@ -126,6 +128,8 @@ namespace KOASampleCS
             stTradeData.nBuyTime = new int[200];
             stTradeData.nHighPrice = new int[200];
             stTradeData.nHighTime = new int[200];
+            stTradeData.nLowPrice = new int[200];
+            stTradeData.nLowTime = new int[200];
             stTradeData.nStandardPrice = new int[200];
             stTradeData.nStandardTime = new int[200];
             stTradeData.bEndSell = new bool[200];
@@ -416,7 +420,26 @@ namespace KOASampleCS
                     {
                         if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0)
                         {
-                            if (stTradeData.nNowPrice[i] >= stTradeData.nHighPrice[i] && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && m_nTradeCount < 9/*(nHour < 10 || nHour > 12)*/)
+                            int nCheckPrice = 0;
+
+                            if (stTradeData.nHighPrice[i] > 0)
+                            {
+                                int nMinusPrice = Convert.ToInt32(stTradeData.nHighPrice[i] * 0.005);
+                                nCheckPrice = stTradeData.nHighPrice[i] - nMinusPrice;
+
+                                if (nCheckPrice >= 1000 && nCheckPrice < 5000)
+                                    nCheckPrice = nCheckPrice - (nCheckPrice % 5);
+                                else if (nCheckPrice >= 5000 && nCheckPrice < 10000)
+                                    nCheckPrice = nCheckPrice - (nCheckPrice % 10);
+                                else if (nCheckPrice >= 10000 && nCheckPrice < 50000)
+                                    nCheckPrice = nCheckPrice - (nCheckPrice % 50);
+                                else if (nCheckPrice >= 50000 && nCheckPrice < 100000)
+                                    nCheckPrice = nCheckPrice - (nCheckPrice % 100);
+                                else if (nCheckPrice >= 100000 && nCheckPrice < 500000)
+                                    nCheckPrice = nCheckPrice - (nCheckPrice % 500);
+                            }
+
+                            if (stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9/*(nHour < 10 || nHour > 12)*/)
                             {
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
@@ -608,7 +631,7 @@ namespace KOASampleCS
                                 }
                                 */
 
-                                /*
+                               
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
                                 int nMinusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.02);
 
@@ -620,13 +643,14 @@ namespace KOASampleCS
                                 if (nNowPrice < stTradeData.nBuyPrice[i] - nMinusPrice)
                                 {
                                     LogManager.WriteLine("손절 :\t" + stTradeData.sCode[i]);
-                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", nNowPrice, stTradeData.sOrderNo[i]);
+                                    lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", nNowPrice, stTradeData.sOrderNo[i]);
 
                                     if (lRet == 0)
                                     {
                                         stTradeData.nState[i] = 6;
                                     }
                                 }
+                                /*
                                 else if (stTradeData.bEndSell[i] == true && nNowTime > 930)
                                 {
                                     int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "00", stTradeData.nHighPrice[i], stTradeData.sOrderNo[i]);
@@ -1177,14 +1201,31 @@ namespace KOASampleCS
                         if (stTradeData.nHighPrice[i] <= stTradeData.nNowPrice[i] && (stTradeData.nHighTime[i] == 0 || stTradeData.nHighTime[i] + 10 > nHour * 100 + nMinute))
                         {
                             stTradeData.nHighPrice[i] = stTradeData.nNowPrice[i];
+                            stTradeData.nLowPrice[i] = stTradeData.nNowPrice[i];
 
-                            if(nMinute > 50)
+                            if (nMinute > 50)
                             {
                                 stTradeData.nHighTime[i] = (nHour + 1) * 100;
+                                stTradeData.nLowTime[i] = (nHour + 1) * 100;
                             }
                             else
                             {
                                 stTradeData.nHighTime[i] = nHour * 100 + nMinute;
+                                stTradeData.nLowTime[i] = nHour * 100 + nMinute;
+                            }
+                        }
+
+                        if (stTradeData.nLowPrice[i] >= stTradeData.nNowPrice[i] && (stTradeData.nLowPrice[i] == 0 || stTradeData.nLowTime[i] + 10 > nHour * 100 + nMinute))
+                        {
+                            stTradeData.nLowPrice[i] = stTradeData.nNowPrice[i];
+
+                            if (nMinute > 50)
+                            {
+                                stTradeData.nLowTime[i] = (nHour + 1) * 100;
+                            }
+                            else
+                            {
+                                stTradeData.nLowTime[i] = nHour * 100 + nMinute;
                             }
                         }
 
