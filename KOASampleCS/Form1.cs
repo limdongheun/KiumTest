@@ -439,7 +439,7 @@ namespace KOASampleCS
                                     nCheckPrice = nCheckPrice - (nCheckPrice % 500);
                             }
 
-                            if (stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9/*(nHour < 10 || nHour > 12)*/)
+                            if (stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9 && nNowTime < 1330)
                             {
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
                                 int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
