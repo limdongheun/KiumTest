@@ -497,7 +497,7 @@ namespace KOASampleCS
                                 }
                             }  
 
-                            if (nNowPrice > 0 && (stTradeData.n5MinuteAverage[i] > stTradeData.n10MinuteAverage[i] || ((nHour == 9 && nMinute < 10) && stTradeData.n5MinutePrice[i,4] > stTradeData.n5MinutePrice[i, 3] && stTradeData.n5MinutePrice[i, 3] > 0)) && m_nTradeCount < 7)
+                            if (nNowTime < 930 && nNowPrice > 0 && (stTradeData.n5MinuteAverage[i] > stTradeData.n10MinuteAverage[i] || ((nHour == 9 && nMinute < 10) && stTradeData.n5MinutePrice[i,4] > stTradeData.n5MinutePrice[i, 3] && stTradeData.n5MinutePrice[i, 3] > 0)) && m_nTradeCount < 7)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
@@ -516,15 +516,14 @@ namespace KOASampleCS
                                         m_nTradeCount++;
                                     }
                                 }
-                            }
-
-                            /*
-                            if (stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9 && nNowTime < 1330)
+                            }                         
+                            else if (nNowPrice > 0 && stTradeData.n5MinuteAverage[i] > stTradeData.n10MinuteAverage[i] && stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9 && nNowTime < 1330)
                             {
+                                /*
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nClosePrice[i] * 0.05);
-                                int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
+                                nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
 
-                                int nQty = 1;
+                                nQty = 1;
                                 int nBuyPrice = 0;
 
                                 if (nNowPrice >= 1000 && nNowPrice < 5000)
@@ -542,16 +541,18 @@ namespace KOASampleCS
                                 {
                                     m_nTradeCount = 0;
                                 }
-                                else if (nBuyPrice > 10000)
+
+                                if (nBuyPrice > 10000)
                                 {
                                     nQty = 20000 / nBuyPrice;
-                                    m_nTradeCount += 2;
+                                    //m_nTradeCount += 2;
                                 }
                                 else
                                 {
                                     nQty = 10000 / nBuyPrice;
-                                    m_nTradeCount++;
+                                    //m_nTradeCount++;
                                 }
+                                */
 
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
@@ -560,6 +561,15 @@ namespace KOASampleCS
                                     stTradeData.nState[i] = 1;
                                     stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyTime[i] = nNowTime;
+
+                                    if (nNowPrice > 10000)
+                                    {
+                                        m_nTradeCount += 2;
+                                    }
+                                    else
+                                    {
+                                        m_nTradeCount++;
+                                    }
                                 }
 
                                 /*
@@ -603,9 +613,9 @@ namespace KOASampleCS
                                         stTradeData.nBuyTime[i] = nNowTime;
                                     }
                                 }
-                                
+                                */
                             }
-                            */
+
                         }
                         else if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 1)
                         {
