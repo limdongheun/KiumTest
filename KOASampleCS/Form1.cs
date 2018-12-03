@@ -537,6 +537,16 @@ namespace KOASampleCS
                                     stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyTime[i] = nNowTime;
 
+                                    stTradeData.nAverageStatus[i] = 0;
+                                    stTradeData.nUpAverageEnd1[i] = 0;
+                                    stTradeData.nUpAverageEnd2[i] = 0;
+                                    stTradeData.nUpAverageHigh1[i] = 0;
+                                    stTradeData.nUpAverageHigh2[i] = 0;
+                                    stTradeData.nDownAverageEnd1[i] = 0;
+                                    stTradeData.nDownAverageEnd2[i] = 0;
+                                    stTradeData.nDownAverageHigh1[i] = 0;
+                                    stTradeData.nDownAverageHigh2[i] = 0;
+
                                     if (nNowPrice > 10000)
                                     {
                                         m_nTradeCount += 2;
