@@ -90,6 +90,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.txt실시간종목코드 = new System.Windows.Forms.TextBox();
             this.btn자동주문 = new System.Windows.Forms.Button();
+            this.btnSaleValue = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -169,14 +170,14 @@
             // 현재가ToolStripMenuItem
             // 
             this.현재가ToolStripMenuItem.Name = "현재가ToolStripMenuItem";
-            this.현재가ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.현재가ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.현재가ToolStripMenuItem.Text = "현재가";
             this.현재가ToolStripMenuItem.Click += new System.EventHandler(this.현재가ToolStripMenuItem_Click);
             // 
             // 일봉데이터ToolStripMenuItem
             // 
             this.일봉데이터ToolStripMenuItem.Name = "일봉데이터ToolStripMenuItem";
-            this.일봉데이터ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.일봉데이터ToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.일봉데이터ToolStripMenuItem.Text = "일봉데이터";
             this.일봉데이터ToolStripMenuItem.Click += new System.EventHandler(this.일봉데이터ToolStripMenuItem_Click);
             // 
@@ -663,11 +664,22 @@
             this.btn자동주문.UseVisualStyleBackColor = true;
             this.btn자동주문.Click += new System.EventHandler(this.btn자동주문_Click);
             // 
+            // btnSaleValue
+            // 
+            this.btnSaleValue.Location = new System.Drawing.Point(164, 49);
+            this.btnSaleValue.Name = "btnSaleValue";
+            this.btnSaleValue.Size = new System.Drawing.Size(75, 23);
+            this.btnSaleValue.TabIndex = 27;
+            this.btnSaleValue.Text = "매수중지";
+            this.btnSaleValue.UseVisualStyleBackColor = true;
+            this.btnSaleValue.Click += new System.EventHandler(this.btnSaleValue_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1445, 536);
+            this.Controls.Add(this.btnSaleValue);
             this.Controls.Add(this.btn자동주문);
             this.Controls.Add(this.group실시간등록해제);
             this.Controls.Add(this.groupBox2);
@@ -774,6 +786,7 @@
         private System.Windows.Forms.Button btn실시간등록;
         private System.Windows.Forms.Button btn실시간해제;
         private System.Windows.Forms.Button btn자동주문;
+        private System.Windows.Forms.Button btnSaleValue;
     }
 }
 

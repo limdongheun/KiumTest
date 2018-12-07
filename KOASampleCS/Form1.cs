@@ -89,6 +89,7 @@ namespace KOASampleCS
         public int m_nCloseSellCount = 0;
         public int m_nStartSellCount = 0;
         public int m_nAverageHigh = 0;
+        public bool m_bSale = true;
 
         public struct ConditionList
         {
@@ -471,7 +472,7 @@ namespace KOASampleCS
 
                     for (int i = 0; i < 200; i++)
                     {
-                        if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0)
+                        if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0 && m_bSale == true)
                         {
                             int nCheckPrice = 0;
 
@@ -1986,6 +1987,20 @@ namespace KOASampleCS
                 btn자동주문.Text = "자동주문 중단";
                 _bRealTrade = true;
                 Logger(Log.일반, "======= 자동 주문 실행 ========");
+            }
+        }
+
+        private void btnSaleValue_Click(object sender, EventArgs e)
+        {
+            if(m_bSale == true)
+            {
+                m_bSale = false;
+                btnSaleValue.Text = "매수시작";
+            }
+            else
+            {
+                m_bSale = true;
+                btnSaleValue.Text = "매수중지";
             }
         }
     }
