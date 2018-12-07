@@ -557,6 +557,7 @@ namespace KOASampleCS
                                     }
                                 }
                             }
+                            /*
                             else if (nNowTime < 930 && nNowPrice > 0 && (stTradeData.n5MinuteAverage[i] > stTradeData.n10MinuteAverage[i] || ((nHour == 9 && nMinute < 10) && stTradeData.n5MinutePrice[i,4] > stTradeData.n5MinutePrice[i, 3] && stTradeData.n5MinutePrice[i, 3] > 0)) && m_nTradeCount < 7)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
@@ -576,8 +577,7 @@ namespace KOASampleCS
                                         m_nTradeCount++;
                                     }
                                 }
-                            }
-                            /*                      
+                            }                      
                             else if (nNowPrice > 0 && stTradeData.n5MinuteAverage[i] > stTradeData.n10MinuteAverage[i] && stTradeData.nNowPrice[i] >= nCheckPrice && stTradeData.nHighTime[i] > 0 && stTradeData.nHighTime[i] + 5 < nHour*100 + nMinute && stTradeData.nLowTime[i] + 5 < nHour * 100 + nMinute && m_nTradeCount < 9 && nNowTime < 1330)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
