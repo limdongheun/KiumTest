@@ -534,6 +534,8 @@ namespace KOASampleCS
 
                                 if (lRet == 0)
                                 {
+                                    LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tnUpAverageEnd1 - " + stTradeData.nUpAverageEnd1[i].ToString() + "\tnUpAverageEnd2 - " + stTradeData.nUpAverageEnd2[i].ToString());
+
                                     stTradeData.nState[i] = 1;
                                     stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyTime[i] = nNowTime;
@@ -707,10 +709,13 @@ namespace KOASampleCS
 
                             if (stTradeData.nDownAverageEnd1[i] > 0 && stTradeData.nDownAverageEnd1[i] > stTradeData.nDownAverageEnd2[i])
                             {
+                                LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tnDownAverageEnd1 - " + stTradeData.nDownAverageEnd1[i].ToString() + "\tnDownAverageEnd2 - " + stTradeData.nDownAverageEnd2[i].ToString());
+
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
-                            else if(sellTime < nNowTime)
+                            else if(sellTime < nNowTime && stTradeData.nAverageStatus[i] == 2)
                             {
+                                LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t시간초과");
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
 
