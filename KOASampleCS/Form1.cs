@@ -528,7 +528,7 @@ namespace KOASampleCS
                                 }
                             }  
 
-                            if(stTradeData.nUpAverageEnd1[i] > 0 && stTradeData.nUpAverageEnd1[i] < stTradeData.nUpAverageEnd2[i] && m_nTradeCount < 7 && nNowTime < 1330)
+                            if(stTradeData.nClosePrice[i] < nNowPrice && stTradeData.nUpAverageEnd1[i] > 0 && stTradeData.nUpAverageEnd1[i] < stTradeData.nUpAverageEnd2[i] && m_nTradeCount < 10 && nNowTime < 1330)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
