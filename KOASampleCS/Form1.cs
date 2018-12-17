@@ -738,7 +738,7 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
                             
-                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nBuyTime[i] < 910)
+                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && stTradeData.nBuyTime[i] < 910)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
