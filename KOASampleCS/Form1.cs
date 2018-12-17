@@ -470,6 +470,11 @@ namespace KOASampleCS
                         */
                     }
 
+                    if(nNowTime > 904)
+                    {
+                        m_bSale = false;
+                    }
+
                     for (int i = 0; i < 200; i++)
                     {
                         if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0 && m_bSale == true)
@@ -518,17 +523,17 @@ namespace KOASampleCS
                             {
                                 if (nNowPrice > 10000)
                                 {
-                                    nQty = 20000 / nNowPrice;
+                                    nQty = 40000 / nNowPrice;
                                     //m_nTradeCount += 2;
                                 }
                                 else
                                 {
-                                    nQty = 10000 / nNowPrice;
+                                    nQty = 30000 / nNowPrice;
                                     //m_nTradeCount++;
                                 }
                             }
 
-                            if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 10 && nNowTime < 910)
+                            if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 6 && nNowTime < 905)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
