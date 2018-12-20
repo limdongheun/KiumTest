@@ -747,12 +747,13 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
                             
-                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > 910)
+                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > 910 && stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
+                            /*
                             else if (stTradeData.nDownAverageEnd1[i] > 0 && stTradeData.nDownAverageEnd1[i] > stTradeData.nDownAverageEnd2[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tnDownAverageEnd1 - " + stTradeData.nDownAverageEnd1[i].ToString() + "\tnDownAverageEnd2 - " + stTradeData.nDownAverageEnd2[i].ToString());
@@ -764,6 +765,7 @@ namespace KOASampleCS
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t시간초과");
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
+                            */
 
                             /*
                             if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardTime[i] + 60 < (nHour * 10000) + (nMinute * 100) + nSecond)
