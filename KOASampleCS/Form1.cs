@@ -363,11 +363,22 @@ namespace KOASampleCS
 
                     if(nState <= 3)
                     {
-                        stTradeData.nBuyQty[i] = nBuyQty;
-                        stTradeData.nBuyPrice[i] = nBuyPrice;
+                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0)
+                        {
+                            int nOldPrice = stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i];
+                            int nNewPrice = nBuyPrice * nBuyQty;
 
-                        if (stTradeData.nOrderQty[i] != stTradeData.nBuyQty[i])
-                            stTradeData.nState[i] = 1;
+                            stTradeData.nBuyQty[i] += nBuyQty;
+                            stTradeData.nBuyPrice[i] = (nOldPrice + nNewPrice) / stTradeData.nBuyQty[i];
+                        }
+                        else
+                        {
+                            stTradeData.nBuyQty[i] = nBuyQty;
+                            stTradeData.nBuyPrice[i] = nBuyPrice;
+                        }
+
+                        //if (stTradeData.nOrderQty[i] != stTradeData.nBuyQty[i])
+                        //    stTradeData.nState[i] = 1;
                     }
                     else if (nState > 3)
                     {
@@ -546,7 +557,7 @@ namespace KOASampleCS
                                     LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t장시작 매수");
 
                                     stTradeData.nState[i] = 1;
-                                    stTradeData.nOrderQty[i] = nQty;
+                                    //stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyTime[i] = nNowTime;
 
                                     stTradeData.nAverageStatus[i] = 0;
@@ -578,7 +589,7 @@ namespace KOASampleCS
                                     LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tnUpAverageEnd1 - " + stTradeData.nUpAverageEnd1[i].ToString() + "\tnUpAverageEnd2 - " + stTradeData.nUpAverageEnd2[i].ToString());
 
                                     stTradeData.nState[i] = 1;
-                                    stTradeData.nOrderQty[i] = nQty;
+                                    //stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyTime[i] = nNowTime;
 
                                     stTradeData.nAverageStatus[i] = 0;
@@ -752,6 +763,22 @@ namespace KOASampleCS
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                            }
+                            else if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && sellTime < nNowTime && nNowTime < 1100)
+                            {
+                                LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t추가 매수");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i] / 2, 1, "03", 0, "");
+                                stTradeData.nBuyTime[i] = nNowTime;
+
+                                stTradeData.nAverageStatus[i] = 0;
+                                stTradeData.nUpAverageEnd1[i] = 0;
+                                stTradeData.nUpAverageEnd2[i] = 0;
+                                stTradeData.nUpAverageHigh1[i] = 0;
+                                stTradeData.nUpAverageHigh2[i] = 0;
+                                stTradeData.nDownAverageEnd1[i] = 0;
+                                stTradeData.nDownAverageEnd2[i] = 0;
+                                stTradeData.nDownAverageHigh1[i] = 0;
+                                stTradeData.nDownAverageHigh2[i] = 0;
                             }
                             /*
                             else if (stTradeData.nDownAverageEnd1[i] > 0 && stTradeData.nDownAverageEnd1[i] > stTradeData.nDownAverageEnd2[i])
