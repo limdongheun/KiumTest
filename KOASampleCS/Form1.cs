@@ -354,6 +354,11 @@ namespace KOASampleCS
 
         public void ChangeTradeList(string Name, int nState, string sOrderNo, int nBuyQty, int nBuyPrice, int nSellQty, int nSellPrice)
         {
+            int nHour = Convert.ToInt32(System.DateTime.Now.ToString("HH"));
+            int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
+            int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
+            int nNowTime = nHour * 100 + nMinute;
+
             for (int i = 0; i < 200; i++)
             {
                 if (stTradeData.sName[i] == Name)
@@ -363,7 +368,7 @@ namespace KOASampleCS
 
                     if(nState <= 3)
                     {
-                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0)
+                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && stTradeData.nBuyTime[i] != nNowTime)
                         {
                             int nOldPrice = stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i];
                             int nNewPrice = nBuyPrice * nBuyQty;
@@ -375,6 +380,7 @@ namespace KOASampleCS
                         {
                             stTradeData.nBuyQty[i] = nBuyQty;
                             stTradeData.nBuyPrice[i] = nBuyPrice;
+                            stTradeData.nBuyTime[i] = nNowTime;
                         }
 
                         //if (stTradeData.nOrderQty[i] != stTradeData.nBuyQty[i])
@@ -558,7 +564,7 @@ namespace KOASampleCS
 
                                     stTradeData.nState[i] = 1;
                                     //stTradeData.nOrderQty[i] = nQty;
-                                    stTradeData.nBuyTime[i] = nNowTime;
+                                    //stTradeData.nBuyTime[i] = nNowTime;
 
                                     stTradeData.nAverageStatus[i] = 0;
                                     stTradeData.nUpAverageEnd1[i] = 0;
@@ -590,7 +596,7 @@ namespace KOASampleCS
 
                                     stTradeData.nState[i] = 1;
                                     //stTradeData.nOrderQty[i] = nQty;
-                                    stTradeData.nBuyTime[i] = nNowTime;
+                                    //stTradeData.nBuyTime[i] = nNowTime;
 
                                     stTradeData.nAverageStatus[i] = 0;
                                     stTradeData.nUpAverageEnd1[i] = 0;
@@ -768,7 +774,7 @@ namespace KOASampleCS
                             {
                                 LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t추가 매수");
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i] / 2, 1, "03", 0, "");
-                                stTradeData.nBuyTime[i] = nNowTime;
+                                //stTradeData.nBuyTime[i] = nNowTime;
 
                                 stTradeData.nAverageStatus[i] = 0;
                                 stTradeData.nUpAverageEnd1[i] = 0;
