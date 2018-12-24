@@ -322,9 +322,10 @@ namespace KOASampleCS
 
                             if(state == 4)
                             {
-                                stTradeData.bEndSell[i] = true;
-                                stTradeData.nState[i] = 3;
-                                stTradeData.nBuyPrice[nSavePoint] = Convert.ToInt32(sLastPrice);
+                                stTradeData.bEndSell[nSavePoint] = true;
+                                stTradeData.nState[nSavePoint] = 3;
+                                stTradeData.nBuyPrice[nSavePoint] = buyPrice;
+                                stTradeData.nBuyTime[nSavePoint] = 900;
                             }
                             else
                                 stTradeData.nBuyPrice[nSavePoint] = 0;
@@ -368,8 +369,10 @@ namespace KOASampleCS
 
                     if(nState <= 3)
                     {
-                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && stTradeData.nBuyTime[i] != nNowTime)
+                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && stTradeData.nState[i] == 4)
                         {
+                            stTradeData.nState[i] = 3;
+
                             int nOldPrice = stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i];
                             int nNewPrice = nBuyPrice * nBuyQty;
 
@@ -416,18 +419,16 @@ namespace KOASampleCS
                     int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                     int nNowTime = nHour * 100 + nMinute;
 
-                    if (nHour == 9 && nMinute == 0 && nSecond > 10 && m_bStartSell == false)
+                    if (nHour == 9 && nMinute == 0 && nSecond > 0 && m_bStartSell == false)
                     {
                         m_bStartSell = true;
 
-                        /*
                         axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
                         axKHOpenAPI.SetInputValue("비밀번호", "");
                         axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
                         axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
 
                         axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
-                        */
                     }
                     else if (nHour == 15 && nMinute == 21)
                     {
@@ -554,7 +555,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 1;
                             }
-                            else if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 10 && nNowTime < 905)
+                            else if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 10 && nNowTime < 904)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
@@ -764,27 +765,34 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
                             
-                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > 910 && stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
+                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > 910 && (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] || nNowTime > 1200))
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
-                            else if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && sellTime < nNowTime && nNowTime < 1100)
+                            else if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && sellTime < nNowTime)
                             {
-                                LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t추가 매수");
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i] / 2, 1, "03", 0, "");
-                                //stTradeData.nBuyTime[i] = nNowTime;
+                                if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.03)
+                                {
+                                    LogManager.WriteLine("매수 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t추가 매수");
+                                    lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i] / 2, 1, "03", 0, "");
+                                    //stTradeData.nBuyTime[i] = nNowTime;
 
-                                stTradeData.nAverageStatus[i] = 0;
-                                stTradeData.nUpAverageEnd1[i] = 0;
-                                stTradeData.nUpAverageEnd2[i] = 0;
-                                stTradeData.nUpAverageHigh1[i] = 0;
-                                stTradeData.nUpAverageHigh2[i] = 0;
-                                stTradeData.nDownAverageEnd1[i] = 0;
-                                stTradeData.nDownAverageEnd2[i] = 0;
-                                stTradeData.nDownAverageHigh1[i] = 0;
-                                stTradeData.nDownAverageHigh2[i] = 0;
+                                    stTradeData.nAverageStatus[i] = 0;
+                                    stTradeData.nUpAverageEnd1[i] = 0;
+                                    stTradeData.nUpAverageEnd2[i] = 0;
+                                    stTradeData.nUpAverageHigh1[i] = 0;
+                                    stTradeData.nUpAverageHigh2[i] = 0;
+                                    stTradeData.nDownAverageEnd1[i] = 0;
+                                    stTradeData.nDownAverageEnd2[i] = 0;
+                                    stTradeData.nDownAverageHigh1[i] = 0;
+                                    stTradeData.nDownAverageHigh2[i] = 0;
+                                }
+                                else
+                                {
+                                    stTradeData.nBuyTime[i] = nNowTime;
+                                }
                             }
                             /*
                             else if (stTradeData.nDownAverageEnd1[i] > 0 && stTradeData.nDownAverageEnd1[i] > stTradeData.nDownAverageEnd2[i])
@@ -1173,8 +1181,9 @@ namespace KOASampleCS
                         sCode = sCode.TrimEnd(' ');
 
                         int nQty = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "보유수량"));
+                        int nPrice = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "평균단가"));
 
-                        AddTradeList(sCode + ";", 4, nQty);
+                        AddTradeList(sCode + ";", 4, nQty, nPrice);
                         System.Threading.Thread.Sleep(500);
                     }
                     
@@ -2057,8 +2066,15 @@ namespace KOASampleCS
 
             //AddTradeList("032820;010820;101390;078130;001510;002100;039610;054780;008350;");
 
-            System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
-            TradeThread.Start();
+            axKHOpenAPI.SetInputValue("계좌번호", "5198658610");
+            axKHOpenAPI.SetInputValue("비밀번호", "");
+            axKHOpenAPI.SetInputValue("상장폐지조회구분", "0");
+            axKHOpenAPI.SetInputValue("비밀번호입력매체구분", "00");
+
+            axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
+
+            //System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
+            //TradeThread.Start();
 
             return;
 
