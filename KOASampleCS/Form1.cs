@@ -378,8 +378,9 @@ namespace KOASampleCS
 
                             stTradeData.nBuyQty[i] += nBuyQty;
                             stTradeData.nBuyPrice[i] = (nOldPrice + nNewPrice) / stTradeData.nBuyQty[i];
+                            stTradeData.nBuyTime[i] = nNowTime;
                         }
-                        else
+                        else if (stTradeData.nBuyQty[i] == 0 && stTradeData.nBuyPrice[i] == 0)
                         {
                             stTradeData.nBuyQty[i] = nBuyQty;
                             stTradeData.nBuyPrice[i] = nBuyPrice;
