@@ -46,6 +46,7 @@ namespace KOASampleCS
             public int[] n3HourStartPrice;        //3시 초반금액
             public int[] n3HourLastPrice;        //3시 마감금액
 
+            public bool[] bHighPriceCheck;      //고가 체크
             public int[] nAverageStatus;     //이평선 상태
             public int[] nUpAverageHigh1;     //상승 이평선 최고가1
             public int[] nUpAverageHigh2;     //상승 이평선 최고가2
@@ -152,6 +153,7 @@ namespace KOASampleCS
             stTradeData.n3HourStartPrice = new int[200];
             stTradeData.n3HourLastPrice = new int[200];
 
+            stTradeData.bHighPriceCheck = new bool[200];
             stTradeData.nAverageStatus = new int[200];
             stTradeData.nUpAverageHigh1 = new int[200];
             stTradeData.nUpAverageHigh2 = new int[200];
@@ -198,6 +200,7 @@ namespace KOASampleCS
                 stTradeData.n3HourStartPrice[i] = 0;
                 stTradeData.n3HourLastPrice[i] = 0;
 
+                stTradeData.bHighPriceCheck[i] = false;
                 stTradeData.nAverageStatus[i] = 0;
                 stTradeData.nUpAverageHigh1[i] = 0;
                 stTradeData.nUpAverageHigh2[i] = 0;
@@ -738,7 +741,7 @@ namespace KOASampleCS
                             }
                             */
                             int nPlusPrice = 0;
-                            nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.02);
+                            nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.03);
 
                             int lSellPrice = stTradeData.nBuyPrice[i] + nPlusPrice;
 
@@ -752,8 +755,18 @@ namespace KOASampleCS
                                 lSellPrice = lSellPrice - (lSellPrice % 100);
                             else if (lSellPrice >= 100000 && lSellPrice < 500000)
                                 lSellPrice = lSellPrice - (lSellPrice % 500);
-                            
-                                                        
+
+                            if(stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
+                            {
+                                stTradeData.bHighPriceCheck[i] = true;
+                            }
+
+                            int nCheckTime = 910;
+
+                            if(stTradeData.bHighPriceCheck[i] == true)
+                            {
+                                nCheckTime = 900;
+                            }
 
                             int lRet = 10;
 
@@ -766,7 +779,7 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
                             
-                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > 910 && (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] || nNowTime > 1200))
+                            if(stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > nCheckTime && (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] || nNowTime > 1200))
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
