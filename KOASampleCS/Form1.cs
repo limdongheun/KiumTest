@@ -423,7 +423,7 @@ namespace KOASampleCS
                     int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                     int nNowTime = nHour * 100 + nMinute;
 
-                    if (nHour == 9 && nMinute == 0 && nSecond > 0 && m_bStartSell == false)
+                    if (nHour == 8 && nMinute == 59 && nSecond > 0 && m_bStartSell == false)
                     {
                         m_bStartSell = true;
 
