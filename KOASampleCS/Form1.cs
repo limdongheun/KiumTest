@@ -756,7 +756,7 @@ namespace KOASampleCS
                             else if (lSellPrice >= 100000 && lSellPrice < 500000)
                                 lSellPrice = lSellPrice - (lSellPrice % 500);
 
-                            if(stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
+                            if(stTradeData.nNowPrice[i] > lSellPrice)
                             {
                                 stTradeData.bHighPriceCheck[i] = true;
                             }
