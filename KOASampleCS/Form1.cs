@@ -372,7 +372,7 @@ namespace KOASampleCS
 
                     if(nState <= 3)
                     {
-                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && stTradeData.nState[i] == 4)
+                        if(stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0)
                         {
                             stTradeData.nState[i] = 3;
 
@@ -383,7 +383,7 @@ namespace KOASampleCS
                             stTradeData.nBuyPrice[i] = (nOldPrice + nNewPrice) / stTradeData.nBuyQty[i];
                             stTradeData.nBuyTime[i] = nNowTime;
                         }
-                        else if (stTradeData.nState[i] == 1)
+                        else if (stTradeData.nState[i] == 3)
                         {
                             stTradeData.nBuyQty[i] = nBuyQty;
                             stTradeData.nBuyPrice[i] = nBuyPrice;
