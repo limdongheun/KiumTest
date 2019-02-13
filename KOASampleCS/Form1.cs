@@ -379,6 +379,8 @@ namespace KOASampleCS
                             int nOldPrice = stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i];
                             int nNewPrice = nBuyPrice * nBuyQty;
 
+                            LogManager.WriteLine("평균 :\t" + stTradeData.nBuyPrice[i] + "\t" + stTradeData.nBuyQty[i] + "\t" + nBuyPrice + "\t" + nBuyQty);
+
                             stTradeData.nBuyQty[i] += nBuyQty;
                             stTradeData.nBuyPrice[i] = (nOldPrice + nNewPrice) / stTradeData.nBuyQty[i];
                             stTradeData.nBuyTime[i] = nNowTime;
