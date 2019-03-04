@@ -547,12 +547,12 @@ namespace KOASampleCS
                             {
                                 if (nNowPrice > 10000)
                                 {
-                                    nQty = 40000 / nNowPrice;
+                                    nQty = 80000 / nNowPrice;
                                     //m_nTradeCount += 2;
                                 }
                                 else
                                 {
-                                    nQty = 30000 / nNowPrice;
+                                    nQty = 60000 / nNowPrice;
                                     //m_nTradeCount++;
                                 }
                             }
