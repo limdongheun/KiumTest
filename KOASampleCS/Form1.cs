@@ -552,7 +552,7 @@ namespace KOASampleCS
                                 }
                                 else
                                 {
-                                    nQty = 60000 / nNowPrice;
+                                    nQty = 50000 / nNowPrice;
                                     //m_nTradeCount++;
                                 }
                             }
