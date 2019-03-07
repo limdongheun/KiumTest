@@ -561,7 +561,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 1;
                             }
-                            else if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 10 && nNowTime < 904)
+                            else if (stTradeData.nClosePrice[i] < nNowPrice && m_nTradeCount < 10 && nNowTime < 903)
                             {
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
 
@@ -805,7 +805,7 @@ namespace KOASampleCS
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
-                            else if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && sellTime < nNowTime)
+                            else if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && sellTime < nNowTime && stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i] < 100000)
                             {
                                 if(stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.03)
                                 {
