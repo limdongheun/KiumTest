@@ -557,7 +557,7 @@ namespace KOASampleCS
                                 }
                             }
 
-                            if(m_nTradeCount > 9 || nNowPrice > (stTradeData.nClosePrice[i] + stTradeData.nClosePrice[i] * 0.08))
+                            if(m_nTradeCount > 9 || nNowPrice > (stTradeData.nClosePrice[i] + stTradeData.nClosePrice[i] * 0.05))
                             {
                                 stTradeData.nState[i] = 1;
                             }
