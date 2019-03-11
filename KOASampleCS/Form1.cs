@@ -438,27 +438,28 @@ namespace KOASampleCS
                     }
                     else if (nHour == 15 && nMinute == 21)
                     {
-                        /*
+                        
                         LogManager.WriteLine("종가 매수 시작");
 
-                        for (int i = m_nStartSellCount; i < 200; i++)
+                        for (int i = 0; i < 200; i++)
                         {
                             if (m_nCloseSellCount == 10)
                                 break;
 
                             if (stTradeData.sCode[i] != "")
                             {
-                                /*
+                                
                                 axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                                 axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                                 axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                                //axKHOpenAPI.SetInputValue("틱범위", "1");
 
                                 int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
                                 if(nRet == 0)
                                     LogManager.WriteLine(stTradeData.sCode[i]);
 
                                 System.Threading.Thread.Sleep(4000);
-                                */
+                                
                                 /*
                                 if(stTradeData.nHighPrice[i] > 0)
                                 {
@@ -470,11 +471,11 @@ namespace KOASampleCS
 
                                         if (stTradeData.nNowPrice[i] > 10000)
                                         {
-                                            nQty = 20000 / stTradeData.nNowPrice[i];
+                                            nQty = 80000 / stTradeData.nNowPrice[i];
                                         }
                                         else
                                         {
-                                            nQty = 10000 / stTradeData.nNowPrice[i];
+                                            nQty = 50000 / stTradeData.nNowPrice[i];
                                         }
 
                                         int lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
@@ -487,14 +488,15 @@ namespace KOASampleCS
                                         System.Threading.Thread.Sleep(1000);
                                     }
                                 }
+                                */
                             }
                         }
 
                         return;
-                        */
+                        
                     }
 
-                    if(nNowTime > 904)
+                    if(nNowTime >= 900)
                     {
                         m_bSale = false;
                     }
@@ -781,7 +783,13 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if (stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > nCheckTime && stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
+                            if (stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.01)
+                            {
+                                LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
+
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                            }
+                            else if (stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > nCheckTime && stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
@@ -799,7 +807,7 @@ namespace KOASampleCS
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
-                            else if (nNowTime > 1519)
+                            else if (nNowTime >= 1519)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
@@ -1275,7 +1283,7 @@ namespace KOASampleCS
 
                 LogManager.WriteLine("주식분봉차트조회 : " + sCode);
 
-                string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "09";
+                string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "091000";
                 int nHighPrice = 0;
                 int nNowPrice = 0;
                 int nBuyPrice = 0;
@@ -1293,7 +1301,8 @@ namespace KOASampleCS
 
                         nBuyPrice = Convert.ToInt32(sBuyPrice);
                     }
-                    else if(sTime.Contains(sCheckTime))
+                    //else if (sTime.Contains(sCheckTime))
+                    else if(Convert.ToInt64(sTime) <= Convert.ToInt64(sCheckTime) && Convert.ToInt64(sTime) > Convert.ToInt64(sCheckTime) - 1000)
                     {
                         string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "고가");
                         sHighPrice = sHighPrice.Replace(" ", "");
@@ -1308,7 +1317,35 @@ namespace KOASampleCS
                         }
                     }
                 }
+
+                for (int j = 0; j < 200; j++)
+                {
+                    if(sCode == stTradeData.sCode[j])
+                    {
+                        if (stTradeData.nClosePrice[j] + stTradeData.nClosePrice[j] * 0.05 < nHighPrice && m_nCloseSellCount < 10)
+                        {
+                            int nQty = 1;
+
+                            if (nNowPrice > 10000)
+                            {
+                                nQty = 80000 / nNowPrice;
+                            }
+                            else
+                            {
+                                nQty = 50000 / nNowPrice;
+                            }
+
+                            int lRet = SendOrder(sCode, nQty, 1, "03", 0, "");
+                            if (lRet == 0)
+                                LogManager.WriteLine("주식분봉차트조회 매수 : " + sCode);
+                            m_nCloseSellCount++;
+
+                            break;
+                        }
+                    }
+                }
                 
+                /*
                 if (nHighPrice - nLsatPrice > nLsatPrice * 0.05 && m_nCloseSellCount < 10)
                 {
                     int nQty = 1;
@@ -1327,6 +1364,7 @@ namespace KOASampleCS
                         LogManager.WriteLine("주식분봉차트조회 매수 : " + sCode);
                     m_nCloseSellCount++;
                 }
+                */
             }
         }
 
@@ -1660,7 +1698,7 @@ namespace KOASampleCS
             //axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
             axKHOpenAPI.SetInputValue("수정주가구분", "1");
-            axKHOpenAPI.SetInputValue("틱범위", "1");
+            //axKHOpenAPI.SetInputValue("틱범위", "1");
 
             int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
             //int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
