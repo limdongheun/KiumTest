@@ -413,6 +413,10 @@ namespace KOASampleCS
 
         public void TradeDataCheck()
         {
+            bool bLogin = false;
+            bool bSaveLocal = false;
+            bool bStartCheck = false;
+
             try
             {
                 while (true)
@@ -425,6 +429,35 @@ namespace KOASampleCS
                     int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                     int nNowTime = nHour * 100 + nMinute;
 
+                    if(bLogin == false && nNowTime > 835)
+                    {
+                        bLogin = true;
+                        axKHOpenAPI.CommConnect();
+
+                        System.Threading.Thread.Sleep(20000);
+                    }
+                    
+                    if(bSaveLocal == false && nNowTime > 840)
+                    {
+                        bSaveLocal = true;
+                        axKHOpenAPI.GetConditionLoad();
+
+                        System.Threading.Thread.Sleep(5000);
+                    }    
+
+                    if (bStartCheck == false && nNowTime > 842)
+                    {
+                        bStartCheck = true;
+
+                        string strScrNum = GetScrNum();
+                        axKHOpenAPI.SendCondition(strScrNum, "(단타)급등종목 검색", 0, 1);
+
+                        _strRealConScrNum = strScrNum;
+                        _strRealConName = "000^(단타)급등종목 검색";
+                        _nIndex = 0;
+                    }
+                    
+                    
                     if (nHour == 8 && nMinute == 59 && nSecond > 0 && m_bStartSell == false)
                     {
                         m_bStartSell = true;
@@ -437,8 +470,7 @@ namespace KOASampleCS
                         axKHOpenAPI.CommRqData("계좌평가현황요청", "opw00004", 0, GetScrNum());
                     }
                     else if (nHour == 15 && nMinute == 21)
-                    {
-                        
+                    {               
                         LogManager.WriteLine("종가 매수 시작");
 
                         for (int i = 0; i < 200; i++)
@@ -788,6 +820,12 @@ namespace KOASampleCS
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                            }
+                            else if (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.03)
+                            {
+                                LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
+
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
                             else if (stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i]-1] && nNowTime > nCheckTime && stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i])
                             {
@@ -1907,6 +1945,26 @@ namespace KOASampleCS
             if( e.lRet == 1 )
             {
                 Logger(Log.일반, "[이벤트] 조건식 저장 성공");
+
+                string strConList;
+
+                strConList = axKHOpenAPI.GetConditionNameList().Trim();
+
+                Logger(Log.조회, strConList);
+
+                // 분리된 문자 배열 저장
+                string[] spConList = strConList.Split(';');
+
+                // ComboBox 출력
+                for (int i = 0; i < spConList.Length; i++)
+                {
+                    if (spConList[i].Trim().Length >= 2)
+                    {
+                        cbo조건식.Items.Add(spConList[i]);
+                    }
+                }
+
+                cbo조건식.SelectedIndex = 0;
             }
             else
             {
