@@ -815,11 +815,17 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if (stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.01)
+                            if (stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && nNowTime >= 900)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                            }
+                            else if(stTradeData.nHighTime[i] + 30 < nNowTime * 100 + nSecond && nNowTime > 900)
+                            {
+                                LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
+
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
                             else if (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.03 && nNowTime >= 900)
                             {
@@ -1542,7 +1548,12 @@ namespace KOASampleCS
                         int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
                         int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
 
-                        if (stTradeData.nHighPrice[i] <= stTradeData.nNowPrice[i] && (stTradeData.nHighTime[i] == 0 || stTradeData.nHighTime[i] + 10 > nHour * 100 + nMinute))
+                        if (stTradeData.nHighPrice[i] <= stTradeData.nNowPrice[i] && nHour * 100 + nMinute < 905)
+                        {
+                            stTradeData.nHighPrice[i] = stTradeData.nNowPrice[i];
+                            stTradeData.nHighTime[i] = (nHour * 10000) + (nMinute * 100) + nSecond;
+                        }
+                        else if (stTradeData.nHighPrice[i] <= stTradeData.nNowPrice[i] && (stTradeData.nHighTime[i] == 0 || stTradeData.nHighTime[i] + 10 > nHour * 100 + nMinute))
                         {
                             stTradeData.nHighPrice[i] = stTradeData.nNowPrice[i];
                             stTradeData.nLowPrice[i] = stTradeData.nNowPrice[i];
