@@ -815,6 +815,7 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
+                            /*
                             if (stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && nNowTime >= 900)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
@@ -827,7 +828,8 @@ namespace KOASampleCS
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
-                            else if (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.03 && nNowTime*100 + nSecond >= 90003)
+                            */
+                            if (stTradeData.nNowPrice[i] > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.03 && nNowTime*100 + nSecond >= 90003)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
@@ -837,21 +839,21 @@ namespace KOASampleCS
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
                             else if (stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] && nNowTime > 1200 && stTradeData.nNowPrice[i] + stTradeData.nBuyPrice[i] * 0.01 > stTradeData.nBuyPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
                             else if (stTradeData.n5MinutePrice[i, 4] < stTradeData.n5MinutePrice[i, 3] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 2] > stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] && nNowTime > 1430 && stTradeData.nNowPrice[i] + stTradeData.nBuyPrice[i] * 0.02 > stTradeData.nBuyPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
-                            else if (nNowTime >= 1519)
+                            else if (nNowTime >= 1518)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
