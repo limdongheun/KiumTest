@@ -1272,7 +1272,7 @@ namespace KOASampleCS
                         int nPrice = Convert.ToInt32(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "평균단가"));
 
                         AddTradeList(sCode + ";", 4, nQty, nPrice);
-                        System.Threading.Thread.Sleep(500);
+                        System.Threading.Thread.Sleep(2000);
                     }
                     
                     //m_nStartSellCount++;
