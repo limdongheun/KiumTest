@@ -45,6 +45,7 @@ namespace KOASampleCS
             public bool[] bEndSell;         //마감구매종목
             public int[] n3HourStartPrice;        //3시 초반금액
             public int[] n3HourLastPrice;        //3시 마감금액
+            public bool[] bSellSignal;      //매수신호
 
             public bool[] bHighPriceCheck;      //고가 체크
             public int[] nAverageStatus;     //이평선 상태
@@ -152,6 +153,7 @@ namespace KOASampleCS
             stTradeData.bEndSell = new bool[200];
             stTradeData.n3HourStartPrice = new int[200];
             stTradeData.n3HourLastPrice = new int[200];
+            stTradeData.bSellSignal = new bool[200];
 
             stTradeData.bHighPriceCheck = new bool[200];
             stTradeData.nAverageStatus = new int[200];
@@ -199,6 +201,7 @@ namespace KOASampleCS
                 stTradeData.bEndSell[i] = false;
                 stTradeData.n3HourStartPrice[i] = 0;
                 stTradeData.n3HourLastPrice[i] = 0;
+                stTradeData.bSellSignal[i] = false;
 
                 stTradeData.bHighPriceCheck[i] = false;
                 stTradeData.nAverageStatus[i] = 0;
@@ -410,6 +413,7 @@ namespace KOASampleCS
                         {
                             stTradeData.nState[i] = 6;
 
+                            stTradeData.bSellSignal[i] = false;
                             stTradeData.nBuyQty[i] = 0;
                             stTradeData.nBuyPrice[i] = 0;
                             stTradeData.nBuyTime[i] = 0;
@@ -583,16 +587,18 @@ namespace KOASampleCS
 
                             int lRet = 0;
 
-                            if (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.03) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
+                            if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.03) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
                             {
-                                LogManager.WriteLine("매수(3%2min) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1].ToString() + "\t" + nNowPrice.ToString());
-
-                                stTradeData.nBuyQty[i] = 0;
-                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
+                                stTradeData.bSellSignal[i] = true;
                             }
-                            else if (nHigePrice10Min - (nHigePrice10Min * 0.03) > nNowPrice && stTradeData.nMCount[i] > 10 && nNowTime > 910 && nNowTime < 1400)
+                            else if (stTradeData.bSellSignal[i] == false && nHigePrice10Min - (nHigePrice10Min * 0.03) > nNowPrice && stTradeData.nMCount[i] > 10 && nNowTime > 910 && nNowTime < 1400)
                             {
-                                LogManager.WriteLine("매수(3%10min) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHigePrice10Min.ToString() + "\t" + nNowPrice.ToString());
+                                stTradeData.bSellSignal[i] = true;
+                            }
+
+                            if(stTradeData.bSellSignal[i] == true && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 2] < stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1])
+                            {
+                                LogManager.WriteLine("매수(3%) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
                                 stTradeData.nBuyQty[i] = 0;
                                 lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
