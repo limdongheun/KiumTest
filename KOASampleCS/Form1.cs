@@ -370,12 +370,12 @@ namespace KOASampleCS
             {
                 if (stTradeData.sName[i] == Name)
                 {
-                    stTradeData.nState[i] = nState;
+                    //stTradeData.nState[i] = nState;
                     stTradeData.sOrderNo[i] = sOrderNo;
 
                     if(nState <= 3)
                     {
-                        if (stTradeData.nState[i] == 7)
+                        if (stTradeData.nState[i] == 7 && nState == 3)
                         {
                             stTradeData.nBuyQty[i] += nBuyQty;
                             stTradeData.nBuyPrice[i] = nBuyPrice;
@@ -409,7 +409,7 @@ namespace KOASampleCS
                         stTradeData.nSellQty[i] = nSellQty;
                         stTradeData.nSellPrice[i] = nSellPrice;
 
-                        if(stTradeData.nState[i] == 8)
+                        if(stTradeData.nState[i] == 8 && nState == 6)
                         {
                             stTradeData.nState[i] = 6;
 
@@ -585,25 +585,28 @@ namespace KOASampleCS
                                 }
                             }
 
-                            int lRet = 0;
+                            int lRet = 1;
 
-                            if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.03) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
+                            if(stTradeData.nMCount[i] > 2)
                             {
-                                stTradeData.bSellSignal[i] = true;
-                            }
-                            else if (stTradeData.bSellSignal[i] == false && nHigePrice10Min - (nHigePrice10Min * 0.03) > nNowPrice && stTradeData.nMCount[i] > 10 && nNowTime > 910 && nNowTime < 1400)
-                            {
-                                stTradeData.bSellSignal[i] = true;
-                            }
+                                if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.05) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
+                                {
+                                    stTradeData.bSellSignal[i] = true;
+                                }
+                                else if (stTradeData.bSellSignal[i] == false && nHigePrice10Min - (nHigePrice10Min * 0.04) > nNowPrice && stTradeData.nMCount[i] > 10 && nNowTime > 910 && nNowTime < 1400)
+                                {
+                                    stTradeData.bSellSignal[i] = true;
+                                }
 
-                            if(stTradeData.bSellSignal[i] == true && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 2] < stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1])
-                            {
-                                LogManager.WriteLine("매수(3%) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+                                if (stTradeData.bSellSignal[i] == true && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 2] < stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] < nNowPrice)
+                                {
+                                    LogManager.WriteLine("매수(3%) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
-                                stTradeData.nBuyQty[i] = 0;
-                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
+                                    stTradeData.nBuyQty[i] = 0;
+                                    lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
+                                }
                             }
-
+                            
                             if (lRet == 0)
                             {
                                 stTradeData.nState[i] = 7;
