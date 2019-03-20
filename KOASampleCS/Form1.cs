@@ -498,7 +498,7 @@ namespace KOASampleCS
 
                             if (stTradeData.sCode[i] != "")
                             {
-                                
+                                /*
                                 axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                                 axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                                 axKHOpenAPI.SetInputValue("수정주가구분", "1");
@@ -509,7 +509,7 @@ namespace KOASampleCS
                                     LogManager.WriteLine(stTradeData.sCode[i]);
 
                                 System.Threading.Thread.Sleep(4000);
-                                
+                                */
                                 /*
                                 if(stTradeData.nHighPrice[i] > 0)
                                 {
