@@ -35,6 +35,7 @@ namespace KOASampleCS
             public int[] nBuyPrice;           //매수단가
             public int[] nSellQty;             //매도수량
             public int[] nSellPrice;           //매도단가
+            public int[] nSellCount;           //매도횟수
             public int[] nBuyTime;          //매수주문시간
             public int[] nSellTime;          //매도주문시간
             public int[] nHighPrice;        //최고금액
@@ -144,6 +145,7 @@ namespace KOASampleCS
             stTradeData.nBuyPrice = new int[200];
             stTradeData.nSellQty = new int[200];
             stTradeData.nSellPrice = new int[200];
+            stTradeData.nSellCount = new int[200];
             stTradeData.nBuyTime = new int[200];
             stTradeData.nSellTime = new int[200];
             stTradeData.nHighPrice = new int[200];
@@ -195,6 +197,7 @@ namespace KOASampleCS
                 stTradeData.nBuyPrice[i] = 0;
                 stTradeData.nSellQty[i] = 0;
                 stTradeData.nSellPrice[i] = 0;
+                stTradeData.nSellCount[i] = 0;
                 stTradeData.nBuyTime[i] = 0;
                 stTradeData.nSellTime[i] = 0;
                 stTradeData.nHighPrice[i] = 0;
@@ -409,18 +412,22 @@ namespace KOASampleCS
                     }
                     else if (nState > 3)
                     {
-                        stTradeData.nSellQty[i] = nSellQty;
+                        stTradeData.nSellQty[i] += nSellQty;
                         stTradeData.nSellPrice[i] = nSellPrice;       
 
                         if (stTradeData.nState[i] == 8 && nState == 6)
                         {
-                            stTradeData.nState[i] = 6;
+                            if(stTradeData.nSellQty[i] == stTradeData.nOrderQty[i])
+                            {
+                                stTradeData.nState[i] = 6;
 
-                            stTradeData.bSellSignal[i] = false;
-                            stTradeData.nBuyQty[i] = 0;
-                            stTradeData.nBuyPrice[i] = 0;
-                            stTradeData.nBuyTime[i] = 0;
-                            stTradeData.nSellTime[i] = nNowTime;
+                                stTradeData.bSellSignal[i] = false;
+                                stTradeData.nBuyQty[i] = 0;
+                                stTradeData.nBuyPrice[i] = 0;
+                                stTradeData.nBuyTime[i] = 0;
+                                stTradeData.nSellTime[i] = nNowTime;
+                                stTradeData.nSellCount[i]++;
+                            }
                         }
                     }
 
@@ -557,6 +564,7 @@ namespace KOASampleCS
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
                             int nHigePrice10Min = 0;
+                            int nLowPrice10Min = 0;
 
                             if(stTradeData.nMCount[i] > 10)
                             {
@@ -566,6 +574,13 @@ namespace KOASampleCS
                                     {
                                         nHigePrice10Min = stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - j];
                                     }
+                                }
+
+                                nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 9];
+
+                                if(nHigePrice10Min - nLowPrice10Min > nLowPrice10Min * 0.05)
+                                {
+                                    stTradeData.nSellTime[i] = nNowTime + 40;
                                 }
                             }
                             
@@ -598,7 +613,7 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if (stTradeData.nMCount[i] > 2 && sellTime < nNowTime && stTradeData.nBuyTime[i] == 0)
+                            if (stTradeData.nMCount[i] > 2 && stTradeData.nSellCount[i] < 2  && sellTime < nNowTime && stTradeData.nBuyTime[i] == 0)
                             {
                                 if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.05) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
                                 {
@@ -634,24 +649,7 @@ namespace KOASampleCS
                         }
                         else if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 7)
                         {
-                            bool nSellOK = false;
-
-                            if(stTradeData.nBuyPrice[i] > 10000)
-                            {
-                                if(stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i] > 80000 - stTradeData.nBuyPrice[i])
-                                {
-                                    nSellOK = true;
-                                }
-                            }
-                            else
-                            {
-                                if (stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i] > 50000 - stTradeData.nBuyPrice[i])
-                                {
-                                    nSellOK = true;
-                                }
-                            }
-
-                            if(stTradeData.nBuyQty[i] > 0 && nSellOK == true)
+                            if(stTradeData.nOrderQty[i] == stTradeData.nBuyQty[i])
                             {
                                 int nPlusPrice = Convert.ToInt32(stTradeData.nBuyPrice[i] * 0.016);
                                 int nSellPrice = stTradeData.nBuyPrice[i] + nPlusPrice;
@@ -685,6 +683,7 @@ namespace KOASampleCS
 
                             if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.027) >= nNowPrice)
                             {
+                                LogManager.WriteLine("손절(Status8) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                                 int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
                             }
                         }
