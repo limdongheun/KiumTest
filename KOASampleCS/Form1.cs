@@ -196,7 +196,7 @@ namespace KOASampleCS
                 stTradeData.nSellQty[i] = 0;
                 stTradeData.nSellPrice[i] = 0;
                 stTradeData.nBuyTime[i] = 0;
-                stTradeData.nSellTime[i] = 1;
+                stTradeData.nSellTime[i] = 0;
                 stTradeData.nHighPrice[i] = 0;
                 stTradeData.nHighTime[i] = 0;
                 stTradeData.nStandardPrice[i] = 0;
@@ -598,7 +598,7 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if (stTradeData.nMCount[i] > 2 && stTradeData.nSellTime[i] > 0 && sellTime < nNowTime)
+                            if (stTradeData.nMCount[i] > 2 && sellTime < nNowTime && stTradeData.nBuyTime[i] == 0)
                             {
                                 if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.05) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
                                 {
