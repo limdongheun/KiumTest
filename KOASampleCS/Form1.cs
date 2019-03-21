@@ -566,11 +566,11 @@ namespace KOASampleCS
                             int nHigePrice10Min = 0;
                             int nLowPrice10Min = 0;
 
-                            if(stTradeData.nMCount[i] > 10)
+                            if (stTradeData.nMCount[i] > 10)
                             {
                                 for (int j = 3; j < 10; j++)
                                 {
-                                    if(nHigePrice10Min < stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - j])
+                                    if (nHigePrice10Min < stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - j])
                                     {
                                         nHigePrice10Min = stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - j];
                                     }
@@ -578,9 +578,12 @@ namespace KOASampleCS
 
                                 nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 9];
 
-                                if(nHigePrice10Min - nLowPrice10Min > nLowPrice10Min * 0.05)
+                                if (nLowPrice10Min > 0)
                                 {
-                                    stTradeData.nSellTime[i] = nNowTime + 40;
+                                    if (nHigePrice10Min - nLowPrice10Min > nLowPrice10Min * 0.05)
+                                    {
+                                        stTradeData.nSellTime[i] = nNowTime + 40;
+                                    }
                                 }
                             }
                             
@@ -636,6 +639,7 @@ namespace KOASampleCS
                             if (lRet == 0)
                             {
                                 stTradeData.nState[i] = 7;
+                                stTradeData.nOrderQty[i] = nQty;
 
                                 if (nNowPrice > 10000)
                                 {
