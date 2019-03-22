@@ -427,6 +427,11 @@ namespace KOASampleCS
                                 stTradeData.nBuyTime[i] = 0;
                                 stTradeData.nSellTime[i] = nNowTime;
                                 stTradeData.nSellCount[i]++;
+
+                                if(stTradeData.nSellCount[i] == 2)
+                                {
+                                    stTradeData.nState[i] = 9;
+                                }
                             }
                         }
                     }
@@ -672,7 +677,7 @@ namespace KOASampleCS
                                 LogManager.WriteLine("매도(Status7) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyPrice[i].ToString() + "\t" + nSellPrice.ToString());
 
                                 int nQty = stTradeData.nBuyQty[i];
-                                stTradeData.nBuyQty[i] = 0;
+                                //stTradeData.nBuyQty[i] = 0;
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
 
                                 if(lRet == 0)
@@ -685,7 +690,7 @@ namespace KOASampleCS
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
 
-                            if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.027) >= nNowPrice)
+                            if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.027) >= nNowPrice && stTradeData.nBuyQty[i] > 0)
                             {
                                 LogManager.WriteLine("손절(Status8) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                                 int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
