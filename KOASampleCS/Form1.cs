@@ -579,9 +579,17 @@ namespace KOASampleCS
                                     {
                                         nHigePrice10Min = stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - j];
                                     }
+
+                                    if(j > 5)
+                                    {
+                                        if (nLowPrice10Min > stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - j] && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - j] > 0)
+                                        {
+                                            nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - j];
+                                        }
+                                    }
                                 }
 
-                                nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 9];
+                                //nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 9];
 
                                 if (nLowPrice10Min > 0)
                                 {
@@ -645,6 +653,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 7;
                                 stTradeData.nOrderQty[i] = nQty;
+                                stTradeData.nBuyTime[i] = nNowTime;
 
                                 if (nNowPrice > 10000)
                                 {
@@ -685,15 +694,50 @@ namespace KOASampleCS
                                     stTradeData.nState[i] = 8;
                                 }
                             }
+                            else if(stTradeData.nBuyTime[i] + 2 < nNowTime)
+                            {
+                                LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+
+                                int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 3, "00", 0, stTradeData.sOrderNo[i]);
+
+                                if (lRet == 0)
+                                {
+                                    stTradeData.nState[i] = 6;
+
+                                    stTradeData.bSellSignal[i] = false;
+                                    stTradeData.nBuyQty[i] = 0;
+                                    stTradeData.nBuyPrice[i] = 0;
+                                    stTradeData.nBuyTime[i] = 0;
+                                    stTradeData.nSellTime[i] = nNowTime;
+                                    stTradeData.nSellCount[i]--;
+                                }
+                            }
                         }
                         else if(stTradeData.sCode[i] != "" && stTradeData.nState[i] == 8)
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
 
-                            if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.027) >= nNowPrice && stTradeData.nBuyQty[i] > 0)
+                            if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.02) >= nNowPrice && stTradeData.nBuyQty[i] > 0)
                             {
                                 LogManager.WriteLine("손절(Status8) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                                 int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
+
+                                if(lRet == 0)
+                                {
+                                    stTradeData.nState[i] = 6;
+
+                                    stTradeData.bSellSignal[i] = false;
+                                    stTradeData.nBuyQty[i] = 0;
+                                    stTradeData.nBuyPrice[i] = 0;
+                                    stTradeData.nBuyTime[i] = 0;
+                                    stTradeData.nSellTime[i] = nNowTime;
+                                    stTradeData.nSellCount[i]++;
+
+                                    if (stTradeData.nSellCount[i] == 2)
+                                    {
+                                        stTradeData.nState[i] = 9;
+                                    }
+                                }
                             }
                         }
                         else if (stTradeData.sCode[i] != "" && stTradeData.nState[i] == 0 && m_bSale == true)
