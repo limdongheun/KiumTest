@@ -702,7 +702,7 @@ namespace KOASampleCS
                                     stTradeData.nState[i] = 8;
                                 }
                             }
-                            else if(Convert.ToInt32(stTradeData.nNowPrice[i]) > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.015 && stTradeData.nBuyQty[i] == 0)
+                            else if((Convert.ToInt32(stTradeData.nNowPrice[i]) > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.015 || stTradeData.nBuyTime[i] + 3 > nNowTime) && stTradeData.nBuyQty[i] == 0)
                             {
                                 LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
