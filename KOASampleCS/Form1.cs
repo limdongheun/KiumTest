@@ -379,7 +379,9 @@ namespace KOASampleCS
                     //stTradeData.nState[i] = nState;
                     stTradeData.sOrderNo[i] = sOrderNo;
 
-                    if(nState <= 3)
+                    LogManager.WriteLine("매매완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + sOrderNo + "\t" + nState.ToString());
+
+                    if (nState <= 3)
                     {
                         if (stTradeData.nState[i] == 7 && nState == 3)
                         {
@@ -414,12 +416,12 @@ namespace KOASampleCS
                     }
                     else if (nState > 3)
                     {
-                        stTradeData.nSellQty[i] += nSellQty;
-                        stTradeData.nSellPrice[i] = nSellPrice;       
-
                         if (stTradeData.nState[i] == 8 && nState == 6)
                         {
-                            if(stTradeData.nSellQty[i] == stTradeData.nOrderQty[i])
+                            stTradeData.nSellQty[i] += nSellQty;
+                            stTradeData.nSellPrice[i] = nSellPrice;
+
+                            if (stTradeData.nSellQty[i] == stTradeData.nOrderQty[i])
                             {
                                 stTradeData.nState[i] = 6;
 
@@ -427,6 +429,8 @@ namespace KOASampleCS
                                 stTradeData.nBuyQty[i] = 0;
                                 stTradeData.nBuyPrice[i] = 0;
                                 stTradeData.nBuyTime[i] = 0;
+                                stTradeData.nSellQty[i] = 0;
+                                stTradeData.nSellPrice[i] = 0;
                                 stTradeData.nSellTime[i] = nNowTime;
                                 stTradeData.nSellCount[i]++;
 
@@ -599,7 +603,7 @@ namespace KOASampleCS
 
                                 if (nLowPrice10Min > 0)
                                 {
-                                    if (nHigePrice10Min - nLowPrice10Min > nLowPrice10Min * 0.05)
+                                    if (nHigePrice10Min - nLowPrice10Min > nLowPrice10Min * 0.05 && stTradeData.nSellTime[i] < nNowTime)
                                     {
                                         stTradeData.nSellTime[i] = nNowTime + 40;
                                         LogManager.WriteLine("시간딜레이 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nNowTime.ToString() + "/" + stTradeData.nSellTime[i].ToString());
@@ -702,7 +706,7 @@ namespace KOASampleCS
                                     stTradeData.nState[i] = 8;
                                 }
                             }
-                            else if((Convert.ToInt32(stTradeData.nNowPrice[i]) > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.015 || stTradeData.nBuyTime[i] + 3 > nNowTime) && stTradeData.nBuyQty[i] == 0)
+                            else if((Convert.ToInt32(stTradeData.nNowPrice[i]) > stTradeData.nBuyPrice[i] + stTradeData.nBuyPrice[i] * 0.015 || stTradeData.nBuyTime[i] + 3 < nNowTime) && stTradeData.nBuyQty[i] == 0)
                             {
                                 LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
