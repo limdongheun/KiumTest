@@ -573,7 +573,7 @@ namespace KOASampleCS
 
                     for (int i = 0; i < 200; i++)
                     {
-                        if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 20)
+                        if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10)
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
                             int nHigePrice10Min = 0;
@@ -608,7 +608,7 @@ namespace KOASampleCS
 
                                 for (int j = 0; j < nHighPoint; j++)
                                 {
-                                    if(j == 0)
+                                    if(nLowPrice10Min == 0 && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - j] > 0)
                                     {
                                         nLowPrice10Min = stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - j];
                                     }
@@ -660,14 +660,14 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if (stTradeData.nMCount[i] > 2 && stTradeData.nSellCount[i] < 5  && stTradeData.nBuyTime[i] == 0)
+                            if (stTradeData.nMCount[i] > 2 && stTradeData.nSellCount[i] < 5  && stTradeData.nBuyTime[i] == 0 && sellTime < nNowTime)
                             {
                                 if (stTradeData.bSellSignal[i] == false && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] - (stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] * 0.05) > nNowPrice && stTradeData.nMCount[i] > 0 && nNowTime > 910 && nNowTime < 1400)
                                 {
                                     stTradeData.bSellSignal[i] = true;
                                     LogManager.WriteLine("매수신호1 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1].ToString() + "/" + nNowPrice.ToString());
                                 }
-                                else if (stTradeData.bSellSignal[i] == false && nHigePrice10Min - (nHigePrice10Min * 0.04) > nLowPrice10Min && stTradeData.nMCount[i] > 10 && nNowTime > 910 && nNowTime < 1430)
+                                else if (stTradeData.bSellSignal[i] == false && nHigePrice10Min - (nHigePrice10Min * 0.04) > nLowPrice10Min && stTradeData.nMCount[i] > 10 && nLowPrice10Min > 0 && nNowTime > 910 && nNowTime < 1430)
                                 {
                                     stTradeData.bSellSignal[i] = true;
                                     LogManager.WriteLine("매수신호2 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHigePrice10Min.ToString() + "/" + nLowPrice10Min.ToString());
@@ -743,6 +743,15 @@ namespace KOASampleCS
                                     stTradeData.nBuyPrice[i] = 0;
                                     stTradeData.nBuyTime[i] = 0;
                                     stTradeData.nSellTime[i] = nNowTime;
+
+                                    if (Convert.ToInt32(stTradeData.nNowPrice[i]) > 10000)
+                                    {
+                                        m_nTradeCount -= 2;
+                                    }
+                                    else
+                                    {
+                                        m_nTradeCount--;
+                                    }
                                 }
                             }
                         }
