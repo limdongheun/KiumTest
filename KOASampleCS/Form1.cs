@@ -673,7 +673,7 @@ namespace KOASampleCS
                                     LogManager.WriteLine("매수신호2 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHigePrice10Min.ToString() + "/" + nLowPrice10Min.ToString());
                                 }
 
-                                if (stTradeData.bSellSignal[i] == true && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 2] < stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 2] < stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] < nNowPrice)
+                                if (stTradeData.bSellSignal[i] == true && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] < stTradeData.nMLowPrice[i, stTradeData.nMCount[i]] && stTradeData.nMHighPrice[i, stTradeData.nMCount[i] - 1] < stTradeData.nMHighPrice[i, stTradeData.nMCount[i]] && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] < nNowPrice)
                                 {
                                     LogManager.WriteLine("매수(4%) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
@@ -725,7 +725,7 @@ namespace KOASampleCS
                                     }
                                     else
                                     {
-                                        LogManager.WriteLine("매도(Status7) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyPrice[i].ToString() + "\t" + nSellPrice.ToString());
+                                        LogManager.WriteLine("매도(Status7) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyPrice[i].ToString() + "\t" + stTradeData.nNowPrice[i].ToString());
 
                                         int nQty = stTradeData.nBuyQty[i];
 
@@ -735,6 +735,7 @@ namespace KOASampleCS
                                         if (lRet == 0)
                                         {
                                             stTradeData.nState[i] = 8;
+                                            stTradeData.nSellTime[i] = nNowTime;
                                         }
                                     }
                                 }
@@ -770,12 +771,29 @@ namespace KOASampleCS
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
 
-                            if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.015) >= nNowPrice && stTradeData.nBuyQty[i] > 0)
+                            if (stTradeData.nSellTime[i] + 1 < nNowTime)
+                            {
+                                LogManager.WriteLine("정정(Status8) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
+                                int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 3, "00", 0, stTradeData.sOrderNo[i]);
+                                System.Threading.Thread.Sleep(2000);
+
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 2, "07", 0, "");
+
+                                if (lRet == 0)
+                                {
+                                    stTradeData.nSellTime[i] = nNowTime;
+                                }
+                            }
+                            else if (stTradeData.nBuyPrice[i] - (stTradeData.nBuyPrice[i] * 0.015) >= nNowPrice && stTradeData.nBuyQty[i] > 0)
                             {
                                 LogManager.WriteLine("손절(Status8) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
-                                int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
+                                int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 3, "00", 0, stTradeData.sOrderNo[i]);
+                                System.Threading.Thread.Sleep(2000);
 
-                                if(lRet == 0)
+                                //lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 6, "03", stTradeData.nNowPrice[i], stTradeData.sOrderNo[i]);
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 2, "03", 0, "");
+
+                                if (lRet == 0)
                                 {
                                     stTradeData.nState[i] = 6;
 
