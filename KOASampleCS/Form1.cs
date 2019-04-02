@@ -573,7 +573,7 @@ namespace KOASampleCS
 
                     for (int i = 0; i < 200; i++)
                     {
-                        if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10)
+                        if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10 && m_bSale == true)
                         {
                             int nNowPrice = Convert.ToInt32(stTradeData.nNowPrice[i]);
                             int nHigePrice10Min = 0;
@@ -723,7 +723,7 @@ namespace KOASampleCS
                                     {
                                         stTradeData.nBuyTime[i] += 1;
                                     }
-                                    else
+                                    else if(stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] > stTradeData.nNowPrice[i])
                                     {
                                         LogManager.WriteLine("매도(Status7) :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyPrice[i].ToString() + "\t" + stTradeData.nNowPrice[i].ToString());
 
@@ -1091,20 +1091,18 @@ namespace KOASampleCS
                                 sellTime = sellTime + 40;
                             }
 
-                            if(nNowTime <= 910 && nSecond > 9 && stTradeData.nMStartPrice[i, stTradeData.nMCount[i]] > stTradeData.nNowPrice[i])
+                            if(nNowTime == 900 && nSecond > 20 && stTradeData.nMStartPrice[i, stTradeData.nMCount[i]] > stTradeData.nNowPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tStartPrice - " + stTradeData.nMStartPrice[i, stTradeData.nMCount[i]].ToString() + "\tNowPrice - " + stTradeData.nNowPrice[i].ToString());
 
                                 lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
                             }
-                            /*
-                            if (stTradeData.nNowPrice[i] < stTradeData.nBuyPrice[i] && nNowTime >= 900)
+                            if (nNowTime > 900 && stTradeData.nMCount[i] > 0 && stTradeData.nMLowPrice[i, stTradeData.nMCount[i] - 1] > stTradeData.nNowPrice[i])
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
 
-                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "03", 0, "");
+                                lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty[i], 2, "07", 0, "");
                             }
-                            */
                             else if(stTradeData.nHighTime[i] + 45 < nNowTime * 100 + nSecond && nNowTime > 900 && stTradeData.nHighTime[i] > 90000)
                             {
                                 LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\tn5MinutePrice(4) - " + stTradeData.n5MinutePrice[i, 4].ToString() + "\tn5MinutePrice(3) - " + stTradeData.n5MinutePrice[i, 3].ToString());
