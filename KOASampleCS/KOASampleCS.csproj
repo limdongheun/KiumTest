@@ -208,6 +208,7 @@
     <Content Include="log\20190408.txt" />
     <Content Include="log\20190409.txt" />
     <Content Include="log\20190410.txt" />
+    <Content Include="log\20190411.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
