@@ -16,7 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using KiwoomCode;
-
+using System.IO;
 
 namespace KOASampleCS
 {
@@ -94,6 +94,7 @@ namespace KOASampleCS
         public int m_nStartSellCount = 0;
         public int m_nAverageHigh = 0;
         public bool m_bSale = true;
+        public bool m_bNextDayChcek = true;
 
         public struct ConditionList
         {
@@ -134,57 +135,57 @@ namespace KOASampleCS
         {
             InitializeComponent();
 
-            stTradeData.sCode = new string[200];
-            stTradeData.sName = new string[200];
-            stTradeData.nClosePrice = new int[200];
-            stTradeData.nNowPrice = new int[200];
-            stTradeData.nState = new int[200];
-            stTradeData.sOrderNo = new string[200];
-            stTradeData.nOrderQty = new int[200];
-            stTradeData.nBuyQty = new int[200];
-            stTradeData.nBuyPrice = new int[200];
-            stTradeData.nSellQty = new int[200];
-            stTradeData.nSellPrice = new int[200];
-            stTradeData.nSellCount = new int[200];
-            stTradeData.nBuyTime = new int[200];
-            stTradeData.nSellTime = new int[200];
-            stTradeData.nHighPrice = new int[200];
-            stTradeData.nHighTime = new int[200];
-            stTradeData.nLowPrice = new int[200];
-            stTradeData.nLowTime = new int[200];
-            stTradeData.nStandardPrice = new int[200];
-            stTradeData.nStandardTime = new int[200];
-            stTradeData.bEndSell = new bool[200];
-            stTradeData.n3HourStartPrice = new int[200];
-            stTradeData.n3HourLastPrice = new int[200];
-            stTradeData.bSellSignal = new bool[200];
+            stTradeData.sCode = new string[2000];
+            stTradeData.sName = new string[2000];
+            stTradeData.nClosePrice = new int[2000];
+            stTradeData.nNowPrice = new int[2000];
+            stTradeData.nState = new int[2000];
+            stTradeData.sOrderNo = new string[2000];
+            stTradeData.nOrderQty = new int[2000];
+            stTradeData.nBuyQty = new int[2000];
+            stTradeData.nBuyPrice = new int[2000];
+            stTradeData.nSellQty = new int[2000];
+            stTradeData.nSellPrice = new int[2000];
+            stTradeData.nSellCount = new int[2000];
+            stTradeData.nBuyTime = new int[2000];
+            stTradeData.nSellTime = new int[2000];
+            stTradeData.nHighPrice = new int[2000];
+            stTradeData.nHighTime = new int[2000];
+            stTradeData.nLowPrice = new int[2000];
+            stTradeData.nLowTime = new int[2000];
+            stTradeData.nStandardPrice = new int[2000];
+            stTradeData.nStandardTime = new int[2000];
+            stTradeData.bEndSell = new bool[2000];
+            stTradeData.n3HourStartPrice = new int[2000];
+            stTradeData.n3HourLastPrice = new int[2000];
+            stTradeData.bSellSignal = new bool[2000];
 
-            stTradeData.bHighPriceCheck = new bool[200];
-            stTradeData.nAverageStatus = new int[200];
-            stTradeData.nUpAverageHigh1 = new int[200];
-            stTradeData.nUpAverageHigh2 = new int[200];
-            stTradeData.nUpAverageEnd1 = new int[200];
-            stTradeData.nUpAverageEnd2 = new int[200];
-            stTradeData.nDownAverageHigh1 = new int[200];
-            stTradeData.nDownAverageHigh2 = new int[200];
-            stTradeData.nDownAverageEnd1 = new int[200];
-            stTradeData.nDownAverageEnd2 = new int[200];
+            stTradeData.bHighPriceCheck = new bool[2000];
+            stTradeData.nAverageStatus = new int[2000];
+            stTradeData.nUpAverageHigh1 = new int[2000];
+            stTradeData.nUpAverageHigh2 = new int[2000];
+            stTradeData.nUpAverageEnd1 = new int[2000];
+            stTradeData.nUpAverageEnd2 = new int[2000];
+            stTradeData.nDownAverageHigh1 = new int[2000];
+            stTradeData.nDownAverageHigh2 = new int[2000];
+            stTradeData.nDownAverageEnd1 = new int[2000];
+            stTradeData.nDownAverageEnd2 = new int[2000];
 
-            stTradeData.n5MinuteAverage = new int[200];
-            stTradeData.n10MinuteAverage = new int[200];
-            stTradeData.n5MinutePrice = new int[200, 5];
-            stTradeData.n10MinutePrice = new int[200, 10];
+            stTradeData.n5MinuteAverage = new int[2000];
+            stTradeData.n10MinuteAverage = new int[2000];
+            stTradeData.n5MinutePrice = new int[2000, 5];
+            stTradeData.n10MinutePrice = new int[2000, 10];
 
-            stTradeData.nMStartPrice = new int[200,500];
-            stTradeData.nMEndPrice = new int[200, 500];
-            stTradeData.nMHighPrice = new int[200, 500];
-            stTradeData.nMLowPrice = new int[200, 500];
-            stTradeData.nMTime = new int[200, 500];
-            stTradeData.nMHighTime = new int[200, 500];
-            stTradeData.nMLowTime = new int[200, 500];
-            stTradeData.nMCount = new int[200];
+            stTradeData.nMStartPrice = new int[2000,500];
+            stTradeData.nMEndPrice = new int[2000, 500];
+            stTradeData.nMHighPrice = new int[2000, 500];
+            stTradeData.nMLowPrice = new int[2000, 500];
+            stTradeData.nMTime = new int[2000, 500];
+            stTradeData.nMHighTime = new int[2000, 500];
+            stTradeData.nMLowTime = new int[2000, 500];
+            stTradeData.nMCount = new int[2000];
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 stTradeData.sCode[i] = "";
                 stTradeData.sName[i] = "";
@@ -248,11 +249,9 @@ namespace KOASampleCS
             }
 
             m_bTradeDataCheckThread = true;
-            System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
-            TradeThread.Start();
+            //System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck));
+            //TradeThread.Start();
 
-            //System.Threading.Thread LiveCheckThread = new System.Threading.Thread(new System.Threading.ThreadStart(CheckLiveStock));
-            //LiveCheckThread.Start();
         }
 
         public void CheckLiveStock()
@@ -308,7 +307,7 @@ namespace KOASampleCS
                         int nSavePoint = 1000;
                         bool bSave = true;
 
-                        for (int j = 0; j < 200; j++)
+                        for (int j = 0; j < 2000; j++)
                         {
                             if (stTradeData.sCode[j] == "" && nSavePoint == 1000)
                             {
@@ -372,7 +371,7 @@ namespace KOASampleCS
             int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
             int nNowTime = nHour * 100 + nMinute;
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 if (stTradeData.sName[i] == Name)
                 {
@@ -511,7 +510,7 @@ namespace KOASampleCS
                     {               
                         LogManager.WriteLine("종가 매수 시작");
 
-                        for (int i = 0; i < 200; i++)
+                        for (int i = 0; i < 2000; i++)
                         {
                             if (m_nCloseSellCount == 10)
                                 break;
@@ -571,7 +570,7 @@ namespace KOASampleCS
                         m_bSale = false;
                     }
 
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 2000; i++)
                     {
                         if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10 && m_bSale == true)
                         {
@@ -1521,17 +1520,51 @@ namespace KOASampleCS
             else if (e.sRQName == "주식일봉차트조회")
             {
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
+                if(nCnt > 5)
+                {
+                    long trVol1, trVol2, trVol3, trVol4, trVol5;
 
+                    trVol1 = Convert.ToInt64(axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "거래량"));
+                    trVol2 = Convert.ToInt64(axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "거래량"));
+                    trVol3 = Convert.ToInt64(axKHOpenAPI.GetCommData(e.sTrCode, "", 2, "거래량"));
+                    trVol4 = Convert.ToInt64(axKHOpenAPI.GetCommData(e.sTrCode, "", 3, "거래량"));
+                    trVol5 = Convert.ToInt64(axKHOpenAPI.GetCommData(e.sTrCode, "", 4, "거래량"));
+
+                    bool bSave = false;
+
+                    if (trVol1 > trVol2 * 2 && trVol1 > trVol3 * 2 && trVol1 > trVol4 * 2 && trVol1 > trVol5 * 2)
+                    {
+                        bSave = true;
+                    }
+                    else if (trVol2 > trVol1 * 2 && trVol2 > trVol3 * 2 && trVol2 > trVol4 * 2 && trVol2 > trVol5 * 2)
+                    {
+                        bSave = true;
+                    }
+
+                    if (bSave == true)
+                    {
+                        StreamWriter sw = new StreamWriter(System.Windows.Forms.Application.StartupPath + "\\DayCheck.txt", true);
+                        string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
+                        sw.WriteLine(sCode.Trim());
+                        sw.Flush();
+                        sw.Close();
+                    } 
+                }
+
+                m_bNextDayChcek = true;
+                /*
                 for (int i = 0; i < nCnt; i++)
                 {
+                    
                     Logger(Log.조회, "{0} | 현재가:{1:N0} | 거래량:{2:N0} | 시가:{3:N0} | 고가:{4:N0} | 저가:{5:N0} ",
                         axKHOpenAPI.GetCommData(e.sTrCode, "", i, "일자").Trim(),
                         Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "현재가").Trim()),
                         Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "거래량").Trim()),
                         Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "시가").Trim()),
                         Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "고가").Trim()),
-                        Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "저가").Trim()));
+                        Int32.Parse(axKHOpenAPI.GetCommData(e.sTrCode, "", i, "저가").Trim()));  
                 }
+                */
             }
             else if (e.sRQName == "계좌평가현황요청")
             {
@@ -1646,7 +1679,7 @@ namespace KOASampleCS
                     }
                 }
 
-                for (int j = 0; j < 200; j++)
+                for (int j = 0; j < 2000; j++)
                 {
                     if(sCode == stTradeData.sCode[j])
                     {
@@ -1817,7 +1850,7 @@ namespace KOASampleCS
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 if (stTradeData.sCode[i] == e.sRealKey)
                 {
@@ -2027,14 +2060,15 @@ namespace KOASampleCS
 
         private void 일봉데이터ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //txt종목코드.Text = stTradeData.sCode[0];
             axKHOpenAPI.SetInputValue("종목코드", txt종목코드.Text.Trim());
-            //axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+            //axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[0].Trim());
             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
             axKHOpenAPI.SetInputValue("수정주가구분", "1");
             //axKHOpenAPI.SetInputValue("틱범위", "1");
 
-            int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
-            //int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+            //int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
             _scrNum++;
 
             if (Error.IsError(nRet))
@@ -2448,7 +2482,7 @@ namespace KOASampleCS
 
         private void btn실시간해제_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 2000; i++)
             {
                 if (stTradeData.sCode[i] != "")
                 {
@@ -2528,6 +2562,125 @@ namespace KOASampleCS
             {
                 m_bSale = true;
                 btnSaleValue.Text = "매수중지";
+            }
+        }
+
+        private void btnReadLog_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDlg = new OpenFileDialog();
+            openFileDlg.DefaultExt = "txt";
+            openFileDlg.Filter = "TXT Files(*.txt;*.log)|*.txt;*.log";
+            openFileDlg.ShowDialog();
+
+            string line;
+
+            if (openFileDlg.FileName.Length > 0)
+            {
+                foreach (string filename in openFileDlg.FileNames)
+                {
+                    System.IO.StreamReader file = new System.IO.StreamReader(filename);
+                    while ((line = file.ReadLine()) != null)
+                    {
+                        if(filename.Contains(".txt"))
+                        {
+                            if (line.Contains("종목 :"))
+                            {
+                                string[] item = line.Split('\t');
+                                AddTradeList(item[1] + ";", 10, 0, 0);
+                            }
+                        }
+                        else
+                        {
+                            string[] item = line.Split('\t');
+                            AddTradeList(item[0], 10, 0, 0);
+
+                            axKHOpenAPI.SetInputValue("종목코드", item[0].Substring(0,6));
+                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
+
+                            m_bNextDayChcek = false;
+                            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+
+                            
+                        }
+                    }
+                    file.Close();
+                    Logger(Log.일반, "[로그 읽기 완료] " + filename);
+                }
+            }
+
+            openFileDlg.Dispose();
+        }
+
+        private void btnSaveDB_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDlg = new SaveFileDialog();
+            saveFileDlg.Filter = "TXT Files(*.txt;*.log)|*.txt;*.log";
+            saveFileDlg.ShowDialog();
+
+            if (saveFileDlg.FileName != "")
+            {
+                StreamWriter sw = new StreamWriter(saveFileDlg.FileName, true);
+                for(int i = 0; i < 2000; i++)
+                {
+                    if(stTradeData.sCode[i] != "")
+                    {
+                        sw.WriteLine(stTradeData.sCode[i] + ";\t0\t0\t0\t0\t0\t0\t0\t0\t0\t0");
+                    }
+                }
+                
+                sw.Flush();
+                sw.Close();
+            }
+            
+        }
+
+        private void btnCheckDayChart_Click(object sender, EventArgs e)
+        {
+            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[0]);
+            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+            axKHOpenAPI.SetInputValue("수정주가구분", "1");
+
+            m_bNextDayChcek = false;
+            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+
+            return;
+
+            m_bNextDayChcek = true;
+            System.Threading.Thread DayCheckThread = new System.Threading.Thread(new System.Threading.ThreadStart(CheckDayStock));
+            DayCheckThread.Start(); 
+        }
+
+        public void CheckDayStock()
+        {
+            try
+            {
+                while (true)
+                {
+                    for (int i = 0; i < 2000; i++)
+                    {
+                        axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                        axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                        axKHOpenAPI.SetInputValue("수정주가구분", "1");
+
+                        m_bNextDayChcek = false;
+                        int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+                        //_scrNum++;
+
+                        while(true)
+                        {
+                            if (m_bNextDayChcek == true)
+                                break;
+                        }
+                    }
+
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                return;
+                throw;
             }
         }
     }

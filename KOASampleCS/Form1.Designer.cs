@@ -91,6 +91,9 @@
             this.txt실시간종목코드 = new System.Windows.Forms.TextBox();
             this.btn자동주문 = new System.Windows.Forms.Button();
             this.btnSaleValue = new System.Windows.Forms.Button();
+            this.btnReadLog = new System.Windows.Forms.Button();
+            this.btnSaveDB = new System.Windows.Forms.Button();
+            this.btnCheckDayChart = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -674,11 +677,44 @@
             this.btnSaleValue.UseVisualStyleBackColor = true;
             this.btnSaleValue.Click += new System.EventHandler(this.btnSaleValue_Click);
             // 
+            // btnReadLog
+            // 
+            this.btnReadLog.Location = new System.Drawing.Point(275, 404);
+            this.btnReadLog.Name = "btnReadLog";
+            this.btnReadLog.Size = new System.Drawing.Size(109, 23);
+            this.btnReadLog.TabIndex = 28;
+            this.btnReadLog.Text = "로그 파일 읽기";
+            this.btnReadLog.UseVisualStyleBackColor = true;
+            this.btnReadLog.Click += new System.EventHandler(this.btnReadLog_Click);
+            // 
+            // btnSaveDB
+            // 
+            this.btnSaveDB.Location = new System.Drawing.Point(275, 433);
+            this.btnSaveDB.Name = "btnSaveDB";
+            this.btnSaveDB.Size = new System.Drawing.Size(109, 23);
+            this.btnSaveDB.TabIndex = 29;
+            this.btnSaveDB.Text = "파일 저장";
+            this.btnSaveDB.UseVisualStyleBackColor = true;
+            this.btnSaveDB.Click += new System.EventHandler(this.btnSaveDB_Click);
+            // 
+            // btnCheckDayChart
+            // 
+            this.btnCheckDayChart.Location = new System.Drawing.Point(275, 462);
+            this.btnCheckDayChart.Name = "btnCheckDayChart";
+            this.btnCheckDayChart.Size = new System.Drawing.Size(109, 23);
+            this.btnCheckDayChart.TabIndex = 30;
+            this.btnCheckDayChart.Text = "일봉체크";
+            this.btnCheckDayChart.UseVisualStyleBackColor = true;
+            this.btnCheckDayChart.Click += new System.EventHandler(this.btnCheckDayChart_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1445, 536);
+            this.Controls.Add(this.btnCheckDayChart);
+            this.Controls.Add(this.btnSaveDB);
+            this.Controls.Add(this.btnReadLog);
             this.Controls.Add(this.btnSaleValue);
             this.Controls.Add(this.btn자동주문);
             this.Controls.Add(this.group실시간등록해제);
@@ -787,6 +823,9 @@
         private System.Windows.Forms.Button btn실시간해제;
         private System.Windows.Forms.Button btn자동주문;
         private System.Windows.Forms.Button btnSaleValue;
+        private System.Windows.Forms.Button btnReadLog;
+        private System.Windows.Forms.Button btnSaveDB;
+        private System.Windows.Forms.Button btnCheckDayChart;
     }
 }
 
