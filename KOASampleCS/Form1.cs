@@ -72,6 +72,8 @@ namespace KOASampleCS
             public int[,] nMHighTime;      //분당 최고가 시간
             public int[,] nMLowTime;      //분당 최저가 시간
             public int[] nMCount;           //현재 저장 카운트
+            public long[,] lMTradVol;        //분당 거래량
+            public long[,] lMTradVolAll;        //전체 거래량
         };
 
         public struct PRICE
@@ -184,6 +186,8 @@ namespace KOASampleCS
             stTradeData.nMHighTime = new int[2000, 500];
             stTradeData.nMLowTime = new int[2000, 500];
             stTradeData.nMCount = new int[2000];
+            stTradeData.lMTradVol = new long[2000, 500];
+            stTradeData.lMTradVolAll = new long[2000, 500];
 
             for (int i = 0; i < 2000; i++)
             {
@@ -235,6 +239,8 @@ namespace KOASampleCS
                     stTradeData.nMTime[i, j] = 0;
                     stTradeData.nMHighTime[i, j] = 0;
                     stTradeData.nMLowTime[i, j] = 0;
+                    stTradeData.lMTradVol[i, j] = 0;
+                    stTradeData.lMTradVolAll[i, j] = 0;
                 }
 
                 for(int j = 0; j < 10; j++)
@@ -1857,6 +1863,11 @@ namespace KOASampleCS
                     string sNowPrice = axKHOpenAPI.GetCommRealData(e.sRealType, 10).Trim();
                     sNowPrice = sNowPrice.Replace("+","");
                     sNowPrice = sNowPrice.Replace("-", "");
+
+                    string sNowTradeVol = axKHOpenAPI.GetCommRealData(e.sRealType, 13).Trim();
+                    sNowTradeVol = sNowTradeVol.Replace("+", "");
+                    sNowTradeVol = sNowTradeVol.Replace("-", "");
+
                     if (sNowPrice != "")
                     {
                         stTradeData.nNowPrice[i] = Convert.ToInt32(sNowPrice);
@@ -1917,6 +1928,8 @@ namespace KOASampleCS
                             stTradeData.nMHighTime[i, stTradeData.nMCount[i]] = nSecond;
                             stTradeData.nMLowPrice[i, stTradeData.nMCount[i]] = Convert.ToInt32(sNowPrice);
                             stTradeData.nMLowTime[i, stTradeData.nMCount[i]] = nSecond;
+                            stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
+                            stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                         }
                         else if (stTradeData.nMTime[i, stTradeData.nMCount[i]] < nHour * 100 + nMinute)
                         {
@@ -1994,7 +2007,9 @@ namespace KOASampleCS
                             stTradeData.nMHighPrice[i, stTradeData.nMCount[i]] = Convert.ToInt32(sNowPrice);
                             stTradeData.nMHighTime[i, stTradeData.nMCount[i]] = nSecond;
                             stTradeData.nMLowPrice[i, stTradeData.nMCount[i]] = Convert.ToInt32(sNowPrice);
-                            stTradeData.nMLowTime[i, stTradeData.nMCount[i]] = nSecond; 
+                            stTradeData.nMLowTime[i, stTradeData.nMCount[i]] = nSecond;
+                            stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i-1]];
+                            stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                         }
                         else
                         {
@@ -2009,6 +2024,17 @@ namespace KOASampleCS
                             {
                                 stTradeData.nMLowPrice[i, stTradeData.nMCount[i]] = Convert.ToInt32(sNowPrice);
                                 stTradeData.nMLowTime[i, stTradeData.nMCount[i]] = nSecond;
+                            }
+
+                            if(stTradeData.nMCount[i] == 0)
+                            {
+                                stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
+                                stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
+                            }
+                            else
+                            {
+                                stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i - 1]];
+                                stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                             }
                         }
                     }
