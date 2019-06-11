@@ -2008,7 +2008,7 @@ namespace KOASampleCS
                             stTradeData.nMHighTime[i, stTradeData.nMCount[i]] = nSecond;
                             stTradeData.nMLowPrice[i, stTradeData.nMCount[i]] = Convert.ToInt32(sNowPrice);
                             stTradeData.nMLowTime[i, stTradeData.nMCount[i]] = nSecond;
-                            stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i-1]];
+                            //stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i-1]];
                             stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                         }
                         else
@@ -2033,7 +2033,7 @@ namespace KOASampleCS
                             }
                             else
                             {
-                                stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i - 1]];
+                                //stTradeData.lMTradVol[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol) - stTradeData.lMTradVolAll[i, stTradeData.nMCount[i - 1]];
                                 stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                             }
                         }

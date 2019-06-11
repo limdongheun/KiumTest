@@ -247,6 +247,7 @@
     <Content Include="log\20190605.txt" />
     <Content Include="log\20190607.txt" />
     <Content Include="log\20190610.txt" />
+    <Content Include="log\20190611.txt" />
     <Content Include="log\DB\checklist.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
