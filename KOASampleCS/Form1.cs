@@ -1639,6 +1639,10 @@ namespace KOASampleCS
                 }
 
             }
+            else if (e.sTrCode == "OPT10080")
+            {
+                LogManager.WriteLine("주식분봉차트조회 시작");
+            }
             else if (e.sRQName == "주식분봉차트조회")
             {
                 LogManager.WriteLine("주식분봉차트조회 시작");
@@ -1711,7 +1715,9 @@ namespace KOASampleCS
                         }
                     }
                 }
-                
+
+                m_bNextDayChcek = true;
+
                 /*
                 if (nHighPrice - nLsatPrice > nLsatPrice * 0.05 && m_nCloseSellCount < 10)
                 {
@@ -2086,15 +2092,15 @@ namespace KOASampleCS
 
         private void 일봉데이터ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //txt종목코드.Text = stTradeData.sCode[0];
-            axKHOpenAPI.SetInputValue("종목코드", txt종목코드.Text.Trim());
-            //axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[0].Trim());
+            string code = stTradeData.sCode[0].Trim();
+            //axKHOpenAPI.SetInputValue("종목코드", txt종목코드.Text.Trim());
+            axKHOpenAPI.SetInputValue("종목코드", code);
             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
             axKHOpenAPI.SetInputValue("수정주가구분", "1");
-            //axKHOpenAPI.SetInputValue("틱범위", "1");
+            axKHOpenAPI.SetInputValue("틱범위", "5");
 
-            //int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
-            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+            int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+            //int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
             _scrNum++;
 
             if (Error.IsError(nRet))
@@ -2515,9 +2521,20 @@ namespace KOASampleCS
                     axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                     axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                     axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                    axKHOpenAPI.SetInputValue("틱범위", "5");
 
+                    m_bNextDayChcek = false;
                     int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
 
+                    /*
+                    while (true)
+                    {
+                        if (m_bNextDayChcek == true)
+                            break;
+
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                    */
                     System.Threading.Thread.Sleep(4000);
                 }
             }
@@ -2663,6 +2680,7 @@ namespace KOASampleCS
 
         private void btnCheckDayChart_Click(object sender, EventArgs e)
         {
+            /*
             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[0]);
             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
             axKHOpenAPI.SetInputValue("수정주가구분", "1");
@@ -2671,6 +2689,7 @@ namespace KOASampleCS
             int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
 
             return;
+            */
 
             m_bNextDayChcek = true;
             System.Threading.Thread DayCheckThread = new System.Threading.Thread(new System.Threading.ThreadStart(CheckDayStock));
@@ -2697,6 +2716,8 @@ namespace KOASampleCS
                         {
                             if (m_bNextDayChcek == true)
                                 break;
+
+                            System.Threading.Thread.Sleep(2000);
                         }
                     }
 

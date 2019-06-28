@@ -85,6 +85,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="log\DB\20190413.log" />
+    <None Include="log\DB\20190628.log" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -259,6 +260,7 @@
     <Content Include="log\20190624.txt" />
     <Content Include="log\20190625.txt" />
     <Content Include="log\20190627.txt" />
+    <Content Include="log\20190628.txt" />
     <Content Include="log\DB\checklist.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
