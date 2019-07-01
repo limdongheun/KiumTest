@@ -1639,10 +1639,6 @@ namespace KOASampleCS
                 }
 
             }
-            else if (e.sTrCode == "OPT10080")
-            {
-                LogManager.WriteLine("주식분봉차트조회 시작");
-            }
             else if (e.sRQName == "주식분봉차트조회")
             {
                 LogManager.WriteLine("주식분봉차트조회 시작");
