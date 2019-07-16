@@ -48,6 +48,7 @@ namespace KOASampleCS
             public int[] n3HourStartPrice;        //3시 초반금액
             public int[] n3HourLastPrice;        //3시 마감금액
             public bool[] bSellSignal;      //매수신호
+            public int[] nPivot;            //피봇2차저항
 
             public bool[] bHighPriceCheck;      //고가 체크
             public int[] nAverageStatus;     //이평선 상태
@@ -161,6 +162,7 @@ namespace KOASampleCS
             stTradeData.n3HourStartPrice = new int[2000];
             stTradeData.n3HourLastPrice = new int[2000];
             stTradeData.bSellSignal = new bool[2000];
+            stTradeData.nPivot = new int[2000];
 
             stTradeData.bHighPriceCheck = new bool[2000];
             stTradeData.nAverageStatus = new int[2000];
@@ -213,6 +215,7 @@ namespace KOASampleCS
                 stTradeData.n3HourStartPrice[i] = 0;
                 stTradeData.n3HourLastPrice[i] = 0;
                 stTradeData.bSellSignal[i] = false;
+                stTradeData.nPivot[i] = 0;
 
                 stTradeData.bHighPriceCheck[i] = false;
                 stTradeData.nAverageStatus[i] = 0;
@@ -255,8 +258,8 @@ namespace KOASampleCS
             }
 
             m_bTradeDataCheckThread = true;
-            System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck1));
-            TradeThread.Start();
+            //System.Threading.Thread TradeThread = new System.Threading.Thread(new System.Threading.ThreadStart(TradeDataCheck1));
+            //TradeThread.Start();
 
         }
 
@@ -1680,6 +1683,48 @@ namespace KOASampleCS
             // OPT10081 : 주식일봉차트조회
             else if (e.sRQName == "주식일봉차트조회")
             {
+                LogManager.WriteLine("주식일봉차트조회 시작");
+                int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
+                string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
+                sCode = sCode.Replace(" ", "");
+                string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
+                int nLsatPrice = Convert.ToInt32(sLastPrice);
+
+                int nCodeCount = 0;
+                for (int j = 0; j < 2000; j++)
+                {
+                    if (sCode == stTradeData.sCode[j])
+                    {
+                        nCodeCount = j;
+                        break;
+                    }
+                }
+
+                LogManager.WriteLine("주식일봉차트조회 : " + sCode);
+
+                string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "일자");
+
+                string sEndPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "현재가");
+                sEndPrice = sEndPrice.Replace(" ", "");
+                sEndPrice = sEndPrice.Replace("+", "");
+                sEndPrice = sEndPrice.Replace("-", "");
+
+                string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "고가");
+                sHighPrice = sHighPrice.Replace(" ", "");
+                sHighPrice = sHighPrice.Replace("+", "");
+                sHighPrice = sHighPrice.Replace("-", "");
+
+                string sLowPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "저가");
+                sLowPrice = sLowPrice.Replace(" ", "");
+                sLowPrice = sLowPrice.Replace("+", "");
+                sLowPrice = sLowPrice.Replace("-", "");
+
+                stTradeData.nPivot[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
+
+                System.Threading.Thread.Sleep(4000);
+                m_bNextDayChcek = true;
+
+                /*
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
                 if(nCnt > 5)
                 {
@@ -1711,8 +1756,9 @@ namespace KOASampleCS
                         sw.Close();
                     } 
                 }
+                */
 
-                m_bNextDayChcek = true;
+
                 /*
                 for (int i = 0; i < nCnt; i++)
                 {
@@ -2103,7 +2149,21 @@ namespace KOASampleCS
                         int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                         int nNowTime = nHour * 100 + nMinute;
 
-                        
+                        if(stTradeData.nPivot[i] == 0 && m_bNextDayChcek == true)
+                        {
+                            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
+
+                            m_bNextDayChcek = false;
+                            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+                        }
+
+                        if(stTradeData.nPivot[i] > 0 && stTradeData.nPivot[i] < stTradeData.nNowPrice[i] && stTradeData.nState[i] != 32)
+                        {
+                            stTradeData.nState[i] = 32;
+                            LogManager.WriteLine("피봇2차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                        }
 
                         /*
                         if (stTradeData.nHighPrice[i] <= stTradeData.nNowPrice[i] && nHour * 100 + nMinute < 905)
