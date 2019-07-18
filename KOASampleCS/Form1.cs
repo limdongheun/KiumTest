@@ -1721,6 +1721,17 @@ namespace KOASampleCS
 
                 stTradeData.nPivot[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
 
+                string sTodayHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "고가");
+                sTodayHighPrice = sTodayHighPrice.Replace(" ", "");
+                sTodayHighPrice = sTodayHighPrice.Replace("+", "");
+                sTodayHighPrice = sTodayHighPrice.Replace("-", "");
+
+                if(Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
+                {
+                    stTradeData.nState[nCodeCount] = 32;
+                    LogManager.WriteLine("10%이상 상승 : " + stTradeData.sCode[nCodeCount]);
+                }
+
                 System.Threading.Thread.Sleep(4000);
                 m_bNextDayChcek = true;
 
@@ -2712,6 +2723,11 @@ namespace KOASampleCS
             Logger(Log.실시간, "[실시간타입] : " + e.strType);
             Logger(Log.실시간, "[조건명] : " + e.strConditionName);
             Logger(Log.실시간, "[조건명 인덱스] : " + e.strConditionIndex);
+
+            if(!e.strConditionName.Contains("(단타)"))
+            {
+                LogManager.WriteLine("[종목코드] : " + e.sTrCode + "[조건명] : " + e.strConditionName + "[실시간타입] : " + e.strType);
+            }
 
             if (e.sTrCode != "" && e.strType == "I")
                 AddTradeList(e.sTrCode);
