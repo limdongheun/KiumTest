@@ -1683,7 +1683,7 @@ namespace KOASampleCS
             // OPT10081 : 주식일봉차트조회
             else if (e.sRQName == "주식일봉차트조회")
             {
-                LogManager.WriteLine("주식일봉차트조회 시작");
+                //LogManager.WriteLine("주식일봉차트조회 시작");
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
                 string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
                 sCode = sCode.Replace(" ", "");
@@ -1700,7 +1700,7 @@ namespace KOASampleCS
                     }
                 }
 
-                LogManager.WriteLine("주식일봉차트조회 : " + sCode);
+                //LogManager.WriteLine("주식일봉차트조회 : " + sCode);
 
                 string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "일자");
 
@@ -1853,7 +1853,7 @@ namespace KOASampleCS
             }
             else if (e.sRQName == "주식분봉차트조회")
             {
-                LogManager.WriteLine("주식분봉차트조회 시작");
+                //LogManager.WriteLine("주식분봉차트조회 시작");
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
                 string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
                 sCode = sCode.Replace(" ", "");
@@ -1870,7 +1870,7 @@ namespace KOASampleCS
                     }
                 }
 
-                LogManager.WriteLine("주식분봉차트조회 : " + sCode);
+                //LogManager.WriteLine("주식분봉차트조회 : " + sCode);
 
                 string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "091000";
                 int nHighPrice = 0;
@@ -2726,7 +2726,7 @@ namespace KOASampleCS
 
             if(!e.strConditionName.Contains("(단타)"))
             {
-                LogManager.WriteLine("[종목코드] : " + e.sTrCode + "[조건명] : " + e.strConditionName + "[실시간타입] : " + e.strType);
+                //LogManager.WriteLine("[종목코드] : " + e.sTrCode + "[조건명] : " + e.strConditionName + "[실시간타입] : " + e.strType);
             }
 
             if (e.sTrCode != "" && e.strType == "I")
