@@ -49,6 +49,7 @@ namespace KOASampleCS
             public int[] n3HourLastPrice;        //3시 마감금액
             public bool[] bSellSignal;      //매수신호
             public int[] nPivot;            //피봇2차저항
+            public int[] nCheckTime;            //피봇돌파 후 체크 시간
 
             public bool[] bHighPriceCheck;      //고가 체크
             public int[] nAverageStatus;     //이평선 상태
@@ -65,6 +66,7 @@ namespace KOASampleCS
             public int[,] n5MinutePrice;     //5분 금액
             public int[,] n10MinutePrice;     //10분 금액
 
+            public string[,] sMType;      //5분봉 타입
             public int[,] nMStartPrice;      //분당 시작가
             public int[,] nMEndPrice;      //분당 종가
             public int[,] nMHighPrice;      //분당 최고가
@@ -98,6 +100,7 @@ namespace KOASampleCS
         public int m_nAverageHigh = 0;
         public bool m_bSale = true;
         public bool m_bNextDayChcek = true;
+        public bool m_bNextMinChcek = true;
 
         public struct ConditionList
         {
@@ -138,60 +141,62 @@ namespace KOASampleCS
         {
             InitializeComponent();
 
-            stTradeData.sCode = new string[2000];
-            stTradeData.sName = new string[2000];
-            stTradeData.nClosePrice = new int[2000];
-            stTradeData.nNowPrice = new int[2000];
-            stTradeData.nState = new int[2000];
-            stTradeData.sOrderNo = new string[2000];
-            stTradeData.nOrderQty = new int[2000];
-            stTradeData.nBuyQty = new int[2000];
-            stTradeData.nBuyPrice = new int[2000];
-            stTradeData.nSellQty = new int[2000];
-            stTradeData.nSellPrice = new int[2000];
-            stTradeData.nSellCount = new int[2000];
-            stTradeData.nBuyTime = new int[2000];
-            stTradeData.nSellTime = new int[2000];
-            stTradeData.nHighPrice = new int[2000];
-            stTradeData.nHighTime = new int[2000];
-            stTradeData.nLowPrice = new int[2000];
-            stTradeData.nLowTime = new int[2000];
-            stTradeData.nStandardPrice = new int[2000];
-            stTradeData.nStandardTime = new int[2000];
-            stTradeData.bEndSell = new bool[2000];
-            stTradeData.n3HourStartPrice = new int[2000];
-            stTradeData.n3HourLastPrice = new int[2000];
-            stTradeData.bSellSignal = new bool[2000];
-            stTradeData.nPivot = new int[2000];
+            stTradeData.sCode = new string[200];
+            stTradeData.sName = new string[200];
+            stTradeData.nClosePrice = new int[200];
+            stTradeData.nNowPrice = new int[200];
+            stTradeData.nState = new int[200];
+            stTradeData.sOrderNo = new string[200];
+            stTradeData.nOrderQty = new int[200];
+            stTradeData.nBuyQty = new int[200];
+            stTradeData.nBuyPrice = new int[200];
+            stTradeData.nSellQty = new int[200];
+            stTradeData.nSellPrice = new int[200];
+            stTradeData.nSellCount = new int[200];
+            stTradeData.nBuyTime = new int[200];
+            stTradeData.nSellTime = new int[200];
+            stTradeData.nHighPrice = new int[200];
+            stTradeData.nHighTime = new int[200];
+            stTradeData.nLowPrice = new int[200];
+            stTradeData.nLowTime = new int[200];
+            stTradeData.nStandardPrice = new int[200];
+            stTradeData.nStandardTime = new int[200];
+            stTradeData.bEndSell = new bool[200];
+            stTradeData.n3HourStartPrice = new int[200];
+            stTradeData.n3HourLastPrice = new int[200];
+            stTradeData.bSellSignal = new bool[200];
+            stTradeData.nPivot = new int[200];
+            stTradeData.nCheckTime = new int[200];
 
-            stTradeData.bHighPriceCheck = new bool[2000];
-            stTradeData.nAverageStatus = new int[2000];
-            stTradeData.nUpAverageHigh1 = new int[2000];
-            stTradeData.nUpAverageHigh2 = new int[2000];
-            stTradeData.nUpAverageEnd1 = new int[2000];
-            stTradeData.nUpAverageEnd2 = new int[2000];
-            stTradeData.nDownAverageHigh1 = new int[2000];
-            stTradeData.nDownAverageHigh2 = new int[2000];
-            stTradeData.nDownAverageEnd1 = new int[2000];
-            stTradeData.nDownAverageEnd2 = new int[2000];
+            stTradeData.bHighPriceCheck = new bool[200];
+            stTradeData.nAverageStatus = new int[200];
+            stTradeData.nUpAverageHigh1 = new int[200];
+            stTradeData.nUpAverageHigh2 = new int[200];
+            stTradeData.nUpAverageEnd1 = new int[200];
+            stTradeData.nUpAverageEnd2 = new int[200];
+            stTradeData.nDownAverageHigh1 = new int[200];
+            stTradeData.nDownAverageHigh2 = new int[200];
+            stTradeData.nDownAverageEnd1 = new int[200];
+            stTradeData.nDownAverageEnd2 = new int[200];
 
-            stTradeData.n5MinuteAverage = new int[2000];
-            stTradeData.n10MinuteAverage = new int[2000];
-            stTradeData.n5MinutePrice = new int[2000, 5];
-            stTradeData.n10MinutePrice = new int[2000, 10];
+            stTradeData.n5MinuteAverage = new int[200];
+            stTradeData.n10MinuteAverage = new int[200];
+            stTradeData.n5MinutePrice = new int[200, 5];
+            stTradeData.n10MinutePrice = new int[200, 10];
 
-            stTradeData.nMStartPrice = new int[2000,500];
-            stTradeData.nMEndPrice = new int[2000, 500];
-            stTradeData.nMHighPrice = new int[2000, 500];
-            stTradeData.nMLowPrice = new int[2000, 500];
-            stTradeData.nMTime = new int[2000, 500];
-            stTradeData.nMHighTime = new int[2000, 500];
-            stTradeData.nMLowTime = new int[2000, 500];
-            stTradeData.nMCount = new int[2000];
-            stTradeData.lMTradVol = new long[2000, 500];
-            stTradeData.lMTradVolAll = new long[2000, 500];
+            stTradeData.sMType = new string[200, 500];
+            stTradeData.nMStartPrice = new int[200,500];
+            stTradeData.nMEndPrice = new int[200, 500];
+            stTradeData.nMHighPrice = new int[200, 500];
+            stTradeData.nMLowPrice = new int[200, 500];
+            stTradeData.nMTime = new int[200, 500];
+            stTradeData.nMHighTime = new int[200, 500];
+            stTradeData.nMLowTime = new int[200, 500];
+            stTradeData.nMCount = new int[200];
+            stTradeData.lMTradVol = new long[200, 500];
+            stTradeData.lMTradVolAll = new long[200, 500];
 
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 200; i++)
             {
                 stTradeData.sCode[i] = "";
                 stTradeData.sName[i] = "";
@@ -216,6 +221,7 @@ namespace KOASampleCS
                 stTradeData.n3HourLastPrice[i] = 0;
                 stTradeData.bSellSignal[i] = false;
                 stTradeData.nPivot[i] = 0;
+                stTradeData.nCheckTime[i] = 0;
 
                 stTradeData.bHighPriceCheck[i] = false;
                 stTradeData.nAverageStatus[i] = 0;
@@ -235,6 +241,7 @@ namespace KOASampleCS
 
                 for (int j = 0; j < 500; j++)
                 {
+                    stTradeData.sMType[i, j] = "";
                     stTradeData.nMStartPrice[i,j] = 0;
                     stTradeData.nMEndPrice[i, j] = 0;
                     stTradeData.nMHighPrice[i, j] = 0;
@@ -316,7 +323,7 @@ namespace KOASampleCS
                         int nSavePoint = 1000;
                         bool bSave = true;
 
-                        for (int j = 0; j < 2000; j++)
+                        for (int j = 0; j < 200; j++)
                         {
                             if (stTradeData.sCode[j] == "" && nSavePoint == 1000)
                             {
@@ -380,7 +387,7 @@ namespace KOASampleCS
             int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
             int nNowTime = nHour * 100 + nMinute;
 
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 200; i++)
             {
                 if (stTradeData.sName[i] == Name)
                 {
@@ -473,7 +480,7 @@ namespace KOASampleCS
 
                     int nTimeCount = (nHour - 9) * 60 + nMinute;
 
-                    for (int i = 0; i < 2000; i++)
+                    for (int i = 0; i < 200; i++)
                     {
                         if(stTradeData.sCode[i] != "")
                         {
@@ -674,7 +681,7 @@ namespace KOASampleCS
                     {               
                         LogManager.WriteLine("종가 매수 시작");
 
-                        for (int i = 0; i < 2000; i++)
+                        for (int i = 0; i < 200; i++)
                         {
                             if (m_nCloseSellCount == 10)
                                 break;
@@ -734,7 +741,7 @@ namespace KOASampleCS
                         m_bSale = false;
                     }
 
-                    for (int i = 0; i < 2000; i++)
+                    for (int i = 0; i < 200; i++)
                     {
                         if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10 && m_bSale == true)
                         {
@@ -1693,7 +1700,7 @@ namespace KOASampleCS
                     int nLsatPrice = Convert.ToInt32(sLastPrice);
 
                     int nCodeCount = 0;
-                    for (int j = 0; j < 2000; j++)
+                    for (int j = 0; j < 200; j++)
                     {
                         if (sCode == stTradeData.sCode[j])
                         {
@@ -1867,7 +1874,7 @@ namespace KOASampleCS
                     int nLsatPrice = Convert.ToInt32(sLastPrice);
 
                     int nCodeCount = 0;
-                    for (int j = 0; j < 2000; j++)
+                    for (int j = 0; j < 200; j++)
                     {
                         if (sCode == stTradeData.sCode[j])
                         {
@@ -1968,10 +1975,10 @@ namespace KOASampleCS
                 }
 
                 System.Threading.Thread.Sleep(5000);
-                m_bNextDayChcek = true;
+                m_bNextMinChcek = true;
 
                 /*
-                for (int j = 0; j < 2000; j++)
+                for (int j = 0; j < 200; j++)
                 {
                     if(sCode == stTradeData.sCode[j])
                     {
@@ -2143,7 +2150,7 @@ namespace KOASampleCS
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
         {
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 200; i++)
             {
                 if (stTradeData.sCode[i] == e.sRealKey)
                 {
@@ -2178,10 +2185,56 @@ namespace KOASampleCS
                             int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
                         }
 
+                        if(nNowTime > 920 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i])
+                        {
+                            axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
+                        }
+
                         if(stTradeData.nPivot[i] > 0 && stTradeData.nPivot[i] < stTradeData.nNowPrice[i] && stTradeData.nState[i] != 32)
                         {
                             stTradeData.nState[i] = 32;
+                            if (nMinute + 10 > 60)
+                            {
+                                stTradeData.nCheckTime[i] = nHour + 100 + (nMinute + 10 - 60);
+                            }
+                            else
+                            {
+                                stTradeData.nCheckTime[i] = nHour + nMinute + 10;
+                            }
                             LogManager.WriteLine("피봇2차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                        }
+
+                        if(stTradeData.nCheckTime[i] != 0 && stTradeData.nCheckTime[i] <= nNowTime && m_bNextMinChcek == true)
+                        {
+                            int nTimeCount = (nHour - 9) * 60 + nMinute;
+
+                            if (nTimeCount > 0)
+                            {
+                                nTimeCount = nTimeCount / 5;
+                            }
+
+                            if(stTradeData.nMStartPrice[i, 0] == 0)
+                            {
+                                axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                                axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                                axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                                axKHOpenAPI.SetInputValue("틱범위", "5");
+
+                                m_bNextMinChcek = false;
+                                int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+                            }
+                            
+
+
+                            stTradeData.nMStartPrice[i, nTimeCount] = Convert.ToInt32(sStartPrice);
+                            stTradeData.nMEndPrice[i, nTimeCount] = Convert.ToInt32(sEndPrice);
+                            stTradeData.nMHighPrice[i, nTimeCount] = Convert.ToInt32(sHighPrice);
+                            stTradeData.nMLowPrice[i, nTimeCount] = Convert.ToInt32(sLowPrice);
+                            stTradeData.nMTime[i, nTimeCount] = nNowTime;
+                            //stTradeData.nMHighTime[i, nTimeCount] = 0;
+                            //stTradeData.nMLowTime[i, nTimeCount] = 0;
+                            stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt32(sTradeVol);
+                            //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
                         }
 
                         /*
@@ -2824,7 +2877,7 @@ namespace KOASampleCS
 
         private void btn실시간해제_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 200; i++)
             {
                 if (stTradeData.sCode[i] != "")
                 {
@@ -2974,7 +3027,7 @@ namespace KOASampleCS
             if (saveFileDlg.FileName != "")
             {
                 StreamWriter sw = new StreamWriter(saveFileDlg.FileName, true);
-                for(int i = 0; i < 2000; i++)
+                for(int i = 0; i < 200; i++)
                 {
                     if(stTradeData.sCode[i] != "")
                     {
@@ -3012,7 +3065,7 @@ namespace KOASampleCS
             {
                 while (true)
                 {
-                    for (int i = 0; i < 2000; i++)
+                    for (int i = 0; i < 200; i++)
                     {
                         axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                         axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
