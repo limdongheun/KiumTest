@@ -49,6 +49,7 @@ namespace KOASampleCS
             public int[] n3HourLastPrice;        //3시 마감금액
             public bool[] bSellSignal;      //매수신호
             public int[] nPivot;            //피봇2차저항
+            public int[] nPivotBuyPrice;            //피봇2차저항 돌파 매수금액
             public int[] nCheckTime;            //피봇돌파 후 체크 시간
 
             public bool[] bHighPriceCheck;      //고가 체크
@@ -166,6 +167,7 @@ namespace KOASampleCS
             stTradeData.n3HourLastPrice = new int[200];
             stTradeData.bSellSignal = new bool[200];
             stTradeData.nPivot = new int[200];
+            stTradeData.nPivotBuyPrice = new int[200];
             stTradeData.nCheckTime = new int[200];
 
             stTradeData.bHighPriceCheck = new bool[200];
@@ -221,6 +223,7 @@ namespace KOASampleCS
                 stTradeData.n3HourLastPrice[i] = 0;
                 stTradeData.bSellSignal[i] = false;
                 stTradeData.nPivot[i] = 0;
+                stTradeData.nPivotBuyPrice[i] = 0;
                 stTradeData.nCheckTime[i] = 0;
 
                 stTradeData.bHighPriceCheck[i] = false;
@@ -2204,7 +2207,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("피봇2차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
                         }
 
-                        if(stTradeData.nCheckTime[i] != 0 && stTradeData.nCheckTime[i] <= nNowTime && m_bNextMinChcek == true)
+                        if(stTradeData.nCheckTime[i] != 0 && stTradeData.nCheckTime[i] <= nNowTime)
                         {
                             int nTimeCount = (nHour - 9) * 60 + nMinute;
 
@@ -2213,7 +2216,7 @@ namespace KOASampleCS
                                 nTimeCount = nTimeCount / 5;
                             }
 
-                            if(stTradeData.nMStartPrice[i, 0] == 0)
+                            if(stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true)
                             {
                                 axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                                 axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
@@ -2222,19 +2225,41 @@ namespace KOASampleCS
 
                                 m_bNextMinChcek = false;
                                 int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+                                LogManager.WriteLine("주식분봉차트조회 : " + stTradeData.sCode[i]);
                             }
                             
+                            if(stTradeData.nState[i] == 32 && stTradeData.nNowPrice[i] < stTradeData.nPivot[i])
+                            {
+                                stTradeData.nState[i] = 33;
+                                LogManager.WriteLine("피봇2차저항 보다 하락 : " + stTradeData.sCode[i]);
+                            }
 
+                            if (stTradeData.nState[i] == 33 && stTradeData.nNowPrice[i] > stTradeData.nPivot[i])
+                            {
+                                stTradeData.nState[i] = 34;
 
-                            stTradeData.nMStartPrice[i, nTimeCount] = Convert.ToInt32(sStartPrice);
-                            stTradeData.nMEndPrice[i, nTimeCount] = Convert.ToInt32(sEndPrice);
-                            stTradeData.nMHighPrice[i, nTimeCount] = Convert.ToInt32(sHighPrice);
-                            stTradeData.nMLowPrice[i, nTimeCount] = Convert.ToInt32(sLowPrice);
-                            stTradeData.nMTime[i, nTimeCount] = nNowTime;
-                            //stTradeData.nMHighTime[i, nTimeCount] = 0;
-                            //stTradeData.nMLowTime[i, nTimeCount] = 0;
-                            stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt32(sTradeVol);
-                            //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
+                                int nSellPrice = stTradeData.nPivot[i];
+
+                                if (nSellPrice >= 1000 && nSellPrice < 5000)
+                                    stTradeData.nPivotBuyPrice[i] = nSellPrice - 10;
+                                else if (nSellPrice >= 5000 && nSellPrice < 10000)
+                                    stTradeData.nPivotBuyPrice[i] = nSellPrice - 20;
+                                else if (nSellPrice >= 10000 && nSellPrice < 50000)
+                                    stTradeData.nPivotBuyPrice[i] = nSellPrice - 100;
+                                else if (nSellPrice >= 50000 && nSellPrice < 100000)
+                                    stTradeData.nPivotBuyPrice[i] = nSellPrice - 200;
+                                else if (nSellPrice >= 100000 && nSellPrice < 500000)
+                                    stTradeData.nPivotBuyPrice[i] = nSellPrice - 1000;
+
+                                LogManager.WriteLine("피봇2차저항 보다 상승 : " + stTradeData.sCode[i] + " 매수 : " + stTradeData.nPivotBuyPrice[i].ToString());
+                            }
+
+                            if (stTradeData.nState[i] == 34 && stTradeData.nNowPrice[i] <= stTradeData.nPivotBuyPrice[i])
+                            {
+                                stTradeData.nState[i] = 35;
+                                LogManager.WriteLine("매수체결 : " + stTradeData.sCode[i] + " 매수가격 : " + stTradeData.nPivotBuyPrice[i].ToString() + " 현재가격 : " + stTradeData.nNowPrice[i].ToString());
+                                axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
+                            }
                         }
 
                         /*
