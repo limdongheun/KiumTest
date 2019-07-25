@@ -1685,51 +1685,55 @@ namespace KOASampleCS
             {
                 //LogManager.WriteLine("주식일봉차트조회 시작");
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
-                string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
-                sCode = sCode.Replace(" ", "");
-                string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
-                int nLsatPrice = Convert.ToInt32(sLastPrice);
-
-                int nCodeCount = 0;
-                for (int j = 0; j < 2000; j++)
+                if(nCnt > 0)
                 {
-                    if (sCode == stTradeData.sCode[j])
+                    string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
+                    sCode = sCode.Replace(" ", "");
+                    string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
+                    int nLsatPrice = Convert.ToInt32(sLastPrice);
+
+                    int nCodeCount = 0;
+                    for (int j = 0; j < 2000; j++)
                     {
-                        nCodeCount = j;
-                        break;
+                        if (sCode == stTradeData.sCode[j])
+                        {
+                            nCodeCount = j;
+                            break;
+                        }
                     }
-                }
 
-                //LogManager.WriteLine("주식일봉차트조회 : " + sCode);
+                    //LogManager.WriteLine("주식일봉차트조회 : " + sCode);
 
-                string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "일자");
+                    string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "일자");
 
-                string sEndPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "현재가");
-                sEndPrice = sEndPrice.Replace(" ", "");
-                sEndPrice = sEndPrice.Replace("+", "");
-                sEndPrice = sEndPrice.Replace("-", "");
+                    string sEndPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "현재가");
+                    sEndPrice = sEndPrice.Replace(" ", "");
+                    sEndPrice = sEndPrice.Replace("+", "");
+                    sEndPrice = sEndPrice.Replace("-", "");
 
-                string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "고가");
-                sHighPrice = sHighPrice.Replace(" ", "");
-                sHighPrice = sHighPrice.Replace("+", "");
-                sHighPrice = sHighPrice.Replace("-", "");
+                    string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "고가");
+                    sHighPrice = sHighPrice.Replace(" ", "");
+                    sHighPrice = sHighPrice.Replace("+", "");
+                    sHighPrice = sHighPrice.Replace("-", "");
 
-                string sLowPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "저가");
-                sLowPrice = sLowPrice.Replace(" ", "");
-                sLowPrice = sLowPrice.Replace("+", "");
-                sLowPrice = sLowPrice.Replace("-", "");
+                    string sLowPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 1, "저가");
+                    sLowPrice = sLowPrice.Replace(" ", "");
+                    sLowPrice = sLowPrice.Replace("+", "");
+                    sLowPrice = sLowPrice.Replace("-", "");
 
-                stTradeData.nPivot[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
+                    stTradeData.nPivot[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
 
-                string sTodayHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "고가");
-                sTodayHighPrice = sTodayHighPrice.Replace(" ", "");
-                sTodayHighPrice = sTodayHighPrice.Replace("+", "");
-                sTodayHighPrice = sTodayHighPrice.Replace("-", "");
+                    string sTodayHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "고가");
+                    sTodayHighPrice = sTodayHighPrice.Replace(" ", "");
+                    sTodayHighPrice = sTodayHighPrice.Replace("+", "");
+                    sTodayHighPrice = sTodayHighPrice.Replace("-", "");
 
-                if(Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
-                {
-                    stTradeData.nState[nCodeCount] = 32;
-                    LogManager.WriteLine("10%이상 상승 : " + stTradeData.sCode[nCodeCount]);
+                    if (Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
+                    {
+                        stTradeData.nState[nCodeCount] = 32;
+                        axKHOpenAPI.SetRealRemove("ALL", sCode);  // 모든 화면에서 실시간 해지
+                        LogManager.WriteLine("10%이상 상승 : " + stTradeData.sCode[nCodeCount]);
+                    }
                 }
 
                 System.Threading.Thread.Sleep(4000);
@@ -1855,108 +1859,116 @@ namespace KOASampleCS
             {
                 //LogManager.WriteLine("주식분봉차트조회 시작");
                 int nCnt = axKHOpenAPI.GetRepeatCnt(e.sTrCode, e.sRQName);
-                string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
-                sCode = sCode.Replace(" ", "");
-                string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
-                int nLsatPrice = Convert.ToInt32(sLastPrice);
-
-                int nCodeCount = 0;
-                for (int j = 0; j < 2000; j++)
+                if(nCnt > 0)
                 {
-                    if (sCode == stTradeData.sCode[j])
+                    string sCode = axKHOpenAPI.GetCommData(e.sTrCode, "", 0, "종목코드");
+                    sCode = sCode.Replace(" ", "");
+                    string sLastPrice = axKHOpenAPI.GetMasterLastPrice(sCode);
+                    int nLsatPrice = Convert.ToInt32(sLastPrice);
+
+                    int nCodeCount = 0;
+                    for (int j = 0; j < 2000; j++)
                     {
-                        nCodeCount = j;
-                        break;
-                    }
-                }
-
-                //LogManager.WriteLine("주식분봉차트조회 : " + sCode);
-
-                string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "091000";
-                int nHighPrice = 0;
-                int nNowPrice = 0;
-                int nBuyPrice = 0;
-
-                for (int i = 0; i < nCnt; i++)
-                {
-                    string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "체결시간");
-                    string sHour = sTime.Substring(14, 2);
-                    string sMinute = sTime.Substring(16, 2);
-                    int nTimeCount = (Convert.ToInt32(sHour) - 9) * 60 + Convert.ToInt32(sMinute);
-
-                    if(nTimeCount > 0)
-                    {
-                        nTimeCount = nTimeCount / 5;
+                        if (sCode == stTradeData.sCode[j])
+                        {
+                            nCodeCount = j;
+                            break;
+                        }
                     }
 
-                    string sStartPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "시가");
-                    sStartPrice = sStartPrice.Replace(" ", "");
-                    sStartPrice = sStartPrice.Replace("+", "");
-                    sStartPrice = sStartPrice.Replace("-", "");
+                    //LogManager.WriteLine("주식분봉차트조회 : " + sCode);
 
-                    string sEndPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "현재가");
-                    sEndPrice = sEndPrice.Replace(" ", "");
-                    sEndPrice = sEndPrice.Replace("+", "");
-                    sEndPrice = sEndPrice.Replace("-", "");
+                    string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "091000";
+                    int nHighPrice = 0;
+                    int nNowPrice = 0;
+                    int nBuyPrice = 0;
 
-                    string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "고가");
-                    sHighPrice = sHighPrice.Replace(" ", "");
-                    sHighPrice = sHighPrice.Replace("+", "");
-                    sHighPrice = sHighPrice.Replace("-", "");
-
-                    string sLowPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "저가");
-                    sLowPrice = sLowPrice.Replace(" ", "");
-                    sLowPrice = sLowPrice.Replace("+", "");
-                    sLowPrice = sLowPrice.Replace("-", "");
-
-                    string sTradeVol = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "거래량");
-                    sTradeVol = sTradeVol.Replace(" ", "");
-                    sTradeVol = sTradeVol.Replace("+", "");
-                    sTradeVol = sTradeVol.Replace("-", "");
-
-
-                    stTradeData.nMStartPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sStartPrice);
-                    stTradeData.nMEndPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sEndPrice);
-                    stTradeData.nMHighPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sHighPrice);
-                    stTradeData.nMLowPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sLowPrice);
-                    stTradeData.nMTime[nCodeCount, nTimeCount] = Convert.ToInt32(sHour) * 100 + Convert.ToInt32(sMinute);
-                    //stTradeData.nMHighTime[i, nTimeCount] = 0;
-                    //stTradeData.nMLowTime[i, nTimeCount] = 0;
-                    stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
-                    //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
-
-                    if(stTradeData.nMTime[nCodeCount, nTimeCount] == 900)
+                    for (int i = 0; i < nCnt; i++)
                     {
-                        break;
-                    }
+                        string sTime = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "체결시간");
+                        string sHour = sTime.Substring(14, 2);
+                        string sMinute = sTime.Substring(16, 2);
+                        int nTimeCount = (Convert.ToInt32(sHour) - 9) * 60 + Convert.ToInt32(sMinute);
 
-                    /*
-                    if(i == 0)
-                    {
-                        string sBuyPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "현재가");
-                        sBuyPrice = sBuyPrice.Replace(" ", "");
-                        sBuyPrice = sBuyPrice.Replace("+", "");
-                        sBuyPrice = sBuyPrice.Replace("-", "");
+                        if (nTimeCount > 0)
+                        {
+                            nTimeCount = nTimeCount / 5;
+                        }
 
-                        nBuyPrice = Convert.ToInt32(sBuyPrice);
-                    }
-                    //else if (sTime.Contains(sCheckTime))
-                    else if(Convert.ToInt64(sTime) <= Convert.ToInt64(sCheckTime) && Convert.ToInt64(sTime) > Convert.ToInt64(sCheckTime) - 1000)
-                    {
+                        string sStartPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "시가");
+                        sStartPrice = sStartPrice.Replace(" ", "");
+                        sStartPrice = sStartPrice.Replace("+", "");
+                        sStartPrice = sStartPrice.Replace("-", "");
+
+                        string sEndPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "현재가");
+                        sEndPrice = sEndPrice.Replace(" ", "");
+                        sEndPrice = sEndPrice.Replace("+", "");
+                        sEndPrice = sEndPrice.Replace("-", "");
+
                         string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "고가");
                         sHighPrice = sHighPrice.Replace(" ", "");
                         sHighPrice = sHighPrice.Replace("+", "");
                         sHighPrice = sHighPrice.Replace("-", "");
 
-                        nNowPrice = Convert.ToInt32(sHighPrice);
+                        string sLowPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "저가");
+                        sLowPrice = sLowPrice.Replace(" ", "");
+                        sLowPrice = sLowPrice.Replace("+", "");
+                        sLowPrice = sLowPrice.Replace("-", "");
 
-                        if(nHighPrice < nNowPrice)
+                        string sTradeVol = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "거래량");
+                        sTradeVol = sTradeVol.Replace(" ", "");
+                        sTradeVol = sTradeVol.Replace("+", "");
+                        sTradeVol = sTradeVol.Replace("-", "");
+
+
+                        stTradeData.nMStartPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sStartPrice);
+                        stTradeData.nMEndPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sEndPrice);
+                        stTradeData.nMHighPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sHighPrice);
+                        stTradeData.nMLowPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sLowPrice);
+                        stTradeData.nMTime[nCodeCount, nTimeCount] = Convert.ToInt32(sHour) * 100 + Convert.ToInt32(sMinute);
+                        //stTradeData.nMHighTime[i, nTimeCount] = 0;
+                        //stTradeData.nMLowTime[i, nTimeCount] = 0;
+                        stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
+                        //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
+
+                        if (stTradeData.nMTime[nCodeCount, nTimeCount] == 900)
                         {
-                            nHighPrice = nNowPrice;
+                            break;
                         }
+
+                        /*
+                        if(i == 0)
+                        {
+                            string sBuyPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "현재가");
+                            sBuyPrice = sBuyPrice.Replace(" ", "");
+                            sBuyPrice = sBuyPrice.Replace("+", "");
+                            sBuyPrice = sBuyPrice.Replace("-", "");
+
+                            nBuyPrice = Convert.ToInt32(sBuyPrice);
+                        }
+                        //else if (sTime.Contains(sCheckTime))
+                        else if(Convert.ToInt64(sTime) <= Convert.ToInt64(sCheckTime) && Convert.ToInt64(sTime) > Convert.ToInt64(sCheckTime) - 1000)
+                        {
+                            string sHighPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "고가");
+                            sHighPrice = sHighPrice.Replace(" ", "");
+                            sHighPrice = sHighPrice.Replace("+", "");
+                            sHighPrice = sHighPrice.Replace("-", "");
+
+                            nNowPrice = Convert.ToInt32(sHighPrice);
+
+                            if(nHighPrice < nNowPrice)
+                            {
+                                nHighPrice = nNowPrice;
+                            }
+                        }
+                        */
                     }
-                    */
+
+                    stTradeData.nState[nCodeCount] = 31;
                 }
+
+                System.Threading.Thread.Sleep(5000);
+                m_bNextDayChcek = true;
 
                 /*
                 for (int j = 0; j < 2000; j++)
@@ -1986,10 +1998,6 @@ namespace KOASampleCS
                     }
                 }
                 */
-
-                System.Threading.Thread.Sleep(5000);
-                stTradeData.nState[nCodeCount] = 31;
-                m_bNextDayChcek = true;
 
                 /*
                 if (nHighPrice - nLsatPrice > nLsatPrice * 0.05 && m_nCloseSellCount < 10)
