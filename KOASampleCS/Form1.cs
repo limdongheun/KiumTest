@@ -2193,16 +2193,16 @@ namespace KOASampleCS
                             axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
                         }
 
-                        if(stTradeData.nPivot[i] > 0 && stTradeData.nPivot[i] < stTradeData.nNowPrice[i] && stTradeData.nState[i] != 32)
+                        if(stTradeData.nPivot[i] > 0 && stTradeData.nPivot[i] < stTradeData.nNowPrice[i] && stTradeData.nState[i] < 32)
                         {
                             stTradeData.nState[i] = 32;
-                            if (nMinute + 10 > 60)
+                            if (nMinute + 10 >= 60)
                             {
-                                stTradeData.nCheckTime[i] = nHour + 100 + (nMinute + 10 - 60);
+                                stTradeData.nCheckTime[i] = nHour * 100 + 100 + (nMinute + 10 - 60);
                             }
                             else
                             {
-                                stTradeData.nCheckTime[i] = nHour + nMinute + 10;
+                                stTradeData.nCheckTime[i] = nHour * 100 + nMinute + 10;
                             }
                             LogManager.WriteLine("피봇2차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
                         }
@@ -2804,11 +2804,11 @@ namespace KOASampleCS
 
         private void axKHOpenAPI_OnReceiveRealCondition(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealConditionEvent e)
         {
-            Logger(Log.실시간, "========= 조건조회 실시간 편입/이탈 ==========");
-            Logger(Log.실시간, "[종목코드] : " + e.sTrCode);
-            Logger(Log.실시간, "[실시간타입] : " + e.strType);
-            Logger(Log.실시간, "[조건명] : " + e.strConditionName);
-            Logger(Log.실시간, "[조건명 인덱스] : " + e.strConditionIndex);
+            //Logger(Log.실시간, "========= 조건조회 실시간 편입/이탈 ==========");
+            //Logger(Log.실시간, "[종목코드] : " + e.sTrCode);
+            //Logger(Log.실시간, "[실시간타입] : " + e.strType);
+            //Logger(Log.실시간, "[조건명] : " + e.strConditionName);
+            //Logger(Log.실시간, "[조건명 인덱스] : " + e.strConditionIndex);
 
             if(!e.strConditionName.Contains("(단타)"))
             {
