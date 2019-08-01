@@ -28,7 +28,7 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -278,6 +278,9 @@
     <Content Include="log\20190724.txt" />
     <Content Include="log\20190725.txt" />
     <Content Include="log\20190726.txt" />
+    <Content Include="log\20190729.txt" />
+    <Content Include="log\20190730.txt" />
+    <Content Include="log\20190801.txt" />
     <Content Include="log\DB\checklist.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
