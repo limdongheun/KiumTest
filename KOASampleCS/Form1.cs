@@ -2283,17 +2283,28 @@ namespace KOASampleCS
                                 stTradeData.nBuyQty[i] = 0;
                                 stTradeData.nBuyPrice[i] = stTradeData.nNowPrice[i];
 
-                                if ((nMinute % 5 > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i]) || stTradeData.nMHighPrice[i, nTimeCount - 2] < stTradeData.nNowPrice[i])
+                                if(stTradeData.nMHighPrice[i, nTimeCount - 2] < stTradeData.nNowPrice[i])
                                 {
-                                    if (nNowTime < 1000)
-                                    {
-                                        nQty = nQty * 2;
-                                        m_nTradeCount++;
-                                    }
-
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                                 }
-                                else if (nMinute % 5 > 0 && stTradeData.nMStartPrice[i, nTimeCount] > stTradeData.nNowPrice[i])
+                                if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount - 1])
+                                {
+                                    int nBuyPrice = (stTradeData.nMStartPrice[i, nTimeCount - 1] + stTradeData.nMEndPrice[i, nTimeCount - 1]) / 2;
+
+                                    if (nBuyPrice >= 1000 && nBuyPrice < 5000)
+                                        nBuyPrice = nBuyPrice - (nBuyPrice % 5);
+                                    else if (nBuyPrice >= 5000 && nBuyPrice < 10000)
+                                        nBuyPrice = nBuyPrice - (nBuyPrice % 10);
+                                    else if (nBuyPrice >= 10000 && nBuyPrice < 50000)
+                                        nBuyPrice = nBuyPrice - (nBuyPrice % 50);
+                                    else if (nBuyPrice >= 50000 && nBuyPrice < 100000)
+                                        nBuyPrice = nBuyPrice - (nBuyPrice % 100);
+                                    else if (nBuyPrice >= 100000 && nBuyPrice < 500000)
+                                        nBuyPrice = nBuyPrice - (nBuyPrice % 500);
+
+                                    lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
+                                }
+                                else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", stTradeData.nMLowPrice[i, nTimeCount - 2], "");
                                 }
@@ -2354,11 +2365,11 @@ namespace KOASampleCS
 
                             if(stTradeData.nBuyTime[i] < 1000)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.04);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.03);
                             }
                             else if (stTradeData.nBuyTime[i] < 1100)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.025);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.02);
                             }
                             else if (stTradeData.nBuyTime[i] < 1200)
                             {
