@@ -1762,7 +1762,7 @@ namespace KOASampleCS
                     if (Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
                     {
                         stTradeData.nState[nCodeCount] = 32;
-                        axKHOpenAPI.SetRealRemove("ALL", sCode);  // 모든 화면에서 실시간 해지
+                        //axKHOpenAPI.SetRealRemove("ALL", sCode);  // 모든 화면에서 실시간 해지
                         LogManager.WriteLine("10%이상 상승 : " + stTradeData.sCode[nCodeCount]);
                     }
                 }
@@ -2474,7 +2474,7 @@ namespace KOASampleCS
 
                         if(nNowTime > 920 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i])
                         {
-                            axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
+                            //axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
                         }
 
                         if(stTradeData.nPivot[i] > 0 && stTradeData.nPivot[i] < stTradeData.nNowPrice[i] && stTradeData.nState[i] < 32)
@@ -2537,7 +2537,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 35;
                                 LogManager.WriteLine("매수체결 : " + stTradeData.sCode[i] + " 매수가격 : " + stTradeData.nPivotBuyPrice[i].ToString() + " 현재가격 : " + stTradeData.nNowPrice[i].ToString());
-                                axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
+                                //axKHOpenAPI.SetRealRemove("ALL", stTradeData.sCode[i]);  // 모든 화면에서 실시간 해지
                             }
                         }
 
