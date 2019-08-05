@@ -2286,6 +2286,7 @@ namespace KOASampleCS
                                 if(stTradeData.nMHighPrice[i, nTimeCount - 2] < stTradeData.nNowPrice[i])
                                 {
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                                    LogManager.WriteLine("시장가매수 : " + stTradeData.sCode[i]);
                                 }
                                 if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
@@ -2303,10 +2304,12 @@ namespace KOASampleCS
                                         nBuyPrice = nBuyPrice - (nBuyPrice % 500);
 
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
+                                    LogManager.WriteLine("5분상승매수 : " + stTradeData.sCode[i] + " " + nBuyPrice.ToString());
                                 }
                                 else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", stTradeData.nMLowPrice[i, nTimeCount - 2], "");
+                                    LogManager.WriteLine("5분하락매수 : " + stTradeData.sCode[i] + " " + stTradeData.nMLowPrice[i, nTimeCount - 2].ToString());
                                 }
 
                                 /*
@@ -2390,6 +2393,7 @@ namespace KOASampleCS
                             int nQty = stTradeData.nBuyQty[i];
 
                             int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
+                            LogManager.WriteLine("매도 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
                             //int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
 
                             if (lRet == 0)
