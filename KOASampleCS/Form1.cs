@@ -2492,7 +2492,11 @@ namespace KOASampleCS
                             int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 6, "00", 0, stTradeData.sOrderNo[i]);
                             System.Threading.Thread.Sleep(1000);
 
-                            lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 1, "03", 0, "");
+                            int nQty = stTradeData.nOrderQty[i];
+                            stTradeData.nBuyQty[i] = 0;
+                            stTradeData.nOrderQty[i] = 0;
+
+                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                             LogManager.WriteLine("시장가추가매수 : " + stTradeData.sCode[i]);
 
                             if (lRet == 0)
