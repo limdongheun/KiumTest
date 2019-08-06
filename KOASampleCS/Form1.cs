@@ -2289,7 +2289,7 @@ namespace KOASampleCS
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                                     LogManager.WriteLine("시장가매수 : " + stTradeData.sCode[i]);
                                 }
-                                if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount - 1])
+                                if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && nMinute % 5 > 0 && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
                                     int nBuyPrice = (stTradeData.nMStartPrice[i, nTimeCount - 1] + stTradeData.nMEndPrice[i, nTimeCount - 1]) / 2;
 
@@ -2304,8 +2304,16 @@ namespace KOASampleCS
                                     else if (nBuyPrice >= 100000 && nBuyPrice < 500000)
                                         nBuyPrice = nBuyPrice - (nBuyPrice % 500);
 
-                                    lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
-                                    LogManager.WriteLine("5분상승매수 : " + stTradeData.sCode[i] + " " + nBuyPrice.ToString());
+                                    if (stTradeData.nMStartPrice[i, nTimeCount] > stTradeData.nNowPrice[i])
+                                    {
+                                        stTradeData.nMTime[i, nTimeCount - 3] = 0;
+                                        LogManager.WriteLine("하락5분딜레이 : " + stTradeData.sCode[i]);
+                                    }
+                                    else
+                                    {
+                                        lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
+                                        LogManager.WriteLine("5분상승매수 : " + stTradeData.sCode[i] + " " + nBuyPrice.ToString());
+                                    }
                                 }
                                 else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && nMinute % 5 > 0 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
