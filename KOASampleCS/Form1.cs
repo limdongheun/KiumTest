@@ -142,63 +142,63 @@ namespace KOASampleCS
         {
             InitializeComponent();
 
-            stTradeData.sCode = new string[200];
-            stTradeData.sName = new string[200];
-            stTradeData.nClosePrice = new int[200];
-            stTradeData.nNowPrice = new int[200];
-            stTradeData.nState = new int[200];
-            stTradeData.sOrderNo = new string[200];
-            stTradeData.nOrderQty = new int[200];
-            stTradeData.nBuyQty = new int[200];
-            stTradeData.nBuyPrice = new int[200];
-            stTradeData.nSellQty = new int[200];
-            stTradeData.nSellPrice = new int[200];
-            stTradeData.nSellCount = new int[200];
-            stTradeData.nBuyTime = new int[200];
-            stTradeData.nSellTime = new int[200];
-            stTradeData.nHighPrice = new int[200];
-            stTradeData.nHighTime = new int[200];
-            stTradeData.nLowPrice = new int[200];
-            stTradeData.nLowTime = new int[200];
-            stTradeData.nStandardPrice = new int[200];
-            stTradeData.nStandardTime = new int[200];
-            stTradeData.bEndSell = new bool[200];
-            stTradeData.n3HourStartPrice = new int[200];
-            stTradeData.n3HourLastPrice = new int[200];
-            stTradeData.bSellSignal = new bool[200];
-            stTradeData.nPivot = new int[200];
-            stTradeData.nPivotBuyPrice = new int[200];
-            stTradeData.nCheckTime = new int[200];
+            stTradeData.sCode = new string[1000];
+            stTradeData.sName = new string[1000];
+            stTradeData.nClosePrice = new int[1000];
+            stTradeData.nNowPrice = new int[1000];
+            stTradeData.nState = new int[1000];
+            stTradeData.sOrderNo = new string[1000];
+            stTradeData.nOrderQty = new int[1000];
+            stTradeData.nBuyQty = new int[1000];
+            stTradeData.nBuyPrice = new int[1000];
+            stTradeData.nSellQty = new int[1000];
+            stTradeData.nSellPrice = new int[1000];
+            stTradeData.nSellCount = new int[1000];
+            stTradeData.nBuyTime = new int[1000];
+            stTradeData.nSellTime = new int[1000];
+            stTradeData.nHighPrice = new int[1000];
+            stTradeData.nHighTime = new int[1000];
+            stTradeData.nLowPrice = new int[1000];
+            stTradeData.nLowTime = new int[1000];
+            stTradeData.nStandardPrice = new int[1000];
+            stTradeData.nStandardTime = new int[1000];
+            stTradeData.bEndSell = new bool[1000];
+            stTradeData.n3HourStartPrice = new int[1000];
+            stTradeData.n3HourLastPrice = new int[1000];
+            stTradeData.bSellSignal = new bool[1000];
+            stTradeData.nPivot = new int[1000];
+            stTradeData.nPivotBuyPrice = new int[1000];
+            stTradeData.nCheckTime = new int[1000];
 
-            stTradeData.bHighPriceCheck = new bool[200];
-            stTradeData.nAverageStatus = new int[200];
-            stTradeData.nUpAverageHigh1 = new int[200];
-            stTradeData.nUpAverageHigh2 = new int[200];
-            stTradeData.nUpAverageEnd1 = new int[200];
-            stTradeData.nUpAverageEnd2 = new int[200];
-            stTradeData.nDownAverageHigh1 = new int[200];
-            stTradeData.nDownAverageHigh2 = new int[200];
-            stTradeData.nDownAverageEnd1 = new int[200];
-            stTradeData.nDownAverageEnd2 = new int[200];
+            stTradeData.bHighPriceCheck = new bool[1000];
+            stTradeData.nAverageStatus = new int[1000];
+            stTradeData.nUpAverageHigh1 = new int[1000];
+            stTradeData.nUpAverageHigh2 = new int[1000];
+            stTradeData.nUpAverageEnd1 = new int[1000];
+            stTradeData.nUpAverageEnd2 = new int[1000];
+            stTradeData.nDownAverageHigh1 = new int[1000];
+            stTradeData.nDownAverageHigh2 = new int[1000];
+            stTradeData.nDownAverageEnd1 = new int[1000];
+            stTradeData.nDownAverageEnd2 = new int[1000];
 
-            stTradeData.n5MinuteAverage = new int[200];
-            stTradeData.n10MinuteAverage = new int[200];
-            stTradeData.n5MinutePrice = new int[200, 5];
-            stTradeData.n10MinutePrice = new int[200, 10];
+            stTradeData.n5MinuteAverage = new int[1000];
+            stTradeData.n10MinuteAverage = new int[1000];
+            stTradeData.n5MinutePrice = new int[1000, 5];
+            stTradeData.n10MinutePrice = new int[1000, 10];
 
-            stTradeData.sMType = new string[200, 500];
-            stTradeData.nMStartPrice = new int[200,500];
-            stTradeData.nMEndPrice = new int[200, 500];
-            stTradeData.nMHighPrice = new int[200, 500];
-            stTradeData.nMLowPrice = new int[200, 500];
-            stTradeData.nMTime = new int[200, 500];
-            stTradeData.nMHighTime = new int[200, 500];
-            stTradeData.nMLowTime = new int[200, 500];
-            stTradeData.nMCount = new int[200];
-            stTradeData.lMTradVol = new long[200, 500];
-            stTradeData.lMTradVolAll = new long[200, 500];
+            stTradeData.sMType = new string[1000, 500];
+            stTradeData.nMStartPrice = new int[1000, 500];
+            stTradeData.nMEndPrice = new int[1000, 500];
+            stTradeData.nMHighPrice = new int[1000, 500];
+            stTradeData.nMLowPrice = new int[1000, 500];
+            stTradeData.nMTime = new int[1000, 500];
+            stTradeData.nMHighTime = new int[1000, 500];
+            stTradeData.nMLowTime = new int[1000, 500];
+            stTradeData.nMCount = new int[1000];
+            stTradeData.lMTradVol = new long[1000, 500];
+            stTradeData.lMTradVolAll = new long[1000, 500];
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 stTradeData.sCode[i] = "";
                 stTradeData.sName[i] = "";
@@ -326,7 +326,7 @@ namespace KOASampleCS
                         int nSavePoint = 1000;
                         bool bSave = true;
 
-                        for (int j = 0; j < 200; j++)
+                        for (int j = 0; j < 1000; j++)
                         {
                             if (stTradeData.sCode[j] == "" && nSavePoint == 1000)
                             {
@@ -390,7 +390,7 @@ namespace KOASampleCS
             int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
             int nNowTime = nHour * 100 + nMinute;
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 if (stTradeData.sName[i] == Name)
                 {
@@ -483,7 +483,7 @@ namespace KOASampleCS
 
                     int nTimeCount = (nHour - 9) * 60 + nMinute;
 
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 1000; i++)
                     {
                         if(stTradeData.sCode[i] != "")
                         {
@@ -684,7 +684,7 @@ namespace KOASampleCS
                     {               
                         LogManager.WriteLine("종가 매수 시작");
 
-                        for (int i = 0; i < 200; i++)
+                        for (int i = 0; i < 1000; i++)
                         {
                             if (m_nCloseSellCount == 10)
                                 break;
@@ -744,7 +744,7 @@ namespace KOASampleCS
                         m_bSale = false;
                     }
 
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 1000; i++)
                     {
                         if (stTradeData.sCode[i] != "" && (stTradeData.nState[i] == 0 || stTradeData.nState[i] == 6) && m_nTradeCount < 10 && m_bSale == true)
                         {
@@ -1703,7 +1703,7 @@ namespace KOASampleCS
                     int nLsatPrice = Convert.ToInt32(sLastPrice);
 
                     int nCodeCount = 0;
-                    for (int j = 0; j < 200; j++)
+                    for (int j = 0; j < 1000; j++)
                     {
                         if (sCode == stTradeData.sCode[j])
                         {
@@ -1898,7 +1898,7 @@ namespace KOASampleCS
                     int nLsatPrice = Convert.ToInt32(sLastPrice);
 
                     int nCodeCount = 0;
-                    for (int j = 0; j < 200; j++)
+                    for (int j = 0; j < 1000; j++)
                     {
                         if (sCode == stTradeData.sCode[j])
                         {
@@ -2002,7 +2002,7 @@ namespace KOASampleCS
                 m_bNextMinChcek = true;
 
                 /*
-                for (int j = 0; j < 200; j++)
+                for (int j = 0; j < 1000; j++)
                 {
                     if(sCode == stTradeData.sCode[j])
                     {
@@ -2174,7 +2174,7 @@ namespace KOASampleCS
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 if (stTradeData.sCode[i] == e.sRealKey)
                 {
@@ -3185,7 +3185,7 @@ namespace KOASampleCS
 
         private void btn실시간해제_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 1000; i++)
             {
                 if (stTradeData.sCode[i] != "")
                 {
@@ -3335,7 +3335,7 @@ namespace KOASampleCS
             if (saveFileDlg.FileName != "")
             {
                 StreamWriter sw = new StreamWriter(saveFileDlg.FileName, true);
-                for(int i = 0; i < 200; i++)
+                for(int i = 0; i < 1000; i++)
                 {
                     if(stTradeData.sCode[i] != "")
                     {
@@ -3373,7 +3373,7 @@ namespace KOASampleCS
             {
                 while (true)
                 {
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 1000; i++)
                     {
                         axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                         axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
