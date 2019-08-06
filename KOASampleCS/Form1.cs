@@ -2307,10 +2307,18 @@ namespace KOASampleCS
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
                                     LogManager.WriteLine("5분상승매수 : " + stTradeData.sCode[i] + " " + nBuyPrice.ToString());
                                 }
-                                else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
+                                else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && nMinute % 5 > 0 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
                                 {
-                                    lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", stTradeData.nMLowPrice[i, nTimeCount - 2], "");
-                                    LogManager.WriteLine("5분하락매수 : " + stTradeData.sCode[i] + " " + stTradeData.nMLowPrice[i, nTimeCount - 2].ToString());
+                                    if(stTradeData.nMEndPrice[i, nTimeCount - 1] > stTradeData.nNowPrice[i])
+                                    {
+                                        stTradeData.nMTime[i, nTimeCount - 3] = 0;
+                                        LogManager.WriteLine("하락5분딜레이 : " + stTradeData.sCode[i]);
+                                    }
+                                    else
+                                    {
+                                        lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", stTradeData.nMLowPrice[i, nTimeCount - 2], "");
+                                        LogManager.WriteLine("5분하락매수 : " + stTradeData.sCode[i] + " " + stTradeData.nMLowPrice[i, nTimeCount - 2].ToString());
+                                    }
                                 }
 
                                 /*
