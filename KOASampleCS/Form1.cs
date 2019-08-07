@@ -2360,7 +2360,8 @@ namespace KOASampleCS
                                 }
                             }
                         }
-                        else if (stTradeData.nHighPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nBuyQty[i] == 0 && stTradeData.nState[i] == 7)
+                        /*
+                        else if (stTradeData.nBuyTime[i]-10 < nNowTime && stTradeData.nHighPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nBuyQty[i] == 0 && stTradeData.nState[i] == 7)
                         {
                             LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
@@ -2372,6 +2373,7 @@ namespace KOASampleCS
                                 LogManager.WriteLine("취소후매수(고점돌파) : " + stTradeData.sCode[i]);
                             }
                         }
+                        */
                         else if (stTradeData.nBuyTime[i] < nNowTime && stTradeData.nBuyQty[i] == 0 && stTradeData.nState[i] == 7)
                         {
                             LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
