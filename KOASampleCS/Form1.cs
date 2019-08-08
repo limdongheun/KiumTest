@@ -407,6 +407,11 @@ namespace KOASampleCS
                             stTradeData.nBuyPrice[i] = nBuyPrice;
                             stTradeData.nBuyTime[i] = nNowTime;
 
+                            if(stTradeData.nBuyQty[i] > stTradeData.nOrderQty[i])
+                            {
+                                stTradeData.nBuyQty[i] = stTradeData.nOrderQty[i];
+                            }
+
                             LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty[i].ToString() + "/" + stTradeData.nOrderQty[i].ToString() + " " + stTradeData.nBuyPrice[i].ToString());
                         }
                         else if (stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && nBuyPrice > 0 && nBuyQty > 0)
@@ -2431,6 +2436,10 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 8;
                             }
+                        }
+                        else if (stTradeData.nBuyPrice[i] > stTradeData.nNowPrice[i] && stTradeData.nState[i] == 7)
+                        {
+                            stTradeData.nBuyQty[i] = stTradeData.nOrderQty[i];
                         }
                         else if (stTradeData.nOrderQty[i] == stTradeData.nBuyQty[i] && stTradeData.nState[i] == 7)
                         {
