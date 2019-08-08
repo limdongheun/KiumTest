@@ -2400,7 +2400,7 @@ namespace KOASampleCS
 
                             if (stTradeData.nBuyTime[i] < 1000)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.028);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.03);
                             }
                             else if (stTradeData.nBuyTime[i] < 1100)
                             {
@@ -2539,8 +2539,10 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (nNowTime > 915 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true)
+                        if (stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true)
                         {
+                            stTradeData.nState[i] = 1;
+
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
