@@ -2517,7 +2517,7 @@ namespace KOASampleCS
                             }
                             */
                         }
-                        else if (stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.035 > stTradeData.nNowPrice[i] && stTradeData.nState[i] == 8)
+                        else if (stTradeData.nBuyTime[i] + 5 < nNowTime && stTradeData.nBuyPrice[i] - stTradeData.nBuyPrice[i] * 0.035 > stTradeData.nNowPrice[i] && stTradeData.nState[i] == 8)
                         {
                             int nNowPrice = (Convert.ToInt32(stTradeData.nNowPrice[i]) + stTradeData.nBuyPrice[i]) / 2;
                             int nSellPrice = (int)(nNowPrice + nNowPrice * 0.018);
