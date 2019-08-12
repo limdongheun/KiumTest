@@ -2270,37 +2270,44 @@ namespace KOASampleCS
 
                         if(stTradeData.nState[i] == 50 && nNowTime > 909 && nNowTime < 915)
                         {
-                            if(stTradeData.nMHighPrice[i, 0] < stTradeData.nNowPrice[i] && stTradeData.nMHighPrice[i, 1] < stTradeData.nNowPrice[i])
+                            if(stTradeData.nMStartPrice[i, 0] < stTradeData.nMEndPrice[i, 0] && stTradeData.nMStartPrice[i, 1] < stTradeData.nMEndPrice[i, 1] && stTradeData.nMLowPrice[i, 0] < stTradeData.nMLowPrice[i, 1] && stTradeData.nMHighPrice[i, 0] < stTradeData.nMHighPrice[i, 1])
                             {
-                                int nQty = 1;
-
-                                if (m_nTradeCount < 0)
+                                if (stTradeData.nMHighPrice[i, 0] < stTradeData.nNowPrice[i] && stTradeData.nMHighPrice[i, 1] < stTradeData.nNowPrice[i])
                                 {
-                                    m_nTradeCount = 0;
-                                }
+                                    int nQty = 1;
 
-                                if (stTradeData.nNowPrice[i] > 0)
-                                {
-                                    nQty = 50000 / stTradeData.nNowPrice[i];
-                                }
+                                    if (m_nTradeCount < 0)
+                                    {
+                                        m_nTradeCount = 0;
+                                    }
 
-                                int lRet = 10;
+                                    if (stTradeData.nNowPrice[i] > 0)
+                                    {
+                                        nQty = 50000 / stTradeData.nNowPrice[i];
+                                    }
 
-                                stTradeData.nBuyQty[i] = 0;
-                                stTradeData.nBuyPrice[i] = stTradeData.nNowPrice[i];
+                                    int lRet = 10;
 
-                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
-                                LogManager.WriteLine("시장가매수(915) : " + stTradeData.sCode[i]);
-
-                                if (lRet == 0)
-                                {
-                                    lRet = 10;
-                                    stTradeData.nState[i] = 11;
-                                    stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyQty[i] = 0;
+                                    stTradeData.nBuyPrice[i] = stTradeData.nNowPrice[i];
 
-                                    //m_nTradeCount++;
+                                    lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                                    LogManager.WriteLine("시장가매수(915) : " + stTradeData.sCode[i]);
+
+                                    if (lRet == 0)
+                                    {
+                                        lRet = 10;
+                                        stTradeData.nState[i] = 11;
+                                        stTradeData.nOrderQty[i] = nQty;
+                                        stTradeData.nBuyQty[i] = 0;
+
+                                        //m_nTradeCount++;
+                                    }
                                 }
+                            }
+                            else
+                            {
+                                stTradeData.nState[i] = 1;
                             }
                         }
                         else if(stTradeData.nState[i] == 10)
