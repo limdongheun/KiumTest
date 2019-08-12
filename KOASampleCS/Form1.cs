@@ -2268,7 +2268,42 @@ namespace KOASampleCS
                             }
                         }
 
-                        if(stTradeData.nState[i] == 10)
+                        if(stTradeData.nState[i] == 50 && nNowTime > 909 && nNowTime < 915)
+                        {
+                            if(stTradeData.nMHighPrice[i, 0] < stTradeData.nNowPrice[i] && stTradeData.nMHighPrice[i, 1] < stTradeData.nNowPrice[i])
+                            {
+                                int nQty = 1;
+
+                                if (m_nTradeCount < 0)
+                                {
+                                    m_nTradeCount = 0;
+                                }
+
+                                if (stTradeData.nNowPrice[i] > 0)
+                                {
+                                    nQty = 50000 / stTradeData.nNowPrice[i];
+                                }
+
+                                int lRet = 10;
+
+                                stTradeData.nBuyQty[i] = 0;
+                                stTradeData.nBuyPrice[i] = stTradeData.nNowPrice[i];
+
+                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                                LogManager.WriteLine("시장가매수(915) : " + stTradeData.sCode[i]);
+
+                                if (lRet == 0)
+                                {
+                                    lRet = 10;
+                                    stTradeData.nState[i] = 11;
+                                    stTradeData.nOrderQty[i] = nQty;
+                                    stTradeData.nBuyQty[i] = 0;
+
+                                    //m_nTradeCount++;
+                                }
+                            }
+                        }
+                        else if(stTradeData.nState[i] == 10)
                         {
                             if (m_nTradeCount < 4 && nNowTime < 1200 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i] + (stTradeData.nClosePrice[i] * 0.25))
                             {
@@ -2403,7 +2438,11 @@ namespace KOASampleCS
 
                             int nSellPrice = 0;
 
-                            if (stTradeData.nBuyTime[i] < 1000)
+                            if (stTradeData.nBuyTime[i] < 915)
+                            {
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.02);
+                            }
+                            else if (stTradeData.nBuyTime[i] < 1000)
                             {
                                 nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.03);
                             }
@@ -2548,10 +2587,22 @@ namespace KOASampleCS
                             }
                         }
 
+                        if(nNowTime == 905 && stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] != 0)
+                        {
+                            stTradeData.nMStartPrice[i, 0] = 0;
+                        }
+
                         if (stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true)
                         {
-                            stTradeData.nState[i] = 1;
-
+                            if(nNowTime < 909)
+                            {
+                                stTradeData.nState[i] = 50;
+                            }
+                            else
+                            {
+                                stTradeData.nState[i] = 1;
+                            }
+                            
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
