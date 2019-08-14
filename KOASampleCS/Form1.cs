@@ -2287,7 +2287,7 @@ namespace KOASampleCS
 
                                 if (stTradeData.nNowPrice[i] > 0)
                                 {
-                                    nQty = 80000 / stTradeData.nNowPrice[i];
+                                    nQty = 50000 / stTradeData.nNowPrice[i];
                                 }
 
                                 int lRet = 10;
