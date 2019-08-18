@@ -524,6 +524,7 @@ namespace KOASampleCS
                         {
                             stTradeData.nSellQty2[i] += nSellQty;
                             stTradeData.nSellPrice2[i] = nSellPrice;
+                            stTradeData.bUnder910[i] = false;
 
                             LogManager.WriteLine("매도완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nSellQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nSellPrice2[i].ToString());
 
@@ -2085,7 +2086,22 @@ namespace KOASampleCS
                         {
                             if(stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
                             {
-                                stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
+                                int nPrice = 0;
+
+                                if (stTradeData.nHighPrice2[i] < 1000)
+                                    nPrice = 1;
+                                else if (stTradeData.nHighPrice2[i] >= 1000 && stTradeData.nHighPrice2[i] < 5000)
+                                    nPrice = 5;
+                                else if (stTradeData.nHighPrice2[i] >= 5000 && stTradeData.nHighPrice2[i] < 10000)
+                                    nPrice = 10;
+                                else if (stTradeData.nHighPrice2[i] >= 10000 && stTradeData.nHighPrice2[i] < 50000)
+                                    nPrice = 50;
+                                else if (stTradeData.nHighPrice2[i] >= 50000 && stTradeData.nHighPrice2[i] < 100000)
+                                    nPrice = 100;
+                                else if (stTradeData.nHighPrice2[i] >= 100000 && stTradeData.nHighPrice2[i] < 500000)
+                                    nPrice = 500;
+
+                                stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice[nCodeCount, nTimeCount] - nPrice;
                             }  
                         }
 
@@ -2425,7 +2441,7 @@ namespace KOASampleCS
                         {
                             if(stTradeData.nState2[i] == 0)
                             {
-                                if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
+                                if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i])
                                 {
                                     int nQty = 1;
 
@@ -2448,6 +2464,7 @@ namespace KOASampleCS
                                     }
                                 }
 
+                                /*
                                 if (stTradeData.nMTime1[i, stTradeData.nMCount1[i]] < nNowTime)
                                 {
                                     stTradeData.nMTime1[i, stTradeData.nMCount1[i]] = nNowTime;
@@ -2470,7 +2487,32 @@ namespace KOASampleCS
                                         stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
                                     }
                                 }
+                                */
                             }
+                            else if(stTradeData.nState2[i] == 2)
+                            {
+                                int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
+
+                                if (nSellPrice >= 1000 && nSellPrice < 5000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 5) - 5;
+                                else if (nSellPrice >= 5000 && nSellPrice < 10000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 10) - 10;
+                                else if (nSellPrice >= 10000 && nSellPrice < 50000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 50);
+                                else if (nSellPrice >= 50000 && nSellPrice < 100000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 100);
+                                else if (nSellPrice >= 100000 && nSellPrice < 500000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 500);
+
+                                int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "00", nSellPrice, "");
+                                LogManager.WriteLine("시초상승매도(1%) : " + stTradeData.sCode[i]);
+
+                                if (lRet == 0)
+                                {
+                                    stTradeData.nState2[i] = 3;
+                                }
+                            }
+                            /*
                             else
                             {
                                 if(stTradeData.nState2[i] == 2 && stTradeData.nMTime1[i, stTradeData.nMCount1[i]] < nNowTime)
@@ -2579,6 +2621,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nHighPrice2[i] = stTradeData.nNowPrice[i];
                             }
+                            */
                         }
 
                         if (stTradeData.nState[i] == 10)
@@ -3112,7 +3155,6 @@ namespace KOASampleCS
                                 stTradeData.lMTradVolAll[i, stTradeData.nMCount[i]] = Convert.ToInt64(sNowTradeVol);
                             }
                         }
-
                         */
                     }
                 }
