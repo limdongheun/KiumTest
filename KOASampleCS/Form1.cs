@@ -2447,7 +2447,7 @@ namespace KOASampleCS
 
                                     if (stTradeData.nNowPrice[i] > 0)
                                     {
-                                        nQty = 50000 / stTradeData.nNowPrice[i];
+                                        nQty = 100000 / stTradeData.nNowPrice[i];
                                     }
 
                                     int lRet = 10;
@@ -2494,9 +2494,9 @@ namespace KOASampleCS
                                 int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
 
                                 if (nSellPrice >= 1000 && nSellPrice < 5000)
-                                    nSellPrice = nSellPrice - (nSellPrice % 5) - 5;
+                                    nSellPrice = nSellPrice - (nSellPrice % 5);
                                 else if (nSellPrice >= 5000 && nSellPrice < 10000)
-                                    nSellPrice = nSellPrice - (nSellPrice % 10) - 10;
+                                    nSellPrice = nSellPrice - (nSellPrice % 10);
                                 else if (nSellPrice >= 10000 && nSellPrice < 50000)
                                     nSellPrice = nSellPrice - (nSellPrice % 50);
                                 else if (nSellPrice >= 50000 && nSellPrice < 100000)
@@ -2739,19 +2739,19 @@ namespace KOASampleCS
 
                             if (stTradeData.nBuyTime[i] < 915)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.02);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.015);
                             }
                             else if (stTradeData.nBuyTime[i] < 1000)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.02);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.01);
                             }
                             else if (stTradeData.nBuyTime[i] < 1100)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.015);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.01);
                             }
                             else if (stTradeData.nBuyTime[i] < 1200)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.013);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.01);
                             }
 
                             if (nSellPrice >= 1000 && nSellPrice < 5000)
