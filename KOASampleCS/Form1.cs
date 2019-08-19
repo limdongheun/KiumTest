@@ -528,7 +528,7 @@ namespace KOASampleCS
 
                             LogManager.WriteLine("매도완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nSellQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nSellPrice2[i].ToString());
 
-                            stTradeData.nState2[i] = 0;
+                            stTradeData.nState2[i] = 6;
 
                             stTradeData.nBuyQty2[i] = 0;
                             stTradeData.nBuyPrice2[i] = 0;
@@ -2439,6 +2439,11 @@ namespace KOASampleCS
 
                         if(stTradeData.bUnder910[i] == true)
                         {
+                            if(nNowTime > 930)
+                            {
+                                stTradeData.bUnder910[i] = false;
+                            }
+
                             if(stTradeData.nState2[i] == 0)
                             {
                                 if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i])
@@ -2505,7 +2510,7 @@ namespace KOASampleCS
                                     nSellPrice = nSellPrice - (nSellPrice % 500);
 
                                 int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "00", nSellPrice, "");
-                                LogManager.WriteLine("시초상승매도(1%) : " + stTradeData.sCode[i]);
+                                LogManager.WriteLine("시초상승매도(1%) : " + stTradeData.sCode[i] + "\t" + nSellPrice.ToString());
 
                                 if (lRet == 0)
                                 {
@@ -2739,11 +2744,11 @@ namespace KOASampleCS
 
                             if (stTradeData.nBuyTime[i] < 915)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.015);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.02);
                             }
                             else if (stTradeData.nBuyTime[i] < 1000)
                             {
-                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.01);
+                                nSellPrice = stTradeData.nBuyPrice[i] + (int)(stTradeData.nBuyPrice[i] * 0.015);
                             }
                             else if (stTradeData.nBuyTime[i] < 1100)
                             {
