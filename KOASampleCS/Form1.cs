@@ -2439,7 +2439,7 @@ namespace KOASampleCS
 
                         if(stTradeData.bUnder910[i] == true)
                         {
-                            if(nNowTime > 915)
+                            if(nNowTime > 909)
                             {
                                 stTradeData.bUnder910[i] = false;
                             }
@@ -2632,6 +2632,12 @@ namespace KOASampleCS
                                 stTradeData.nHighPrice2[i] = stTradeData.nNowPrice[i];
                             }
                             */
+                        }
+
+                        if (stTradeData.nState2[i] == 3 && nNowTime > 919)
+                        {
+                            SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 6, "03", 0, stTradeData.sOrderNo[i]);
+                            LogManager.WriteLine("시장가매도(920) : " + stTradeData.sCode[i]);
                         }
 
                         if (stTradeData.nState[i] == 10)
