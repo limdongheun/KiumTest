@@ -2654,6 +2654,7 @@ namespace KOASampleCS
                                 {
                                     //lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                                     LogManager.WriteLine("시장가매수 : " + stTradeData.sCode[i]);
+                                    lRet = 0;
 
                                     if (lRet == 0)
                                     {
@@ -2692,6 +2693,7 @@ namespace KOASampleCS
                                         }
                                         //lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
                                         LogManager.WriteLine("5분상승매수 : " + stTradeData.sCode[i] + " " + nBuyPrice.ToString());
+                                        lRet = 0;
                                     }
                                 }
                                 else if (stTradeData.nMTime[i, nTimeCount - 3] != 0 && nMinute % 5 > 1 && stTradeData.nMStartPrice[i, nTimeCount - 1] > stTradeData.nMEndPrice[i, nTimeCount - 1])
