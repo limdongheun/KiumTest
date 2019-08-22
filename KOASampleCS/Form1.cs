@@ -2446,13 +2446,17 @@ namespace KOASampleCS
 
                             if(stTradeData.nState2[i] == 0)
                             {
-                                if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i])
+                                if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < (int)(stTradeData.nClosePrice[i] * 1.12))
                                 {
                                     int nQty = 1;
 
                                     if (stTradeData.nNowPrice[i] > 0)
                                     {
                                         nQty = 100000 / stTradeData.nNowPrice[i];
+                                        if(nNowTime < 905)
+                                        {
+                                            nQty = 150000 / stTradeData.nNowPrice[i];
+                                        }
                                     }
 
                                     int lRet = 10;
@@ -2496,11 +2500,11 @@ namespace KOASampleCS
                             }
                             else if(stTradeData.nState2[i] == 2)
                             {
-                                int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
+                                int nSellPrice = nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
 
-                                if(nNowTime < 906)
+                                if(nNowTime < 906 || stTradeData.nBuyPrice2[i] > 5000)
                                 {
-                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.015);
+                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.02);
                                 }
 
                                 if (nSellPrice >= 1000 && nSellPrice < 5000)
@@ -2634,7 +2638,7 @@ namespace KOASampleCS
                             */
                         }
 
-                        if (stTradeData.nState2[i] == 3 && nNowTime > 919)
+                        if (stTradeData.nState2[i] == 3 && nNowTime > 914)
                         {
                             SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 6, "03", 0, stTradeData.sOrderNo[i]);
                             LogManager.WriteLine("시장가매도(920) : " + stTradeData.sCode[i]);
