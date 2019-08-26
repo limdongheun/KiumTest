@@ -2113,6 +2113,7 @@ namespace KOASampleCS
 
                         if (stTradeData.nMTime[nCodeCount, nTimeCount] == 900)
                         {
+                            LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
                             break;
                         }
 
@@ -2468,7 +2469,7 @@ namespace KOASampleCS
                                     int lRet = 10;
 
                                     lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
-                                    LogManager.WriteLine("시장가매수(910) : " + stTradeData.sCode[i]);
+                                    LogManager.WriteLine("시장가매수(910) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nHighPrice2[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
 
                                     if (lRet == 0)
                                     {
@@ -2646,15 +2647,15 @@ namespace KOASampleCS
 
                         if (stTradeData.nState2[i] == 3 && nNowTime > 914)
                         {
-                            LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+                            LogManager.WriteLine("매도취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
-                            int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 3, "00", 0, stTradeData.sOrderNo[i]);
+                            int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 4, "00", 0, stTradeData.sOrderNo[i]);
+                            stTradeData.nState2[i] = 1;
 
-                            if (lRet == 0)
-                            {
-                                SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 1, "03", 0, "");
-                                LogManager.WriteLine("시장가매도(920) : " + stTradeData.sCode[i]);
-                            }
+                            System.Threading.Thread.Sleep(1000);
+
+                            SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "03", 0, "");
+                            LogManager.WriteLine("시장가매도(915) : " + stTradeData.sCode[i]);
                         }
 
                         if (stTradeData.nState[i] == 10)
