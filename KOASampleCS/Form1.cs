@@ -375,9 +375,9 @@ namespace KOASampleCS
             {
                 string sLastPrice = axKHOpenAPI.GetMasterLastPrice(codes[i]);
 
-                if(sLastPrice != "")
+                if (sLastPrice != "")
                 {
-                    if (Convert.ToInt64(sLastPrice) < 20000)
+                    if (Convert.ToInt64(sLastPrice) < 10000)
                     {
                         int nSavePoint = 1000;
                         bool bSave = true;
@@ -2041,11 +2041,7 @@ namespace KOASampleCS
                         string sMinute = sTime.Substring(16, 2);
                         int nTimeCount = (Convert.ToInt32(sHour) - 9) * 60 + Convert.ToInt32(sMinute);
 
-                        if (nTimeCount > 0)
-                        {
-                            nTimeCount = nTimeCount / 5;
-                        }
-
+                                                
                         string sStartPrice = axKHOpenAPI.GetCommData(e.sTrCode, "", i, "시가");
                         sStartPrice = sStartPrice.Replace(" ", "");
                         sStartPrice = sStartPrice.Replace("+", "");
@@ -2071,51 +2067,109 @@ namespace KOASampleCS
                         sTradeVol = sTradeVol.Replace("+", "");
                         sTradeVol = sTradeVol.Replace("-", "");
 
-
-                        stTradeData.nMStartPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sStartPrice);
-                        stTradeData.nMEndPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sEndPrice);
-                        stTradeData.nMHighPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sHighPrice);
-                        stTradeData.nMLowPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sLowPrice);
-                        stTradeData.nMTime[nCodeCount, nTimeCount] = Convert.ToInt32(sHour) * 100 + Convert.ToInt32(sMinute);
-                        //stTradeData.nMHighTime[i, nTimeCount] = 0;
-                        //stTradeData.nMLowTime[i, nTimeCount] = 0;
-                        stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
-                        //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
-
-                        if(stTradeData.bUnder910[nCodeCount] == true)
+                        if (stTradeData.nState2[nCodeCount] == 50)
                         {
-                            if(stTradeData.nMStartPrice[nCodeCount, nTimeCount] < stTradeData.nClosePrice[nCodeCount] * 0.97)
+                            if(nTimeCount < 60)
                             {
-                                stTradeData.bUnder910[nCodeCount] = false;
-                                break;
+                                stTradeData.nMStartPrice1[nCodeCount, nTimeCount] = Convert.ToInt32(sStartPrice);
+                                stTradeData.nMEndPrice1[nCodeCount, nTimeCount] = Convert.ToInt32(sEndPrice);
+                                stTradeData.nMHighPrice1[nCodeCount, nTimeCount] = Convert.ToInt32(sHighPrice);
+                                stTradeData.nMLowPrice1[nCodeCount, nTimeCount] = Convert.ToInt32(sLowPrice);
+                                stTradeData.nMTime1[nCodeCount, nTimeCount] = Convert.ToInt32(sHour) * 100 + Convert.ToInt32(sMinute);
+
+                                if(stTradeData.nMTime1[nCodeCount, nTimeCount] < 904)
+                                {
+                                    if (stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice1[nCodeCount, nTimeCount])
+                                    {
+                                        int nPrice = 0;
+
+                                        if (stTradeData.nHighPrice2[nCodeCount] < 1000)
+                                            nPrice = 1;
+                                        else if (stTradeData.nHighPrice2[nCodeCount] >= 1000 && stTradeData.nHighPrice2[nCodeCount] < 5000)
+                                            nPrice = 5;
+                                        else if (stTradeData.nHighPrice2[nCodeCount] >= 5000 && stTradeData.nHighPrice2[nCodeCount] < 10000)
+                                            nPrice = 10;
+                                        else if (stTradeData.nHighPrice2[nCodeCount] >= 10000 && stTradeData.nHighPrice2[nCodeCount] < 50000)
+                                            nPrice = 50;
+                                        else if (stTradeData.nHighPrice2[nCodeCount] >= 50000 && stTradeData.nHighPrice2[nCodeCount] < 100000)
+                                            nPrice = 100;
+                                        else if (stTradeData.nHighPrice2[nCodeCount] >= 100000 && stTradeData.nHighPrice2[nCodeCount] < 500000)
+                                            nPrice = 500;
+
+                                        stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice1[nCodeCount, nTimeCount] - nPrice;
+                                    }
+                                }
+                                else if(stTradeData.nMTime1[nCodeCount, nTimeCount] < 911)
+                                {
+                                    if (nHighPrice < stTradeData.nMHighPrice1[nCodeCount, nTimeCount])
+                                    {
+                                        nHighPrice = stTradeData.nMHighPrice1[nCodeCount, nTimeCount];
+                                    }
+                                }
+
+                                if(stTradeData.nMTime1[nCodeCount, nTimeCount] == 900)
+                                {
+                                    if(stTradeData.nHighPrice2[nCodeCount] * 1.02 < nHighPrice)
+                                    {
+                                        LogManager.WriteLine(stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (nTimeCount > 0)
+                            {
+                                nTimeCount = nTimeCount / 5;
                             }
 
-                            if(stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                            stTradeData.nMStartPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sStartPrice);
+                            stTradeData.nMEndPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sEndPrice);
+                            stTradeData.nMHighPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sHighPrice);
+                            stTradeData.nMLowPrice[nCodeCount, nTimeCount] = Convert.ToInt32(sLowPrice);
+                            stTradeData.nMTime[nCodeCount, nTimeCount] = Convert.ToInt32(sHour) * 100 + Convert.ToInt32(sMinute);
+                            //stTradeData.nMHighTime[i, nTimeCount] = 0;
+                            //stTradeData.nMLowTime[i, nTimeCount] = 0;
+                            stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
+                            //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
+
+                            if (stTradeData.bUnder910[nCodeCount] == true)
                             {
-                                int nPrice = 0;
+                                if (stTradeData.nMStartPrice[nCodeCount, nTimeCount] < stTradeData.nClosePrice[nCodeCount] * 0.97)
+                                {
+                                    stTradeData.bUnder910[nCodeCount] = false;
+                                    break;
+                                }
 
-                                if (stTradeData.nHighPrice2[nCodeCount] < 1000)
-                                    nPrice = 1;
-                                else if (stTradeData.nHighPrice2[nCodeCount] >= 1000 && stTradeData.nHighPrice2[nCodeCount] < 5000)
-                                    nPrice = 5;
-                                else if (stTradeData.nHighPrice2[nCodeCount] >= 5000 && stTradeData.nHighPrice2[nCodeCount] < 10000)
-                                    nPrice = 10;
-                                else if (stTradeData.nHighPrice2[nCodeCount] >= 10000 && stTradeData.nHighPrice2[nCodeCount] < 50000)
-                                    nPrice = 50;
-                                else if (stTradeData.nHighPrice2[nCodeCount] >= 50000 && stTradeData.nHighPrice2[nCodeCount] < 100000)
-                                    nPrice = 100;
-                                else if (stTradeData.nHighPrice2[nCodeCount] >= 100000 && stTradeData.nHighPrice2[nCodeCount] < 500000)
-                                    nPrice = 500;
+                                if (stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                {
+                                    int nPrice = 0;
 
-                                stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice[nCodeCount, nTimeCount] - nPrice;
-                            }  
+                                    if (stTradeData.nHighPrice2[nCodeCount] < 1000)
+                                        nPrice = 1;
+                                    else if (stTradeData.nHighPrice2[nCodeCount] >= 1000 && stTradeData.nHighPrice2[nCodeCount] < 5000)
+                                        nPrice = 5;
+                                    else if (stTradeData.nHighPrice2[nCodeCount] >= 5000 && stTradeData.nHighPrice2[nCodeCount] < 10000)
+                                        nPrice = 10;
+                                    else if (stTradeData.nHighPrice2[nCodeCount] >= 10000 && stTradeData.nHighPrice2[nCodeCount] < 50000)
+                                        nPrice = 50;
+                                    else if (stTradeData.nHighPrice2[nCodeCount] >= 50000 && stTradeData.nHighPrice2[nCodeCount] < 100000)
+                                        nPrice = 100;
+                                    else if (stTradeData.nHighPrice2[nCodeCount] >= 100000 && stTradeData.nHighPrice2[nCodeCount] < 500000)
+                                        nPrice = 500;
+
+                                    stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice[nCodeCount, nTimeCount] - nPrice;
+                                }
+                            }
+
+                            if (stTradeData.nMTime[nCodeCount, nTimeCount] == 900)
+                            {
+                                LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
+                                break;
+                            }
                         }
 
-                        if (stTradeData.nMTime[nCodeCount, nTimeCount] == 900)
-                        {
-                            LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
-                            break;
-                        }
 
                         /*
                         if(i == 0)
@@ -2148,7 +2202,7 @@ namespace KOASampleCS
                     stTradeData.nState[nCodeCount] = 31;
                 }
 
-                System.Threading.Thread.Sleep(5000);
+                System.Threading.Thread.Sleep(300);
                 m_bNextMinChcek = true;
 
                 /*
@@ -2331,14 +2385,20 @@ namespace KOASampleCS
                     string sNowPrice = axKHOpenAPI.GetCommRealData(e.sRealType, 10).Trim(); //현재가
                     sNowPrice = sNowPrice.Replace("+","");
                     sNowPrice = sNowPrice.Replace("-", "");
+                    if (sNowPrice == "")
+                        sNowPrice = "0";
 
                     string sNowTradeVol = axKHOpenAPI.GetCommRealData(e.sRealType, 15).Trim();  //거래량
                     sNowTradeVol = sNowTradeVol.Replace("+", "");
                     sNowTradeVol = sNowTradeVol.Replace("-", "");
+                    if (sNowTradeVol == "")
+                        sNowTradeVol = "0";
 
                     string sAddTradeVol = axKHOpenAPI.GetCommRealData(e.sRealType, 13).Trim();  //누적거래량
                     sAddTradeVol = sAddTradeVol.Replace("+", "");
                     sAddTradeVol = sAddTradeVol.Replace("-", "");
+                    if (sAddTradeVol == "")
+                        sAddTradeVol = "0";
 
                     if (sNowPrice != "")
                     {
@@ -2477,6 +2537,7 @@ namespace KOASampleCS
                                         stTradeData.nState2[i] = 1;
                                         stTradeData.nOrderQty2[i] = nQty;
                                         stTradeData.nBuyQty2[i] = 0;
+                                        stTradeData.nBuyTime2[i] = nNowTime;
                                     }
                                 }
 
@@ -2512,6 +2573,11 @@ namespace KOASampleCS
                                 if(nNowTime < 906 || stTradeData.nBuyPrice2[i] > 5000)
                                 {
                                     nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.02);
+                                }
+
+                                if(stTradeData.nBuyTime2[i] == 903 && stTradeData.nMHighPrice1[i, 0] < stTradeData.nMHighPrice1[i, 1] && stTradeData.nMHighPrice1[i, 1] < stTradeData.nMHighPrice1[i, 2])
+                                {
+                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.03);
                                 }
 
                                 if (nSellPrice >= 1000 && nSellPrice < 5000)
@@ -2932,23 +2998,31 @@ namespace KOASampleCS
 
                         if (stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true)
                         {
-                            if(nNowTime < 909)
+                            if(nNowTime < 904)
                             {
-                                stTradeData.nState[i] = 50;
+                                stTradeData.nState[i] = 1;
+                                stTradeData.nState2[i] = 50;
+                                axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                                axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                                axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                                axKHOpenAPI.SetInputValue("틱범위", "1");
+
+                                m_bNextMinChcek = false;
+                                axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
                             }
                             else
                             {
                                 stTradeData.nState[i] = 1;
-                            }
-                            
-                            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
-                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
-                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
-                            axKHOpenAPI.SetInputValue("틱범위", "5");
 
-                            m_bNextMinChcek = false;
-                            int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
-                            LogManager.WriteLine("주식분봉차트조회 : " + stTradeData.sCode[i]);
+                                axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                                axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                                axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                                axKHOpenAPI.SetInputValue("틱범위", "5");
+
+                                m_bNextMinChcek = false;
+                                int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+                                LogManager.WriteLine("주식분봉차트조회 : " + stTradeData.sCode[i]);
+                            }
                         }
 
                         /*
@@ -3794,13 +3868,14 @@ namespace KOASampleCS
                             string[] item = line.Split('\t');
                             AddTradeList(item[0], 10, 0, 0);
 
+                            /*
                             axKHOpenAPI.SetInputValue("종목코드", item[0].Substring(0,6));
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
 
                             m_bNextDayChcek = false;
                             int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
-
+                            */
                             
                         }
                     }
@@ -3861,13 +3936,31 @@ namespace KOASampleCS
                 {
                     for (int i = 0; i < 1000; i++)
                     {
+                        if(stTradeData.sCode[i] != "")
+                        {
+                            stTradeData.nState2[i] = 50;
+                            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
+                            axKHOpenAPI.SetInputValue("틱범위", "1");
+
+                            m_bNextMinChcek = false;
+                            int nRet = axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
+
+                            while (true)
+                            {
+                                if (m_bNextMinChcek == true)
+                                    break;
+                            }
+
+                        }
+                        /*
                         axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                         axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                         axKHOpenAPI.SetInputValue("수정주가구분", "1");
 
                         m_bNextDayChcek = false;
                         int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
-                        //_scrNum++;
 
                         while(true)
                         {
@@ -3876,7 +3969,10 @@ namespace KOASampleCS
 
                             System.Threading.Thread.Sleep(2000);
                         }
+                        */
                     }
+
+                    MessageBox.Show("END");
 
                     return;
                 }
