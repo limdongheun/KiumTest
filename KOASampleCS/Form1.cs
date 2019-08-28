@@ -2109,11 +2109,18 @@ namespace KOASampleCS
 
                                 if(stTradeData.nMTime1[nCodeCount, nTimeCount] == 900)
                                 {
-                                    if(stTradeData.nHighPrice2[nCodeCount] * 1.02 < nHighPrice)
+                                    stTradeData.nState2[nCodeCount] = 0;
+
+                                    if(stTradeData.nMLowPrice1[nCodeCount, 0] < stTradeData.nClosePrice[nCodeCount] * 0.95)
                                     {
-                                        LogManager.WriteLine(stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                                        stTradeData.bUnder910[nCodeCount] = false;
                                     }
-                                    break;
+
+                                    //if (stTradeData.nHighPrice2[nCodeCount] * 1.02 < nHighPrice)
+                                    //{
+                                    //    LogManager.WriteLine(stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                                    //}
+                                    //break;
                                 }
                             }
                         }
