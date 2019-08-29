@@ -2238,7 +2238,7 @@ namespace KOASampleCS
                     stTradeData.nState[nCodeCount] = 31;
                 }
 
-                System.Threading.Thread.Sleep(500);
+                System.Threading.Thread.Sleep(300);
                 m_bNextMinChcek = true;
 
                 /*
@@ -2606,7 +2606,7 @@ namespace KOASampleCS
                             {
                                 int nSellPrice = nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
 
-                                if(nNowTime < 906 || stTradeData.nBuyPrice2[i] > 5000)
+                                if(nNowTime < 905 || stTradeData.nBuyPrice2[i] > 5000)
                                 {
                                     nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.02);
                                 }
