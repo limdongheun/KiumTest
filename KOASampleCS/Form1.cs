@@ -2810,7 +2810,7 @@ namespace KOASampleCS
                             stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
                         }
 
-                        if(stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i])
+                        if(stTradeData.nState2[i] < 11 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i])
                         {
                             int nQty = 1;
 
