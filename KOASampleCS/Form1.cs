@@ -432,6 +432,11 @@ namespace KOASampleCS
                                 stTradeData.bUnder910[nSavePoint] = true;
                             }
 
+                            if(nNowTime < 900)
+                            {
+                                stTradeData.nState2[nSavePoint] = 50;
+                            }
+
                             string sFirst = "1";
                             if(m_bFirst == true)
                             {
@@ -2436,14 +2441,14 @@ namespace KOASampleCS
                     if (sAddTradeVol == "")
                         sAddTradeVol = "0";
 
-                    if (sNowPrice != "")
+                    int nHour = Convert.ToInt32(System.DateTime.Now.ToString("HH"));
+                    int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
+                    int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
+                    int nNowTime = nHour * 100 + nMinute;
+
+                    if (sNowPrice != "" && nNowTime >= 900)
                     {
                         stTradeData.nNowPrice[i] = Convert.ToInt32(sNowPrice);
-
-                        int nHour = Convert.ToInt32(System.DateTime.Now.ToString("HH"));
-                        int nMinute = Convert.ToInt32(System.DateTime.Now.ToString("mm"));
-                        int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
-                        int nNowTime = nHour * 100 + nMinute;
 
                         int nTimeCount = (nHour - 9) * 60 + nMinute;
 
@@ -2760,7 +2765,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("시장가매도(915) : " + stTradeData.sCode[i]);
                         }
 
-                        if (stTradeData.nState[i] == 10)
+                        if (stTradeData.nState[i] == 10 && nTimeCount > 2)
                         {
                             if (nNowTime < 1200 && stTradeData.nNowPrice[i] < stTradeData.nClosePrice[i] + (stTradeData.nClosePrice[i] * 0.25))
                             {
