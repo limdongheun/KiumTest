@@ -51,6 +51,7 @@ namespace KOASampleCS
             public int[] nPivot;            //피봇2차저항
             public int[] nPivotBuyPrice;            //피봇2차저항 돌파 매수금액
             public int[] nCheckTime;            //피봇돌파 후 체크 시간
+            public int[] nAddTime;            //검색 시간
 
             public bool[] bUnder910;           //리스트추가 시간(910 이전)
             public int[] nState2;               //상태
@@ -70,6 +71,7 @@ namespace KOASampleCS
             public int[] nMCount1;           //현재 저장 카운트
             public int[] nMHighCount1;      //현재 최고 시간
             public int[] nNowStartPrice;      //현재 시작가
+            public int[] nNowStartPrice1;      //1분전 시작가
             public int[] nNowTime;      //현재 시간
 
             public bool[] bHighPriceCheck;      //고가 체크
@@ -189,6 +191,7 @@ namespace KOASampleCS
             stTradeData.nPivot = new int[1000];
             stTradeData.nPivotBuyPrice = new int[1000];
             stTradeData.nCheckTime = new int[1000];
+            stTradeData.nAddTime = new int[1000];
 
             stTradeData.bUnder910 = new bool[1000];
             stTradeData.nState2 = new int[1000];
@@ -203,6 +206,7 @@ namespace KOASampleCS
             stTradeData.nHighPrice2 = new int[1000];
             stTradeData.nMHighCount1 = new int[1000];
             stTradeData.nNowStartPrice = new int[1000];
+            stTradeData.nNowStartPrice1 = new int[1000];
             stTradeData.nNowTime = new int[1000];
 
             stTradeData.nMStartPrice1 = new int[1000, 500];
@@ -266,6 +270,7 @@ namespace KOASampleCS
                 stTradeData.nPivot[i] = 0;
                 stTradeData.nPivotBuyPrice[i] = 0;
                 stTradeData.nCheckTime[i] = 0;
+                stTradeData.nAddTime[i] = 0;
 
                 stTradeData.bUnder910[i] = false;
                 stTradeData.nState2[i] = 0;
@@ -280,6 +285,7 @@ namespace KOASampleCS
                 stTradeData.nHighPrice2[i] = 0;
                 stTradeData.nMHighCount1[i] = 0;
                 stTradeData.nNowStartPrice[i] = 0;
+                stTradeData.nNowStartPrice1[i] = 0;
                 stTradeData.nNowTime[i] = 0;
 
                 stTradeData.bHighPriceCheck[i] = false;
@@ -433,7 +439,9 @@ namespace KOASampleCS
                             int nSecond = Convert.ToInt32(System.DateTime.Now.ToString("ss"));
                             int nNowTime = nHour * 100 + nMinute;
 
-                            if(nNowTime < 911)
+                            stTradeData.nAddTime[nSavePoint] = nNowTime;
+
+                            if (nNowTime < 911)
                             {
                                 stTradeData.bUnder910[nSavePoint] = true;
                             }
@@ -2807,12 +2815,13 @@ namespace KOASampleCS
                         if(stTradeData.nNowTime[i] != nNowTime)
                         {
                             stTradeData.nNowTime[i] = nNowTime;
+                            stTradeData.nNowStartPrice1[i] = stTradeData.nNowStartPrice[i];
                             stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
                         }
 
-                        if(stTradeData.nState2[i] < 11 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
+                        if(stTradeData.nAddTime[i] + 10 < nNowTime && stTradeData.nState2[i] < 11 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]))
                         {
-                            stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
+                            stTradeData.nState2[i] = 11;
 
                             int nQty = 1;
 
@@ -2832,6 +2841,16 @@ namespace KOASampleCS
                                 stTradeData.nOrderQty2[i] = nQty;
                                 stTradeData.nBuyQty2[i] = 0;
                                 stTradeData.nBuyTime2[i] = nNowTime;
+                                stTradeData.nBuyPrice2[i] = stTradeData.nNowPrice[i];
+                            }
+                        }
+                        else if (stTradeData.nState2[i] == 11)
+                        {
+                            if(stTradeData.nBuyPrice2[i] * 1.015 < stTradeData.nNowPrice[i])
+                            {
+                                stTradeData.nState2[i] = 0;
+                                stTradeData.nAddTime[i] = nNowTime + 20;
+                                LogManager.WriteLine("급상승 후 매도 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                             }
                         }
                         else if (stTradeData.nState2[i] == 12)
@@ -3136,7 +3155,7 @@ namespace KOASampleCS
                             stTradeData.nMStartPrice[i, 0] = 0;
                         }
 
-                        if (stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true && nNowTime > 902)
+                        if (stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true && nNowTime > 901)
                         {
                             if(nNowTime < 904)
                             {
