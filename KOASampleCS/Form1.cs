@@ -2660,12 +2660,12 @@ namespace KOASampleCS
 
                                 if(nNowTime < 905 || stTradeData.nBuyPrice2[i] > 5000)
                                 {
-                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.02);
+                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.015);
                                 }
 
-                                if(stTradeData.nBuyTime2[i] == 903 && stTradeData.nMHighPrice1[i, 0] < stTradeData.nMHighPrice1[i, 1] && stTradeData.nMHighPrice1[i, 1] < stTradeData.nMHighPrice1[i, 2])
+                                if(stTradeData.nBuyTime2[i] <= 903 && stTradeData.nMHighPrice1[i, 0] < stTradeData.nMHighPrice1[i, 1] && stTradeData.nMHighPrice1[i, 1] < stTradeData.nMHighPrice1[i, 2])
                                 {
-                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.03);
+                                    nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.018);
                                 }
 
                                 if (nSellPrice >= 1000 && nSellPrice < 5000)
@@ -2832,7 +2832,7 @@ namespace KOASampleCS
 
                             int lRet = 10;
 
-                            //lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                             LogManager.WriteLine("시장가매수(급상승) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowStartPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                             
                             if (lRet == 0)
@@ -2842,6 +2842,10 @@ namespace KOASampleCS
                                 stTradeData.nBuyQty2[i] = 0;
                                 stTradeData.nBuyTime2[i] = nNowTime;
                                 stTradeData.nBuyPrice2[i] = stTradeData.nNowPrice[i];
+                            }
+                            else
+                            {
+                                stTradeData.nState2[i] = 0;
                             }
                         }
                         else if (stTradeData.nState2[i] == 11)
@@ -2871,7 +2875,7 @@ namespace KOASampleCS
                             else if (nSellPrice >= 100000 && nSellPrice < 500000)
                                 nSellPrice = nSellPrice - (nSellPrice % 500);
 
-                            //lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "00", nSellPrice, "");
+                            lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "00", nSellPrice, "");
                             LogManager.WriteLine("급상승매도(1%) : " + stTradeData.sCode[i] + "\t" + nSellPrice.ToString());
 
                             //SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "03", 0, "");
