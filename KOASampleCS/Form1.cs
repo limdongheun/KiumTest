@@ -2842,6 +2842,7 @@ namespace KOASampleCS
                                 stTradeData.nBuyQty2[i] = 0;
                                 stTradeData.nBuyTime2[i] = nNowTime;
                                 stTradeData.nBuyPrice2[i] = stTradeData.nNowPrice[i];
+                                stTradeData.nAddTime[i] = nNowTime + 20;
                             }
                             else
                             {
