@@ -2125,7 +2125,15 @@ namespace KOASampleCS
                         {
                             if(Convert.ToInt32(sStartPrice) * 1.03 < Convert.ToInt32(sEndPrice) && Convert.ToInt32(sNowTime) > 1530)
                             {
-                                LogManager.WriteLine(stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount] + "\t" + sHour + sMinute);
+                                LogManager.WriteLine("3%이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount] + "\t" + sHour + sMinute);
+                            }
+                            else if (Convert.ToInt32(sStartPrice) * 1.02 < Convert.ToInt32(sEndPrice) && Convert.ToInt32(sNowTime) > 1530)
+                            {
+                                LogManager.WriteLine("2%이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount] + "\t" + sHour + sMinute);
+                            }
+                            else if (Convert.ToInt32(sStartPrice) * 1.015 < Convert.ToInt32(sEndPrice) && Convert.ToInt32(sNowTime) > 1530)
+                            {
+                                LogManager.WriteLine("1.5%이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount] + "\t" + sHour + sMinute);
                             }
 
                             if (sCheckDay == sDay && nTimeCount < 60)
@@ -2817,14 +2825,9 @@ namespace KOASampleCS
                             stTradeData.nNowTime[i] = nNowTime;
                             stTradeData.nNowStartPrice1[i] = stTradeData.nNowStartPrice[i];
                             stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
-
-                            if(stTradeData.nNowStartPrice1[i] == 0)
-                            {
-                                stTradeData.nNowStartPrice1[i] = stTradeData.nNowStartPrice[i];
-                            }
                         }
 
-                        if((stTradeData.nAddTime[i] + 10 < nNowTime || nNowTime < 906) && stTradeData.nState2[i] < 11 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]))
+                        if((stTradeData.nAddTime[i] + 10 < nNowTime || nNowTime < 906) && stTradeData.nState2[i] < 11 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 11;
 
@@ -2872,7 +2875,7 @@ namespace KOASampleCS
 
                             if(nNowTime > 1100)
                             {
-                                nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.08);
+                                nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.008);
                             }
 
                             if (nSellPrice >= 1000 && nSellPrice < 5000)
@@ -4119,13 +4122,19 @@ namespace KOASampleCS
         {
             try
             {
+                int nNowTime = Convert.ToInt32(System.DateTime.Now.ToString("HHmm"));
+
                 while (true)
                 {
                     for (int i = 0; i < 1000; i++)
                     {
                         if(stTradeData.sCode[i] != "")
                         {
-                            stTradeData.nState2[i] = 50;
+                            if(nNowTime > 1530)
+                            {
+                                stTradeData.nState2[i] = 50;
+                            }
+                            
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
