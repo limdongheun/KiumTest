@@ -2894,7 +2894,7 @@ namespace KOASampleCS
                                 stTradeData.nState2[i] = 13;
                             }
                         }
-                        else if (stTradeData.nState2[i] == 13 && stTradeData.nBuyTime2[i]+10 < nNowTime && stTradeData.nBuyPrice2[i] * 0.985 > stTradeData.nNowStartPrice[i])
+                        else if (stTradeData.nState2[i] == 13 && stTradeData.nBuyTime2[i]+10 < nNowTime && nNowTime > 1000 && stTradeData.nBuyPrice2[i] * 0.985 > stTradeData.nNowStartPrice[i])
                         {
                             LogManager.WriteLine("매도취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
