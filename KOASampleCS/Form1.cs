@@ -3194,7 +3194,7 @@ namespace KOASampleCS
                                 axKHOpenAPI.CommRqData("주식분봉차트조회", "OPT10080", 0, GetScrNum());
                                 LogManager.WriteLine("주식분봉차트조회(1분봉) : " + stTradeData.sCode[i]);
                             }
-                            else
+                            else if(nNowTime < 1530)
                             {
                                 stTradeData.nState[i] = 1;
 
