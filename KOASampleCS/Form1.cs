@@ -2830,7 +2830,7 @@ namespace KOASampleCS
                             stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
                         }
 
-                        if((stTradeData.nAddTime[i] + 10 < nNowTime || nNowTime < 906) && stTradeData.nState2[i] == 0 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
+                        if((stTradeData.nAddTime[i] + 10 < nNowTime || nNowTime < 906) && nNowTime < 1200 && stTradeData.nState2[i] == 0 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 11;
 
@@ -2865,7 +2865,7 @@ namespace KOASampleCS
                             stTradeData.nState2[i] = 13;
                             int lRet = 10;
 
-                            int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.015);
+                            int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.018);
 
                             if(nNowTime > 1100)
                             {
