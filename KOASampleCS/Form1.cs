@@ -2675,7 +2675,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if(stTradeData.nState2[i] == 0 && nNowTime > 1100 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.01 < stTradeData.nNowPrice[i])
+                        if(stTradeData.nState2[i] == 0 && nNowTime > 1100 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.01 < stTradeData.nNowPrice[i] && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i])
                         {
                             int nQty = 1;
 
@@ -2722,7 +2722,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (stTradeData.bUnder910[i] == true)
+                        if (stTradeData.bUnder910[i] == true && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i])
                         {
                             if(nNowTime > 909)
                             {
