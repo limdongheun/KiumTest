@@ -501,6 +501,21 @@ namespace KOASampleCS
                             LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nBuyPrice2[i].ToString());
                         }
 
+                        if (nNowTime > 1030 && stTradeData.nState2[i] == 1 && nState == 3)
+                        {
+                            stTradeData.nState2[i] = 2;
+                            stTradeData.nBuyQty2[i] += nBuyQty;
+                            stTradeData.nBuyPrice2[i] = nBuyPrice;
+                            stTradeData.nBuyTime2[i] = nNowTime;
+
+                            if (stTradeData.nBuyQty2[i] > stTradeData.nOrderQty2[i])
+                            {
+                                stTradeData.nBuyQty2[i] = stTradeData.nOrderQty2[i];
+                            }
+
+                            LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nBuyPrice2[i].ToString());
+                        }
+
                         if (stTradeData.nState2[i] == 11 && nState == 3)
                         {
                             stTradeData.nState2[i] = 12;
@@ -555,6 +570,40 @@ namespace KOASampleCS
                     else if (nState > 3)
                     {
                         if (stTradeData.bUnder910[i] == true && stTradeData.nState2[i] == 3 && nState == 6)
+                        {
+                            stTradeData.nSellQty2[i] += nSellQty;
+                            stTradeData.nSellPrice2[i] = nSellPrice;
+                            stTradeData.bUnder910[i] = false;
+
+                            LogManager.WriteLine("매도완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nSellQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nSellPrice2[i].ToString());
+
+                            stTradeData.nState2[i] = 6;
+
+                            stTradeData.nBuyQty2[i] = 0;
+                            stTradeData.nBuyPrice2[i] = 0;
+                            stTradeData.nBuyTime2[i] = 0;
+                            stTradeData.nSellQty2[i] = 0;
+                            stTradeData.nSellPrice2[i] = 0;
+                            stTradeData.nSellTime2[i] = 0;
+
+                            stTradeData.nMStartPrice1[i, 0] = stTradeData.nMStartPrice1[i, stTradeData.nMCount1[i]];
+                            stTradeData.nMEndPrice1[i, 0] = stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]];
+                            stTradeData.nMHighPrice1[i, 0] = stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]];
+                            stTradeData.nMLowPrice1[i, 0] = stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]];
+                            stTradeData.nMTime1[i, 0] = stTradeData.nMTime1[i, stTradeData.nMCount1[i]];
+                            stTradeData.nMCount1[i] = 0;
+
+                            for (int j = 1; j < 500; j++)
+                            {
+                                stTradeData.nMStartPrice1[i, j] = 0;
+                                stTradeData.nMEndPrice1[i, j] = 0;
+                                stTradeData.nMHighPrice1[i, j] = 0;
+                                stTradeData.nMLowPrice1[i, j] = 0;
+                                stTradeData.nMTime1[i, j] = 0;
+                            }
+                        }
+
+                        if (nNowTime > 1030 && stTradeData.nState2[i] == 3 && nState == 6)
                         {
                             stTradeData.nSellQty2[i] += nSellQty;
                             stTradeData.nSellPrice2[i] = nSellPrice;
@@ -2477,6 +2526,11 @@ namespace KOASampleCS
 
         private void axKHOpenAPI_OnReceiveRealData(object sender, AxKHOpenAPILib._DKHOpenAPIEvents_OnReceiveRealDataEvent e)
         {
+            if(Convert.ToInt32(System.DateTime.Now.ToString("HHmm")) > 1530)
+            {
+                return;
+            }
+
             for (int i = 0; i < 1000; i++)
             {
                 if (stTradeData.sCode[i] == e.sRealKey)
