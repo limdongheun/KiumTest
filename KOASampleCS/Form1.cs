@@ -2818,119 +2818,9 @@ namespace KOASampleCS
                                     stTradeData.nState2[i] = 3;
                                 }
                             }
-                            /*
-                            else
-                            {
-                                if(stTradeData.nState2[i] == 2 && stTradeData.nMTime1[i, stTradeData.nMCount1[i]] < nNowTime)
-                                {
-                                    if(stTradeData.nSellTime2[i] == nNowTime)
-                                    {
-                                        int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty2[i], 2, "03", 0, "");
-                                        LogManager.WriteLine("시장가매도(910) : " + stTradeData.sCode[i]);
-
-                                        if (lRet == 0)
-                                        {
-                                            stTradeData.nState2[i] = 3;
-                                        }
-                                    }
-                                    else
-                                    {
-                                        int nPrice = 0;
-
-                                        if (stTradeData.nNowPrice[i] < 1000)
-                                            nPrice = 1;
-                                        else if (stTradeData.nNowPrice[i] >= 1000 && stTradeData.nNowPrice[i] < 5000)
-                                            nPrice = 5;
-                                        else if (stTradeData.nNowPrice[i] >= 5000 && stTradeData.nNowPrice[i] < 10000)
-                                            nPrice = 10;
-                                        else if (stTradeData.nNowPrice[i] >= 10000 && stTradeData.nNowPrice[i] < 50000)
-                                            nPrice = 50;
-                                        else if (stTradeData.nNowPrice[i] >= 50000 && stTradeData.nNowPrice[i] < 100000)
-                                            nPrice = 100;
-                                        else if (stTradeData.nNowPrice[i] >= 100000 && stTradeData.nNowPrice[i] < 500000)
-                                            nPrice = 500;
-
-                                        bool bSellTarade = false;
-
-                                        if (stTradeData.nMCount1[i] == 0 && stTradeData.nMStartPrice1[i, 0] > stTradeData.nMEndPrice1[i, 0])
-                                        {
-                                            bSellTarade = true;
-                                        }
-                                        else if (stTradeData.nMHighCount1[i] == stTradeData.nMCount1[i] && stTradeData.nMStartPrice1[i, stTradeData.nMHighCount1[i]] > stTradeData.nMEndPrice1[i, stTradeData.nMHighCount1[i]])
-                                        {
-                                            bSellTarade = true;
-                                        }
-                                        else if (stTradeData.nMHighCount1[i] == stTradeData.nMCount1[i] - 1 && stTradeData.nMStartPrice1[i, stTradeData.nMCount1[i]] > stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]])
-                                        {
-                                            bSellTarade = true;
-                                        }
-                                        else if (stTradeData.nMCount1[i] > 1 && stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 2] - nPrice <= stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 1] && stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 2] + nPrice >= stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 1] && stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 1] - nPrice <= stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] && stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i] - 1] + nPrice >= stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]])
-                                        {
-                                            bSellTarade = true;
-                                        }
-
-                                        if (bSellTarade == true)
-                                        {
-                                            int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nBuyQty2[i], 2, "03", 0, "");
-                                            LogManager.WriteLine("시장가매도(910) : " + stTradeData.sCode[i]);
-
-                                            if (lRet == 0)
-                                            {
-                                                stTradeData.nState2[i] = 3;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                if(stTradeData.nState2[i] == 2 && stTradeData.nBuyPrice2[i] + stTradeData.nBuyPrice2[i] * 0.02 < stTradeData.nNowPrice[i])
-                                {
-                                    stTradeData.nSellTime2[i] = nNowTime + 2;
-
-                                    if (stTradeData.nSellTime2[i] % 100 >= 60)
-                                    {
-                                        stTradeData.nSellTime2[i] = stTradeData.nSellTime2[i] + 40;
-                                    }
-                                }
-
-                                if (stTradeData.nMTime1[i, stTradeData.nMCount1[i]] < nNowTime)
-                                {
-                                    if(stTradeData.nMCount1[i] > 0 && stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i-1]] < stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]])
-                                    {
-                                        stTradeData.nMHighCount1[i] = stTradeData.nMCount1[i];
-                                    }
-
-                                    stTradeData.nMCount1[i]++;
-                                    stTradeData.nMTime1[i, stTradeData.nMCount1[i]] = nNowTime;
-                                    stTradeData.nMStartPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                }
-                                else
-                                {
-                                    stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-
-                                    if (stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] < stTradeData.nNowPrice[i])
-                                    {
-                                        stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    }
-
-                                    if (stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] > stTradeData.nNowPrice[i])
-                                    {
-                                        stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    }
-                                }
-                            }
-
-
-                            if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
-                            {
-                                stTradeData.nHighPrice2[i] = stTradeData.nNowPrice[i];
-                            }
-                            */
                         }
 
-                        if (stTradeData.nState2[i] == 3 && nNowTime > 910)
+                        if (stTradeData.nState2[i] == 3 && nNowTime > 910 && nNowTime < 1100)
                         {
                             LogManager.WriteLine("매도취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
@@ -2950,7 +2840,7 @@ namespace KOASampleCS
                             stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
                         }
 
-                        if((stTradeData.nAddTime[i] + 10 < nNowTime || nNowTime < 906) && nNowTime < 910 && stTradeData.nState2[i] == 0 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.02 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
+                        if(nNowTime < 906 && stTradeData.nState2[i] == 0 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.018 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 11;
 
@@ -3014,7 +2904,7 @@ namespace KOASampleCS
                                 stTradeData.nState2[i] = 13;
                             }
                         }
-                        else if (stTradeData.nState2[i] == 13 && ((stTradeData.nBuyPrice2[i] * 0.97 > stTradeData.nNowPrice[i] && nNowTime > 919) || nNowTime > 930) && stTradeData.nBuyPrice2[i] * 0.985 > stTradeData.nNowStartPrice[i])
+                        else if (stTradeData.nState2[i] == 13 && ((stTradeData.nBuyPrice2[i] * 0.97 > stTradeData.nNowPrice[i] && nNowTime > 919) || (stTradeData.nBuyPrice2[i] * 0.985 > stTradeData.nNowPrice[i] && nNowTime > 930)) && stTradeData.nBuyPrice2[i] * 0.985 > stTradeData.nNowStartPrice[i])
                         {
                             LogManager.WriteLine("매도취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
 
