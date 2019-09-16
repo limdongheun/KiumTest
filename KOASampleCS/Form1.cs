@@ -2722,13 +2722,13 @@ namespace KOASampleCS
                             }
                         }
 
+                        if (stTradeData.bUnder910[i] == true && nNowTime > 909)
+                        {
+                            stTradeData.bUnder910[i] = false;
+                        }
+
                         if (stTradeData.bUnder910[i] == true && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 50000)
                         {
-                            if(nNowTime > 909)
-                            {
-                                stTradeData.bUnder910[i] = false;
-                            }
-
                             if(stTradeData.nState2[i] == 0)
                             {
                                 if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < (int)(stTradeData.nClosePrice[i] * 1.12))
