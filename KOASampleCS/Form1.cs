@@ -2134,6 +2134,7 @@ namespace KOASampleCS
                     string sCheckDay = System.DateTime.Now.ToString("dd");
                     string sNowTime = System.DateTime.Now.ToString("HHmm");
                     int nHighPrice = 0;
+                    int nHighPrice2 = 0;
                     int nNowPrice = 0;
                     int nBuyPrice = 0;
 
@@ -2216,8 +2217,13 @@ namespace KOASampleCS
                                         stTradeData.nHighPrice2[nCodeCount] = stTradeData.nMHighPrice1[nCodeCount, nTimeCount];
                                     }
                                 }
-                                else if (nTimeCount < 30 && nTimeCount > 4)
+                                else if (nTimeCount < 60 && nTimeCount > 4)
                                 {
+                                    if(nTimeCount < 10 && nTimeCount > 4 && nHighPrice2 < stTradeData.nMHighPrice1[nCodeCount, nTimeCount])
+                                    {
+                                        nHighPrice2 = stTradeData.nMHighPrice1[nCodeCount, nTimeCount];
+                                    }
+
                                     if (nHighPrice < stTradeData.nMHighPrice1[nCodeCount, nTimeCount])
                                     {
                                         nHighPrice = stTradeData.nMHighPrice1[nCodeCount, nTimeCount];
@@ -2236,13 +2242,17 @@ namespace KOASampleCS
                                         stTradeData.bUnder910[nCodeCount] = false;
                                     }
 
-                                    if (stTradeData.nHighPrice2[nCodeCount] * 1.02 < nHighPrice && Convert.ToInt32(sNowTime) > 1530)
+                                    if (stTradeData.nClosePrice[nCodeCount] < stTradeData.nHighPrice2[nCodeCount] && stTradeData.nHighPrice2[nCodeCount] < nHighPrice2 && stTradeData.nHighPrice2[nCodeCount] * 1.02 < nHighPrice && Convert.ToInt32(sNowTime) > 1530)
                                     {
                                         LogManager.WriteLine("초반상승(2%이상) : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
                                     }
-                                    else if(stTradeData.nHighPrice2[nCodeCount] < nHighPrice && Convert.ToInt32(sNowTime) > 1530)
+                                    else if (stTradeData.nClosePrice[nCodeCount] < stTradeData.nHighPrice2[nCodeCount] && stTradeData.nHighPrice2[nCodeCount] < nHighPrice2 && stTradeData.nHighPrice2[nCodeCount] * 1.01 < nHighPrice && Convert.ToInt32(sNowTime) > 1530)
                                     {
-                                        LogManager.WriteLine("초반상승(2%아래) : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                                        LogManager.WriteLine("초반상승(1%이상) : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                                    }
+                                    else if(stTradeData.nClosePrice[nCodeCount] < stTradeData.nHighPrice2[nCodeCount] && stTradeData.nHighPrice2[nCodeCount] < nHighPrice2 && stTradeData.nHighPrice2[nCodeCount] < nHighPrice && Convert.ToInt32(sNowTime) > 1530)
+                                    {
+                                        LogManager.WriteLine("초반상승(1%이하) : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
                                     }
                                     break;
                                 }
@@ -2729,16 +2739,22 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (stTradeData.bUnder910[i] == true && nNowTime > 929)
+                        if(nNowTime < 905 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nMHighPrice[i, 450] = stTradeData.nNowPrice[i];
+                        }
+
+                        if (stTradeData.bUnder910[i] == true && nNowTime > 910)
                         {
                             stTradeData.bUnder910[i] = false;
                         }
 
-                        if (stTradeData.bUnder910[i] == true && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 50000)
+                        if (nNowTime > 904 && stTradeData.bUnder910[i] == true && stTradeData.nMHighPrice[i, 450] > stTradeData.nClosePrice[i])
                         {
                             if(stTradeData.nState2[i] == 0)
                             {
-                                if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < (int)(stTradeData.nClosePrice[i] * 1.12) && stTradeData.nOrderQty2[i] == 0)
+                                //if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < (int)(stTradeData.nClosePrice[i] * 1.12) && stTradeData.nOrderQty2[i] == 0)
+                                if(stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                                 {
                                     int nQty = 1;
 
@@ -2762,31 +2778,6 @@ namespace KOASampleCS
                                         stTradeData.nBuyTime2[i] = nNowTime;
                                     }
                                 }
-
-                                /*
-                                if (stTradeData.nMTime1[i, stTradeData.nMCount1[i]] < nNowTime)
-                                {
-                                    stTradeData.nMTime1[i, stTradeData.nMCount1[i]] = nNowTime;
-                                    stTradeData.nMStartPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                }
-                                else
-                                {
-                                    stTradeData.nMEndPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-
-                                    if (stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] < stTradeData.nNowPrice[i])
-                                    {
-                                        stTradeData.nMHighPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    }
-
-                                    if (stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] > stTradeData.nNowPrice[i])
-                                    {
-                                        stTradeData.nMLowPrice1[i, stTradeData.nMCount1[i]] = stTradeData.nNowPrice[i];
-                                    }
-                                }
-                                */
                             }
                             else if(stTradeData.nState2[i] == 2)
                             {
@@ -2844,8 +2835,8 @@ namespace KOASampleCS
                         if(stTradeData.nNowTime[i] != nNowTime)
                         {
                             stTradeData.nNowTime[i] = nNowTime;
-                            stTradeData.nNowStartPrice1[i] = stTradeData.nNowStartPrice[i];
-                            stTradeData.nNowStartPrice[i] = stTradeData.nNowPrice[i];
+                            stTradeData.nNowStartPrice1[i] = 0;// stTradeData.nNowStartPrice[i];
+                            stTradeData.nNowStartPrice[i] = 0;// stTradeData.nNowPrice[i];
                         }
 
                         if (nNowTime < 906 && stTradeData.nState2[i] == 0 && stTradeData.nNowStartPrice[i] > 0 && stTradeData.nNowStartPrice1[i] > 0 && (stTradeData.nNowStartPrice[i] * 1.018 < stTradeData.nNowPrice[i] || stTradeData.nNowStartPrice1[i] * 1.02 < stTradeData.nNowPrice[i]) && stTradeData.nClosePrice[i] * 1.2 > stTradeData.nNowPrice[i])
