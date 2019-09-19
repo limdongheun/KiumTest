@@ -2326,7 +2326,7 @@ namespace KOASampleCS
                                     break;
                                 }
 
-                                if (stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && nCodeCount > 5)
+                                if (nTimeCount <= 26 && nTimeCount >= 20 && stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && nCodeCount > 5)
                                 {
                                     int nPrice = 0;
 
@@ -2711,7 +2711,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if(stTradeData.nState2[i] == 0 && nNowTime > 1029 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.005 < stTradeData.nNowPrice[i] && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 300000)
+                        if(stTradeData.nState2[i] == 0 && nNowTime > 1029 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.006 < stTradeData.nNowPrice[i] && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 300000)
                         {
                             stTradeData.nState2[i] = 1;
 
