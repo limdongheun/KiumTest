@@ -2711,7 +2711,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if(stTradeData.nState2[i] == 0 && nNowTime > 1029 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.006 < stTradeData.nNowPrice[i] && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 300000)
+                        if(stTradeData.nState2[i] == 0 && nNowTime > 1029 && stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] * 1.007 < stTradeData.nNowPrice[i] && stTradeData.nNowPrice[i] > stTradeData.nClosePrice[i] && Convert.ToInt32(sAddTradeVol) > 300000)
                         {
                             stTradeData.nState2[i] = 1;
 
@@ -2753,7 +2753,7 @@ namespace KOASampleCS
 
                             //int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "07", 0, "");
                             int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "00", nSellPrice, "");
-                            LogManager.WriteLine("11시이후급상승매도(1.5) : " + stTradeData.sCode[i] + "\t" + nSellPrice.ToString());
+                            LogManager.WriteLine("11시이후급상승매도(1%) : " + stTradeData.sCode[i] + "\t" + nSellPrice.ToString());
 
                             if (lRet == 0)
                             {
