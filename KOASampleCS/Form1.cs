@@ -502,7 +502,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nBuyPrice2[i].ToString());
                         }
 
-                        if (nNowTime > 1030 && stTradeData.nState2[i] == 1 && nState == 3)
+                        if (nNowTime >= 1000 && stTradeData.nState2[i] == 1 && nState == 3)
                         {
                             stTradeData.nState2[i] = 2;
                             stTradeData.nBuyQty2[i] += nBuyQty;
@@ -2822,6 +2822,8 @@ namespace KOASampleCS
                                 //if (stTradeData.nHighPrice2[i] > 0 && stTradeData.nHighPrice2[i] <= stTradeData.nNowPrice[i] && stTradeData.nHighPrice2[i] < (int)(stTradeData.nClosePrice[i] * 1.12) && stTradeData.nOrderQty2[i] == 0)
                                 if(stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                                 {
+                                    stTradeData.nState2[i] = 1;
+
                                     int nQty = 1;
 
                                     if (stTradeData.nNowPrice[i] > 0)
