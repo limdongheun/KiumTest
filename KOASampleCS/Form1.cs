@@ -2780,7 +2780,7 @@ namespace KOASampleCS
                                 stTradeData.nBuyTime2[i] = nNowTime;
                             }
                         }
-                        else if (stTradeData.nState2[i] == 2)
+                        else if (stTradeData.nState2[i] == 2 && stTradeData.bUnder910[i] == false)
                         {
                             int nSellPrice = nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.01);
 
