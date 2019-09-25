@@ -2166,6 +2166,8 @@ namespace KOASampleCS
                     int nHighPrice2 = 0;
                     int nNowPrice = 0;
                     int nBuyPrice = 0;
+                    bool bUnderPivot = false;
+                    bool bOverPivot = false;
 
                     for (int i = 0; i < nCnt; i++)
                     {
@@ -2326,6 +2328,21 @@ namespace KOASampleCS
                             stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
                             //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
 
+                            if(bOverPivot == false && stTradeData.nMHighPrice[nCodeCount, nTimeCount] < stTradeData.nPivot[nCodeCount])
+                            {
+                                bUnderPivot = true;
+                            }
+
+                            if (bUnderPivot == true && stTradeData.nMHighPrice[nCodeCount, nTimeCount] > stTradeData.nPivot[nCodeCount])
+                            {
+                                bOverPivot = true;
+                            }
+
+                            if (bUnderPivot == false && bOverPivot == false && stTradeData.nMHighPrice[nCodeCount, nTimeCount] > stTradeData.nPivot[nCodeCount])
+                            {
+                                bOverPivot = true;
+                            }
+
                             //if (stTradeData.bUnder910[nCodeCount] == true)
                             {
                                 if (stTradeData.nMStartPrice[nCodeCount, nTimeCount] < stTradeData.nClosePrice[nCodeCount] * 0.97)
@@ -2391,8 +2408,19 @@ namespace KOASampleCS
                         */
                     }
 
+                    if (bUnderPivot == true && bOverPivot == true)
+                    {
+                        stTradeData.nState2[nCodeCount] = 41;
+                    }
+                    else if (bUnderPivot == false && bOverPivot == true)
+                    {
+                        stTradeData.nState2[nCodeCount] = 40;
+                    }
+
                     stTradeData.nState[nCodeCount] = 31;
                 }
+
+                
 
                 System.Threading.Thread.Sleep(500);
                 m_bNextMinChcek = true;
@@ -3677,6 +3705,7 @@ namespace KOASampleCS
                                 stTradeData.nState2[i] = 50;
                             }
                             
+                            /*
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
@@ -3690,13 +3719,14 @@ namespace KOASampleCS
                                 if (m_bNextMinChcek == true)
                                     break;
                             }
+                            */
 
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
                             axKHOpenAPI.SetInputValue("수정주가구분", "1");
 
                             m_bNextDayChcek = false;
-                            nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+                            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
 
                             while (true)
                             {
