@@ -404,6 +404,7 @@ namespace KOASampleCS
                             if (stTradeData.sCode[j] == codes[i])
                             {
                                 bSave = false;
+                                LogManager.WriteLine("종목(중복) :\t" + stTradeData.sCode[nSavePoint] + "\t" + stTradeData.sName[nSavePoint]);
                                 break;
                             }
                         }
@@ -2656,10 +2657,12 @@ namespace KOASampleCS
                             if(nTimeCount > 0 && stTradeData.nState2[i] == 0 && stTradeData.nPivot[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount-1] > stTradeData.nPivot[i])
                             {
                                 stTradeData.nState2[i] = 40;
+                                LogManager.WriteLine("피봇2차저항 1차돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
                             }
                             else if (nTimeCount > 0 && stTradeData.nState2[i] == 40 && stTradeData.nPivot[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount - 1] < stTradeData.nPivot[i])
                             {
                                 stTradeData.nState2[i] = 41;
+                                LogManager.WriteLine("피봇2차저항 돌파후하락 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
                             }
                             else if (nTimeCount > 0 && stTradeData.nState2[i] == 41 && stTradeData.nPivot[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount - 1] > stTradeData.nPivot[i])
                             {
@@ -2979,7 +2982,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if(stTradeData.nState2[i] == 42 && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
+                        if(stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot[i])
                         {
                             stTradeData.nState2[i] = 43;
 
@@ -2987,7 +2990,32 @@ namespace KOASampleCS
 
                             if (stTradeData.nNowPrice[i] > 0)
                             {
-                                nQty = 200000 / stTradeData.nNowPrice[i];
+                                nQty = 150000 / stTradeData.nNowPrice[i];
+                            }
+
+                            int lRet = 10;
+
+                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                            LogManager.WriteLine("피봇2차저항 돌파(시초) : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+
+                            if (lRet == 0)
+                            {
+                                lRet = 10;
+                                stTradeData.nState2[i] = 43;
+                                stTradeData.nOrderQty2[i] = nQty;
+                                stTradeData.nBuyQty2[i] = 0;
+                                stTradeData.nBuyTime2[i] = nNowTime;
+                            }
+                        }
+                        else if(stTradeData.nState2[i] == 42 && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nState2[i] = 43;
+
+                            int nQty = 1;
+
+                            if (stTradeData.nNowPrice[i] > 0)
+                            {
+                                nQty = 150000 / stTradeData.nNowPrice[i];
                             }
 
                             int lRet = 10;
@@ -3021,7 +3049,7 @@ namespace KOASampleCS
                             else if (nSellPrice >= 100000 && nSellPrice < 500000)
                                 nSellPrice = nSellPrice - (nSellPrice % 500);
 
-                            int nQty = stTradeData.nBuyQty2[i] / 2;
+                            int nQty = stTradeData.nOrderQty2[i] / 2;
 
                             int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
                             LogManager.WriteLine("피봇2차저항 돌파매도(1%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
@@ -3030,10 +3058,10 @@ namespace KOASampleCS
                         {
                             stTradeData.nState2[i] = 47;
 
-                            int nQty = stTradeData.nBuyQty2[i] - (stTradeData.nBuyQty2[i] / 2);
+                            int nQty = stTradeData.nOrderQty2[i] - (stTradeData.nOrderQty2[i] / 2);
 
                             int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
-                            LogManager.WriteLine("피봇2차저항 돌파매도(3%) : " + stTradeData.sCode[i] + "\t" + stTradeData.nNowPrice.ToString());
+                            LogManager.WriteLine("피봇2차저항 돌파매도(3%) : " + stTradeData.sCode[i] + "\t" + stTradeData.nNowPrice[i].ToString());
 
                             if (lRet == 0)
                             {
@@ -3044,8 +3072,10 @@ namespace KOASampleCS
                         {
                             stTradeData.nState2[i] = 47;
 
-                            int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty2[i], 2, "03", 0, "");
-                            LogManager.WriteLine("피봇2차저항 하락매도(시장가) : " + stTradeData.sCode[i] + "\t" + stTradeData.nNowPrice.ToString());
+                            int nQty = stTradeData.nOrderQty2[i] - (stTradeData.nOrderQty2[i] / 2);
+
+                            int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "03", 0, "");
+                            LogManager.WriteLine("피봇2차저항 하락매도(시장가) : " + stTradeData.sCode[i] + "\t" + stTradeData.nNowPrice[i].ToString());
 
                             if (lRet == 0)
                             {
