@@ -3026,7 +3026,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime < 920 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] < stTradeData.nPivot2[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime < 920 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] < stTradeData.nPivot2[i])
                         {
                             stTradeData.nState2[i] = 31;
 
@@ -3102,7 +3102,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot2[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot2[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot2[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot2[i])
                         {
                             stTradeData.nState2[i] = 43;
 
