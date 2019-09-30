@@ -2018,6 +2018,10 @@ namespace KOASampleCS
                     {
                         LogManager.WriteLine("피봇2차이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
                     }
+                    else if(Convert.ToInt32(sTodayHighPrice) > nPivot1)
+                    {
+                        LogManager.WriteLine("피봇1차이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                    }
 
                     if (Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
                     {
@@ -3771,11 +3775,50 @@ namespace KOASampleCS
                     {
                         if(stTradeData.sCode[i] != "")
                         {
-                            if(nNowTime > 1530)
+                            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
+                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
+                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
+
+                            m_bNextDayChcek = false;
+                            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
+
+                            while (true)
+                            {
+                                if (m_bNextDayChcek == true)
+                                    break;
+                            }
+                        }
+                    }
+
+                    MessageBox.Show("END");
+
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                return;
+                throw;
+            }
+        }
+
+        private void btnCheckMinChart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int nNowTime = Convert.ToInt32(System.DateTime.Now.ToString("HHmm"));
+
+                while (true)
+                {
+                    for (int i = 0; i < 1000; i++)
+                    {
+                        if (stTradeData.sCode[i] != "")
+                        {
+                            if (nNowTime > 1530)
                             {
                                 //stTradeData.nState2[i] = 50;
                             }
-                            
+
 
                             axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                             axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
@@ -3790,21 +3833,6 @@ namespace KOASampleCS
                                 if (m_bNextMinChcek == true)
                                     break;
                             }
-
-                            /*
-                            axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
-                            axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
-                            axKHOpenAPI.SetInputValue("수정주가구분", "1");
-
-                            m_bNextDayChcek = false;
-                            int nRet = axKHOpenAPI.CommRqData("주식일봉차트조회", "OPT10081", 0, GetScrNum());
-
-                            while (true)
-                            {
-                                if (m_bNextDayChcek == true)
-                                    break;
-                            }
-                            */
                         }
                     }
 

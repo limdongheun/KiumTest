@@ -94,6 +94,7 @@
             this.btnReadLog = new System.Windows.Forms.Button();
             this.btnSaveDB = new System.Windows.Forms.Button();
             this.btnCheckDayChart = new System.Windows.Forms.Button();
+            this.btnCheckMinChart = new System.Windows.Forms.Button();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axKHOpenAPI)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -707,11 +708,22 @@
             this.btnCheckDayChart.UseVisualStyleBackColor = true;
             this.btnCheckDayChart.Click += new System.EventHandler(this.btnCheckDayChart_Click);
             // 
+            // btnCheckMinChart
+            // 
+            this.btnCheckMinChart.Location = new System.Drawing.Point(275, 491);
+            this.btnCheckMinChart.Name = "btnCheckMinChart";
+            this.btnCheckMinChart.Size = new System.Drawing.Size(109, 23);
+            this.btnCheckMinChart.TabIndex = 31;
+            this.btnCheckMinChart.Text = "분봉체크";
+            this.btnCheckMinChart.UseVisualStyleBackColor = true;
+            this.btnCheckMinChart.Click += new System.EventHandler(this.btnCheckMinChart_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1445, 536);
+            this.Controls.Add(this.btnCheckMinChart);
             this.Controls.Add(this.btnCheckDayChart);
             this.Controls.Add(this.btnSaveDB);
             this.Controls.Add(this.btnReadLog);
@@ -826,6 +838,7 @@
         private System.Windows.Forms.Button btnReadLog;
         private System.Windows.Forms.Button btnSaveDB;
         private System.Windows.Forms.Button btnCheckDayChart;
+        private System.Windows.Forms.Button btnCheckMinChart;
     }
 }
 
