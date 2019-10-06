@@ -2751,6 +2751,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState2[i] = 49;
                                 stTradeData.nHighPrice2[i] = stTradeData.nMHighPrice[i, nTimeCount - 1];
+                                LogManager.WriteLine("피봇1차저항 하락 후 재돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
                             }
                             else if (nTimeCount > 0 && stTradeData.nState2[i] == 41 && stTradeData.nPivot2[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount - 1] > stTradeData.nPivot2[i])
                             {
@@ -3122,6 +3123,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("시초가 돌파매도(5.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
                         }
 
+                        /*
                         if (stTradeData.nState2[i] == 0 && nNowTime >= 930 && nNowTime < 1100 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] < stTradeData.nPivot2[i])
                         {
                             stTradeData.nState2[i] = 31;
@@ -3210,6 +3212,7 @@ namespace KOASampleCS
                                 stTradeData.nState2[i] = 35;
                             }
                         }
+                        */
 
                         if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot2[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot2[i])
                         {
@@ -3261,7 +3264,7 @@ namespace KOASampleCS
                                 stTradeData.nBuyTime2[i] = nNowTime;
                             }
                         }
-                        else if (stTradeData.nState2[i] == 49 && stTradeData.nHighPrice2[i] < stTradeData.nNowPrice[i])
+                        else if (stTradeData.nState2[i] == 49)
                         {
                             stTradeData.nState2[i] = 43;
 
