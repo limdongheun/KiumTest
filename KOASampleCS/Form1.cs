@@ -2410,6 +2410,15 @@ namespace KOASampleCS
                                         break;
                                     }
 
+                                    if(nTimeCount < 12 && stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                    {
+                                        stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
+                                    }
+                                    else if(stTradeData.nMHighPrice[i, 451] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                    {
+                                        stTradeData.nMHighPrice[i, 451] = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
+                                    }
+
                                     if (nTimeCount <= 26 && nTimeCount >= 20 && stTradeData.nHighPrice2[nCodeCount] < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && nCodeCount > 5)
                                     {
                                         int nPrice = 0;
@@ -2433,7 +2442,12 @@ namespace KOASampleCS
 
                                 if (nTimeCount == 0)
                                 {
-                                    LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
+                                    if (stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[i, 451])
+                                    {
+                                        stTradeData.nMHighPrice[i, 450] = 0;
+                                    }
+
+                                    //LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
                                     break;
                                 }
                             }
@@ -2715,7 +2729,7 @@ namespace KOASampleCS
                         {
                             stTradeData.nMHighPrice[i, 450] = 0;
                         }
-                        else if (nNowTime >= 1200 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        else if (stTradeData.nState2[i] < 47 && nNowTime >= 1200 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 50;
                         }
@@ -3078,6 +3092,7 @@ namespace KOASampleCS
                         if (stTradeData.nState2[i] == 50)
                         {
                             stTradeData.nState2[i] = 51;
+                            stTradeData.nMHighPrice[i, 450] = 0;
 
                             int nQty = 1;
 
