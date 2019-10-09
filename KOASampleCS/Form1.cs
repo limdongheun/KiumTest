@@ -656,7 +656,7 @@ namespace KOASampleCS
 
                             LogManager.WriteLine("매도완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nSellQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nSellPrice2[i].ToString());
 
-                            stTradeData.nState2[i] = 48;
+                            stTradeData.nState2[i] = 60;
 
                             stTradeData.nBuyQty2[i] = 0;
                             stTradeData.nBuyPrice2[i] = 0;
@@ -2442,6 +2442,7 @@ namespace KOASampleCS
 
                                 if (nTimeCount == 0)
                                 {
+                                    LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + "\t" + stTradeData.nMHighPrice[i, 451].ToString());
                                     if (stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[i, 451])
                                     {
                                         stTradeData.nMHighPrice[i, 450] = 0;
@@ -2729,7 +2730,7 @@ namespace KOASampleCS
                         {
                             stTradeData.nMHighPrice[i, 450] = 0;
                         }
-                        else if (stTradeData.nState2[i] < 47 && nNowTime >= 1200 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        else if (stTradeData.nState2[i] < 47 && nNowTime >= 1200 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] > stTradeData.nPivot1[i] && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 50;
                         }
@@ -3092,7 +3093,6 @@ namespace KOASampleCS
                         if (stTradeData.nState2[i] == 50)
                         {
                             stTradeData.nState2[i] = 51;
-                            stTradeData.nMHighPrice[i, 450] = 0;
 
                             int nQty = 1;
 
@@ -3105,6 +3105,7 @@ namespace KOASampleCS
 
                             lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
                             LogManager.WriteLine("시초가 돌파 : " + stTradeData.sCode[i] + " 시초가 : " + stTradeData.nMHighPrice[i, 450].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                            stTradeData.nMHighPrice[i, 450] = 0;
 
                             if (lRet == 0)
                             {
