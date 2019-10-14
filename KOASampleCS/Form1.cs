@@ -3298,17 +3298,30 @@ namespace KOASampleCS
                         {
                             stTradeData.nState2[i] = 43;
 
+                            int nBuyPrice = 0;
+
+                            if (stTradeData.nPivot1[i] >= 1000 && stTradeData.nPivot1[i] < 5000)
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 5);
+                            else if (stTradeData.nPivot1[i] >= 5000 && stTradeData.nPivot1[i] < 10000)
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 10);
+                            else if (stTradeData.nPivot1[i] >= 10000 && stTradeData.nPivot1[i] < 50000)
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 50);
+                            else if (stTradeData.nPivot1[i] >= 50000 && stTradeData.nPivot1[i] < 100000)
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 100);
+                            else if (stTradeData.nPivot1[i] >= 100000 && stTradeData.nPivot1[i] < 500000)
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 500);
+
                             int nQty = 1;
 
                             if (stTradeData.nNowPrice[i] > 0)
                             {
-                                nQty = 100000 / stTradeData.nNowPrice[i];
+                                nQty = 100000 / nBuyPrice;
                             }
 
                             int lRet = 10;
 
-                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
-                            LogManager.WriteLine("피봇1차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot2[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
+                            LogManager.WriteLine("피봇1차저항 돌파 : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot1[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
 
                             if (lRet == 0)
                             {

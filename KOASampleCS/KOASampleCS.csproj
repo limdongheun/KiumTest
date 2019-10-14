@@ -325,6 +325,7 @@
     <Content Include="log\20191008.txt" />
     <Content Include="log\20191010.txt" />
     <Content Include="log\20191011.txt" />
+    <Content Include="log\20191014.txt" />
     <Content Include="log\DB\20190830.txt" />
     <Content Include="log\DB\20190902-1.txt" />
     <Content Include="log\DB\20190902.txt" />
@@ -364,6 +365,8 @@
     <Content Include="log\DB\20191010-2.txt" />
     <Content Include="log\DB\20191011-1.txt" />
     <Content Include="log\DB\20191011-2.txt" />
+    <Content Include="log\DB\20191014-1.txt" />
+    <Content Include="log\DB\20191014-2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
