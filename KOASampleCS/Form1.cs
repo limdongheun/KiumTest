@@ -2748,6 +2748,23 @@ namespace KOASampleCS
                             stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt64(sNowTradeVol);
                             stTradeData.lMTradVolAll[i, nTimeCount] = Convert.ToInt64(sAddTradeVol);
 
+                            if(nNowTime > 1000 && stTradeData.lMTradVolAll[i, nTimeCount-1] - stTradeData.lMTradVolAll[i, nTimeCount-2] > (stTradeData.lMTradVolAll[i, nTimeCount - 2] - stTradeData.lMTradVolAll[i, nTimeCount - 3]) * 10)
+                            {
+                                int nHighP = 0;
+                                for(int a = 0; a < nNowTime - 2; a++)
+                                {
+                                    if(nHighP < stTradeData.nMHighPrice[i, a])
+                                    {
+                                        nHighP = stTradeData.nMHighPrice[i, a];
+                                    }
+                                }
+
+                                if(nHighP < stTradeData.nMHighPrice[i, nTimeCount-1] && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount-1])
+                                {
+                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+                                }
+                            }
+
                             if(nTimeCount > 0 && stTradeData.nState2[i] == 0 && stTradeData.nPivot2[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount-1] > stTradeData.nPivot2[i])
                             {
                                 stTradeData.nState2[i] = 40;
