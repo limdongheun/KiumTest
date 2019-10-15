@@ -2411,7 +2411,7 @@ namespace KOASampleCS
                                         break;
                                     }
 
-                                    if(nTimeCount < 12 && stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                    if(nTimeCount < 12 && stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && stTradeData.nMHighPrice[i, 451] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
                                     {
                                         stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
                                     }
