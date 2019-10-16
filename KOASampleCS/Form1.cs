@@ -2761,7 +2761,7 @@ namespace KOASampleCS
 
                                 if(nHighP < stTradeData.nMHighPrice[i, nTimeCount-1] && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount-1])
                                 {
-                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString());
+                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString() + "\t" + (stTradeData.lMTradVolAll[i, nTimeCount - 2] - stTradeData.lMTradVolAll[i, nTimeCount - 3]).ToString() + "/" + (stTradeData.lMTradVolAll[i, nTimeCount - 1] - stTradeData.lMTradVolAll[i, nTimeCount - 2]).ToString());
                                 }
                             }
 
