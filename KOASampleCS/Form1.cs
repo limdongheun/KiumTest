@@ -410,7 +410,7 @@ namespace KOASampleCS
                             {
                                 bSave = false;
                                 
-                                if(Convert.ToInt32(System.DateTime.Now.ToString("HHmm")) < 1530)
+                                if(Convert.ToInt32(System.DateTime.Now.ToString("HHmm")) > 900 && Convert.ToInt32(System.DateTime.Now.ToString("HHmm")) < 1530)
                                 {
                                     LogManager.WriteLine("종목(중복) :\t" + codes[i]);
                                 }
@@ -2751,7 +2751,7 @@ namespace KOASampleCS
                             if(nNowTime > 1000 && stTradeData.lMTradVolAll[i, nTimeCount-1] - stTradeData.lMTradVolAll[i, nTimeCount-2] > (stTradeData.lMTradVolAll[i, nTimeCount - 2] - stTradeData.lMTradVolAll[i, nTimeCount - 3]) * 10)
                             {
                                 int nHighP = 0;
-                                for(int a = 0; a < nNowTime - 2; a++)
+                                for(int a = 0; a < nTimeCount - 2; a++)
                                 {
                                     if(nHighP < stTradeData.nMHighPrice[i, a])
                                     {
@@ -2761,7 +2761,7 @@ namespace KOASampleCS
 
                                 if(nHighP < stTradeData.nMHighPrice[i, nTimeCount-1] && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount-1])
                                 {
-                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString());
                                 }
                             }
 
