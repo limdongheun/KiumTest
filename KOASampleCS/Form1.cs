@@ -2745,10 +2745,19 @@ namespace KOASampleCS
                             //stTradeData.nMHighTime[i, nTimeCount] = nSecond;
                             stTradeData.nMLowPrice[i, nTimeCount] = Convert.ToInt32(sNowPrice);
                             //stTradeData.nMLowTime[i, nTimeCount] = nSecond;
-                            stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt64(sNowTradeVol);
+                            //stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt64(sNowTradeVol);
                             stTradeData.lMTradVolAll[i, nTimeCount] = Convert.ToInt64(sAddTradeVol);
 
-                            if(nNowTime > 1000 && stTradeData.lMTradVolAll[i, nTimeCount-1] - stTradeData.lMTradVolAll[i, nTimeCount-2] > (stTradeData.lMTradVolAll[i, nTimeCount - 2] - stTradeData.lMTradVolAll[i, nTimeCount - 3]) * 10)
+                            if(nTimeCount == 1)
+                            {
+                                stTradeData.lMTradVol[i, nTimeCount-1] = stTradeData.lMTradVolAll[i, nTimeCount-1];
+                            }
+                            else if(nTimeCount > 1)
+                            {
+                                stTradeData.lMTradVol[i, nTimeCount - 1] = stTradeData.lMTradVolAll[i, nTimeCount - 1] - stTradeData.lMTradVolAll[i, nTimeCount - 2];
+                            }
+
+                            if(nNowTime > 1000 && stTradeData.lMTradVol[i, nTimeCount-1] - stTradeData.lMTradVol[i, nTimeCount-2] > (stTradeData.lMTradVol[i, nTimeCount - 2] - stTradeData.lMTradVol[i, nTimeCount - 3]) * 10)
                             {
                                 int nHighP = 0;
                                 for(int a = 0; a < nTimeCount - 2; a++)
@@ -2761,7 +2770,7 @@ namespace KOASampleCS
 
                                 if(nHighP < stTradeData.nMHighPrice[i, nTimeCount-1] && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount-1])
                                 {
-                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString() + "\t" + (stTradeData.lMTradVolAll[i, nTimeCount - 2] - stTradeData.lMTradVolAll[i, nTimeCount - 3]).ToString() + "/" + (stTradeData.lMTradVolAll[i, nTimeCount - 1] - stTradeData.lMTradVolAll[i, nTimeCount - 2]).ToString());
+                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString() + "\t" + (stTradeData.lMTradVol[i, nTimeCount - 2] - stTradeData.lMTradVol[i, nTimeCount - 3]).ToString() + "/" + (stTradeData.lMTradVol[i, nTimeCount - 1] - stTradeData.lMTradVol[i, nTimeCount - 2]).ToString());
                                 }
                             }
 
@@ -2815,7 +2824,7 @@ namespace KOASampleCS
                             }
 
                             stTradeData.nMEndPrice[i, nTimeCount] = Convert.ToInt32(sNowPrice);
-                            stTradeData.lMTradVol[i, nTimeCount] += Convert.ToInt64(sNowTradeVol);
+                            //stTradeData.lMTradVol[i, nTimeCount] += Convert.ToInt64(sNowTradeVol);
                             stTradeData.lMTradVolAll[i, nTimeCount] = Convert.ToInt64(sAddTradeVol);
                         }
 
