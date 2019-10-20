@@ -379,6 +379,11 @@
     <Content Include="log\DB\20191018-1.txt" />
     <Content Include="log\DB\20191018-2.txt" />
     <Content Include="log\DB\DayCheck.txt" />
+    <Content Include="log\DB\종목1.txt" />
+    <Content Include="log\DB\종목2.txt" />
+    <Content Include="log\DB\종목3.txt" />
+    <Content Include="log\DB\종목4.txt" />
+    <Content Include="log\DB\종목5.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

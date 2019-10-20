@@ -2083,13 +2083,13 @@ namespace KOASampleCS
 
                         bool bSave = false;
 
-                        if (trVol1 > trVol2 * 2 && trVol1 > trVol3 * 2 && trVol1 > trVol4 * 2 && trVol1 > trVol5 * 2)
+                        if (trVol1 > trVol2 * 5 && trVol1 > trVol3 * 5 && trVol1 > trVol4 * 5 && trVol1 > trVol5 * 5)
                         {
                             bSave = true;
                         }
                         else if (trVol2 > trVol1 * 2 && trVol2 > trVol3 * 2 && trVol2 > trVol4 * 2 && trVol2 > trVol5 * 2)
                         {
-                            bSave = true;
+                            //bSave = true;
                         }
 
                         if (bSave == true)
@@ -4150,5 +4150,6 @@ namespace KOASampleCS
                 throw;
             }
         }
+
     }
 }
