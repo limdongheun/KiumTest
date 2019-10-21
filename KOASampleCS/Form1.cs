@@ -2102,7 +2102,7 @@ namespace KOASampleCS
                         } 
                     }
 
-                    System.Threading.Thread.Sleep(500);
+                    System.Threading.Thread.Sleep(600);
                     m_bNextDayChcek = true;
 
                     /*
@@ -3115,7 +3115,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (stTradeData.nState2[i] == 50)
+                        if (stTradeData.nState2[i] == 50 && nNowTime < 1500)
                         {
                             stTradeData.nState2[i] = 51;
 
