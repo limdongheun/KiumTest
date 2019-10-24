@@ -333,6 +333,7 @@
     <Content Include="log\20191021.txt" />
     <Content Include="log\20191022.txt" />
     <Content Include="log\20191023.txt" />
+    <Content Include="log\20191024.txt" />
     <Content Include="log\DB\20190830.txt" />
     <Content Include="log\DB\20190902-1.txt" />
     <Content Include="log\DB\20190902.txt" />
@@ -384,6 +385,7 @@
     <Content Include="log\DB\20191021-1.txt" />
     <Content Include="log\DB\20191021-2.txt" />
     <Content Include="log\DB\20191022.txt" />
+    <Content Include="log\DB\20191024-1.txt" />
     <Content Include="log\DB\DayCheck.txt" />
     <Content Include="log\DB\종목1.txt" />
     <Content Include="log\DB\종목2.txt" />
