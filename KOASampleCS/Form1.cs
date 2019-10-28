@@ -2020,6 +2020,7 @@ namespace KOASampleCS
                         sLowPrice = sLowPrice.Replace("+", "");
                         sLowPrice = sLowPrice.Replace("-", "");
 
+                        stTradeData.nStandardPrice[nCodeCount] = Convert.ToInt32(sHighPrice);
                         stTradeData.nPivot1[nCodeCount] = (((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) * 2) - Convert.ToInt32(sLowPrice);
                         stTradeData.nPivot2[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
 
@@ -2737,6 +2738,12 @@ namespace KOASampleCS
                         else if (stTradeData.nState2[i] < 47 && nNowTime >= 1200 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] > stTradeData.nPivot1[i] && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 50;
+                        }
+
+                        if(stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nStandardPrice[i] = 50000;
+                            LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                         }
 
                         if (stTradeData.nMTime[i, nTimeCount] == 0)
