@@ -2740,10 +2740,10 @@ namespace KOASampleCS
                             stTradeData.nState2[i] = 50;
                         }
 
-                        if(stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
-                            stTradeData.nStandardPrice[i] = 50000;
                             LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
+                            stTradeData.nStandardPrice[i] = 50000;
                         }
 
                         if (stTradeData.nMTime[i, nTimeCount] == 0)
