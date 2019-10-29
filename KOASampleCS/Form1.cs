@@ -2020,6 +2020,12 @@ namespace KOASampleCS
                         sLowPrice = sLowPrice.Replace("+", "");
                         sLowPrice = sLowPrice.Replace("-", "");
 
+                        if (sHighPrice == "")
+                        {
+                            m_bNextDayChcek = true;
+                            return;
+                        }
+                            
                         stTradeData.nStandardPrice[nCodeCount] = Convert.ToInt32(sHighPrice);
                         stTradeData.nPivot1[nCodeCount] = (((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) * 2) - Convert.ToInt32(sLowPrice);
                         stTradeData.nPivot2[nCodeCount] = ((Convert.ToInt32(sHighPrice) + Convert.ToInt32(sLowPrice) + Convert.ToInt32(sEndPrice)) / 3) + Convert.ToInt32(sHighPrice) - Convert.ToInt32(sLowPrice);
@@ -2060,6 +2066,11 @@ namespace KOASampleCS
                         else if (Convert.ToInt32(sTodayHighPrice) > stTradeData.nPivot1[nCodeCount])
                         {
                             LogManager.WriteLine("피봇1차이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
+                        }
+
+                        if (Convert.ToInt32(sTodayHighPrice) > stTradeData.nStandardPrice[nCodeCount])
+                        {
+                            LogManager.WriteLine("전고점이상 상승 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.sName[nCodeCount]);
                         }
 
                         if (Convert.ToInt32(sTodayHighPrice) > Convert.ToInt32(sEndPrice) + Convert.ToInt32(sEndPrice) * 0.1)
