@@ -2756,6 +2756,10 @@ namespace KOASampleCS
                             //LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                             stTradeData.nStandardPrice[i] = 50000;
                         }
+                        if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nPivot1[i] < stTradeData.nMStartPrice[i, 0] && nNowTime < 910)
+                        {
+                            stTradeData.nStandardPrice[i] = 50000;
+                        }
 
                         if (stTradeData.nMTime[i, nTimeCount] == 0)
                         {
