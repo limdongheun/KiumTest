@@ -2751,9 +2751,9 @@ namespace KOASampleCS
                             stTradeData.nState2[i] = 50;
                         }
 
-                        if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && nNowTime > 930 && nNowTime < 1400)
                         {
-                            LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
+                            //LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                             stTradeData.nStandardPrice[i] = 50000;
                         }
 
@@ -3164,6 +3164,32 @@ namespace KOASampleCS
                                 stTradeData.nBuyTime2[i] = nNowTime;
                             }
                         }
+                        else if (nNowTime >= 1400 && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nState2[i] = 51;
+
+                            int nQty = 1;
+
+                            if (stTradeData.nNowPrice[i] > 0)
+                            {
+                                nQty = 150000 / stTradeData.nNowPrice[i];
+                            }
+
+                            int lRet = 10;
+
+                            lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
+                            LogManager.WriteLine("전고점 돌파 : " + stTradeData.sCode[i] + " 시초가 : " + stTradeData.nMHighPrice[i, 450].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                            stTradeData.nMHighPrice[i, 450] = 0;
+
+                            if (lRet == 0)
+                            {
+                                lRet = 10;
+                                stTradeData.nState2[i] = 51;
+                                stTradeData.nOrderQty2[i] = nQty;
+                                stTradeData.nBuyQty2[i] = 0;
+                                stTradeData.nBuyTime2[i] = nNowTime;
+                            }
+                        }
                         else if (stTradeData.nState2[i] == 52)
                         {
                             stTradeData.nState2[i] = 53;
@@ -3278,7 +3304,7 @@ namespace KOASampleCS
                         }
                         */
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot2[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot2[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 43;
 
@@ -3292,7 +3318,7 @@ namespace KOASampleCS
                             int lRet = 10;
 
                             lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
-                            LogManager.WriteLine("피봇2차저항 돌파(시초) : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot2[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                            LogManager.WriteLine("피봇1차저항 돌파(시초) : " + stTradeData.sCode[i] + " 피봇 : " + stTradeData.nPivot2[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
 
                             if (lRet == 0)
                             {
