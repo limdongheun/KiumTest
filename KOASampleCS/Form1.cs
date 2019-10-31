@@ -3168,7 +3168,7 @@ namespace KOASampleCS
                                 stTradeData.nBuyTime2[i] = nNowTime;
                             }
                         }
-                        else if (nNowTime >= 1400 && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        else if (stTradeData.nState2[i] < 51 && nNowTime >= 1400 && stTradeData.nPivot1[i] > 0 && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 51;
 
