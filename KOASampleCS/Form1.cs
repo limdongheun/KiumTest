@@ -893,6 +893,7 @@ namespace KOASampleCS
             bool bLogin = false;
             bool bSaveLocal = false;
             bool bStartCheck = false;
+            bool bLoadFile = false;
 
             try
             {
@@ -932,12 +933,31 @@ namespace KOASampleCS
                         _strRealConScrNum = strScrNum;
                         _strRealConName = "000^(단타)급등종목 검색";
                         _nIndex = 0;
+
+                        strScrNum = GetScrNum();
+                        axKHOpenAPI.SendCondition(strScrNum, "거래량증가_전고점근접", 1, 1);
+                        _strRealConScrNum = strScrNum;
+                        _strRealConName = "001^거래량증가_전고점근접";
+                        _nIndex = 1;
+
+                        strScrNum = GetScrNum();
+                        axKHOpenAPI.SendCondition(strScrNum, "일봉당일_눌림조정종목", 2, 1);
+                        _strRealConScrNum = strScrNum;
+                        _strRealConName = "002^일봉당일_눌림조정종목";
+                        _nIndex = 2;
+                        strScrNum = GetScrNum();
+                        axKHOpenAPI.SendCondition(strScrNum, "급등후_거래량급감조정", 3, 1);
+                        _strRealConScrNum = strScrNum;
+                        _strRealConName = "003^급등후_거래량급감조정";
+                        _nIndex = 3;
                     }
 
-                    if(nNowTime == 845)
+                    if(bLoadFile == false && nNowTime > 845)
                     {
+                        bLoadFile = true;
+
                         string line;
-                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20190917.txt";
+                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20191031.txt";
                         System.IO.StreamReader file = new System.IO.StreamReader(filename);
                         while ((line = file.ReadLine()) != null)
                         {
