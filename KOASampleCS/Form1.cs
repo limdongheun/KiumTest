@@ -2796,6 +2796,11 @@ namespace KOASampleCS
                             if(nTimeCount == 1)
                             {
                                 stTradeData.lMTradVol[i, nTimeCount-1] = stTradeData.lMTradVolAll[i, nTimeCount-1];
+
+                                if(stTradeData.nMStartPrice[i, nTimeCount-1] > stTradeData.nMEndPrice[i, nTimeCount-1])
+                                {
+                                    stTradeData.nStandardPrice[i] = 50000;
+                                }
                             }
                             else if(nTimeCount > 1)
                             {
@@ -3328,7 +3333,7 @@ namespace KOASampleCS
                         }
                         */
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime > 904 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 43;
 
