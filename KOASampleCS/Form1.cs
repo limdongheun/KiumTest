@@ -3365,15 +3365,15 @@ namespace KOASampleCS
                             int nBuyPrice = 0;
 
                             if (stTradeData.nPivot2[i] >= 1000 && stTradeData.nPivot2[i] < 5000)
-                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 5);
+                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 5) - 10;
                             else if (stTradeData.nPivot2[i] >= 5000 && stTradeData.nPivot2[i] < 10000)
-                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 10);
+                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 10) - 20;
                             else if (stTradeData.nPivot2[i] >= 10000 && stTradeData.nPivot2[i] < 50000)
-                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 50);
+                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 50) - 100;
                             else if (stTradeData.nPivot2[i] >= 50000 && stTradeData.nPivot2[i] < 100000)
-                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 100);
+                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 100) - 200;
                             else if (stTradeData.nPivot2[i] >= 100000 && stTradeData.nPivot2[i] < 500000)
-                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 500);
+                                nBuyPrice = stTradeData.nPivot2[i] - (stTradeData.nPivot2[i] % 500) - 1000;
 
                             int nQty = 1;
 
@@ -3403,15 +3403,15 @@ namespace KOASampleCS
                             int nBuyPrice = 0;
 
                             if (stTradeData.nPivot1[i] >= 1000 && stTradeData.nPivot1[i] < 5000)
-                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 5);
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 5) - 10;
                             else if (stTradeData.nPivot1[i] >= 5000 && stTradeData.nPivot1[i] < 10000)
-                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 10);
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 10) - 20;
                             else if (stTradeData.nPivot1[i] >= 10000 && stTradeData.nPivot1[i] < 50000)
-                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 50);
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 50) - 100;
                             else if (stTradeData.nPivot1[i] >= 50000 && stTradeData.nPivot1[i] < 100000)
-                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 100);
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 100) - 200;
                             else if (stTradeData.nPivot1[i] >= 100000 && stTradeData.nPivot1[i] < 500000)
-                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 500);
+                                nBuyPrice = stTradeData.nPivot1[i] - (stTradeData.nPivot1[i] % 500) - 1000;
 
                             int nQty = 1;
 
