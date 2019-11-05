@@ -3333,7 +3333,7 @@ namespace KOASampleCS
                         }
                         */
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime > 904 && nNowTime < 930 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime > 904 && nNowTime < 1100 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 43;
 
@@ -3341,7 +3341,7 @@ namespace KOASampleCS
 
                             if (stTradeData.nNowPrice[i] > 0)
                             {
-                                nQty = 150000 / stTradeData.nNowPrice[i];
+                                nQty = 100000 / stTradeData.nNowPrice[i];
                             }
 
                             int lRet = 10;
