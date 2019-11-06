@@ -2774,9 +2774,13 @@ namespace KOASampleCS
                         if(stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && nNowTime > 930 && nNowTime < 1400)
                         {
                             //LogManager.WriteLine("전고점돌파 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
-                            stTradeData.nStandardPrice[i] = 50000;
+                            //stTradeData.nStandardPrice[i] = 50000;
                         }
                         if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nPivot1[i] < stTradeData.nMStartPrice[i, 0] && nNowTime < 910)
+                        {
+                            stTradeData.nStandardPrice[i] = 50000;
+                        }
+                        if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nClosePrice[i] > stTradeData.nNowPrice[i])
                         {
                             stTradeData.nStandardPrice[i] = 50000;
                         }
@@ -3333,7 +3337,7 @@ namespace KOASampleCS
                         }
                         */
 
-                        if (stTradeData.nState2[i] == 0 && nNowTime > 904 && nNowTime < 1100 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
+                        if (stTradeData.nState2[i] == 0 && nNowTime > 902 && nNowTime < 1100 && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nPivot1[i] && stTradeData.nNowPrice[i] > stTradeData.nPivot1[i] && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState2[i] = 43;
 
