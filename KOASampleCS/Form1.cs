@@ -2758,7 +2758,7 @@ namespace KOASampleCS
                             nTimeCount = nTimeCount / 5;
                         }
 
-                        if(nNowTime < 931 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        if(nNowTime < 1100 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nMHighPrice[i, 450] = stTradeData.nNowPrice[i];
                         }
@@ -2778,7 +2778,7 @@ namespace KOASampleCS
                         }
                         if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nPivot1[i] < stTradeData.nMStartPrice[i, 0] && nNowTime < 910)
                         {
-                            stTradeData.nStandardPrice[i] = 50000;
+                            //stTradeData.nStandardPrice[i] = 50000;
                         }
                         if (stTradeData.nStandardPrice[i] > 0 && stTradeData.nClosePrice[i] > stTradeData.nNowPrice[i])
                         {
