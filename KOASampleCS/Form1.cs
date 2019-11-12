@@ -3205,7 +3205,14 @@ namespace KOASampleCS
 
                             if (stTradeData.nNowPrice[i] > 0)
                             {
-                                nQty = 100000 / stTradeData.nNowPrice[i];
+                                if (nNowTime < 1000)
+                                {
+                                    nQty = 100000 / stTradeData.nNowPrice[i];
+                                }
+                                else
+                                {
+                                    nQty = 150000 / stTradeData.nNowPrice[i];
+                                }
                             }
 
                             int lRet = 10;
@@ -3242,8 +3249,11 @@ namespace KOASampleCS
 
                             int nQty = stTradeData.nOrderQty2[i];
 
-                            int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
-                            LogManager.WriteLine("시초가 돌파매도(1.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
+                            if(nNowTime < 1000)
+                            {
+                                int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
+                                LogManager.WriteLine("시초가 돌파매도(1.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
+                            }
                         }
 
                         /*
