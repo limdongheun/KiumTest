@@ -3205,7 +3205,14 @@ namespace KOASampleCS
 
                             if (stTradeData.nNowPrice[i] > 0)
                             {
-                                nQty = 100000 / stTradeData.nNowPrice[i];
+                                if (nNowTime < 1000)
+                                {
+                                    nQty = 100000 / stTradeData.nNowPrice[i];
+                                }
+                                else
+                                {
+                                    nQty = 150000 / stTradeData.nNowPrice[i];
+                                }
                             }
 
                             int lRet = 10;
@@ -3225,25 +3232,37 @@ namespace KOASampleCS
                         }
                         else if (stTradeData.nState2[i] == 52)
                         {
-                            stTradeData.nState2[i] = 53;
+                            if (nNowTime < 1000)
+                            {
+                                stTradeData.nState2[i] = 53;
 
-                            int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.015);
+                                int nSellPrice = (int)(stTradeData.nBuyPrice2[i] * 1.015);
 
-                            if (nSellPrice >= 1000 && nSellPrice < 5000)
-                                nSellPrice = nSellPrice - (nSellPrice % 5);
-                            else if (nSellPrice >= 5000 && nSellPrice < 10000)
-                                nSellPrice = nSellPrice - (nSellPrice % 10);
-                            else if (nSellPrice >= 10000 && nSellPrice < 50000)
-                                nSellPrice = nSellPrice - (nSellPrice % 50);
-                            else if (nSellPrice >= 50000 && nSellPrice < 100000)
-                                nSellPrice = nSellPrice - (nSellPrice % 100);
-                            else if (nSellPrice >= 100000 && nSellPrice < 500000)
-                                nSellPrice = nSellPrice - (nSellPrice % 500);
+                                if (nSellPrice >= 1000 && nSellPrice < 5000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 5);
+                                else if (nSellPrice >= 5000 && nSellPrice < 10000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 10);
+                                else if (nSellPrice >= 10000 && nSellPrice < 50000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 50);
+                                else if (nSellPrice >= 50000 && nSellPrice < 100000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 100);
+                                else if (nSellPrice >= 100000 && nSellPrice < 500000)
+                                    nSellPrice = nSellPrice - (nSellPrice % 500);
 
-                            int nQty = stTradeData.nOrderQty2[i];
+                                int nQty = stTradeData.nOrderQty2[i];
+ 
+                                int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
+                                LogManager.WriteLine("시초가 돌파매도(1.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
+                            }
+                            else if(stTradeData.nNowPrice[i] > stTradeData.nBuyPrice2[i] * 1.03)
+                            {
+                                stTradeData.nState2[i] = 53;
 
-                            int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "00", nSellPrice, "");
-                            LogManager.WriteLine("시초가 돌파매도(1.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nSellPrice.ToString());
+                                int nQty = stTradeData.nOrderQty2[i];
+
+                                int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
+                                LogManager.WriteLine("전고점 돌파매도(3%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
+                            }
                         }
 
                         /*
