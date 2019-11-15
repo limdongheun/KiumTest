@@ -957,7 +957,7 @@ namespace KOASampleCS
                         bLoadFile = true;
 
                         string line;
-                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20191031.txt";
+                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20191114.txt";
                         System.IO.StreamReader file = new System.IO.StreamReader(filename);
                         while ((line = file.ReadLine()) != null)
                         {
@@ -2588,7 +2588,7 @@ namespace KOASampleCS
             }
             catch (Exception)
             {
-
+                return;
                 throw;
             }
             
