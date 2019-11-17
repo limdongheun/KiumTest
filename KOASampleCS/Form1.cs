@@ -2798,7 +2798,7 @@ namespace KOASampleCS
                             stTradeData.nState[i] = 1;
                         }
 
-                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && nTimeCount > 0)
+                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i] && nTimeCount > 0)
                         {
                             stTradeData.nState[i] = 11;
                         }
