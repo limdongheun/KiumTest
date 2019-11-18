@@ -3063,6 +3063,7 @@ namespace KOASampleCS
                             }
                         }
 
+                        /*
                         if (stTradeData.nState2[i] == 50 && nNowTime < 1500)
                         {
                             stTradeData.nState2[i] = 51;
@@ -3156,6 +3157,7 @@ namespace KOASampleCS
                                 LogManager.WriteLine("전고점 돌파매도(3%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                             }
                         }
+                        */
 
                     }
                 }
