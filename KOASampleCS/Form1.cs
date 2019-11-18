@@ -2785,6 +2785,11 @@ namespace KOASampleCS
                             //stTradeData.lMTradVol[i, nTimeCount] = Convert.ToInt64(sNowTradeVol);
                             stTradeData.lMTradVolAll[i, nTimeCount] = Convert.ToInt64(sAddTradeVol);
 
+                            if(nTimeCount == 1 && stTradeData.nState[i] == 0 && (stTradeData.nMHighPrice[i, nTimeCount-1] - stTradeData.nMLowPrice[i, nTimeCount-1]) / 2 > stTradeData.nMLowPrice[i, nTimeCount-1])
+                            {
+                                nTimeCount = 100;
+                            }
+
                             if(stTradeData.nState[i] == 11)
                             {
                                 stTradeData.nState[i] = 12;
