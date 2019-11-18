@@ -606,41 +606,6 @@ namespace KOASampleCS
                             LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty2[i].ToString() + "/" + stTradeData.nOrderQty2[i].ToString() + " " + stTradeData.nBuyPrice2[i].ToString());
                         }
 
-                        if ((stTradeData.nState[i] == 7 || stTradeData.nState[i] == 11) && nState == 3)
-                        {
-                            stTradeData.nBuyQty[i] += nBuyQty;
-                            stTradeData.nBuyPrice[i] = nBuyPrice;
-                            stTradeData.nBuyTime[i] = nNowTime;
-
-                            if(stTradeData.nBuyQty[i] > stTradeData.nOrderQty[i])
-                            {
-                                stTradeData.nBuyQty[i] = stTradeData.nOrderQty[i];
-                            }
-
-                            LogManager.WriteLine("매수완료 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nBuyQty[i].ToString() + "/" + stTradeData.nOrderQty[i].ToString() + " " + stTradeData.nBuyPrice[i].ToString());
-                        }
-                        else if (stTradeData.nBuyQty[i] > 0 && stTradeData.nBuyPrice[i] > 0 && nBuyPrice > 0 && nBuyQty > 0)
-                        {
-                            stTradeData.nState[i] = 3;
-
-                            int nOldPrice = stTradeData.nBuyPrice[i] * stTradeData.nBuyQty[i];
-                            int nNewPrice = nBuyPrice * nBuyQty;
-
-                            LogManager.WriteLine("평균 :\t" + stTradeData.nBuyPrice[i] + "\t" + stTradeData.nBuyQty[i] + "\t" + nBuyPrice + "\t" + nBuyQty);
-
-                            stTradeData.nBuyQty[i] += nBuyQty;
-                            stTradeData.nBuyPrice[i] = (nOldPrice + nNewPrice) / stTradeData.nBuyQty[i];
-                            stTradeData.nBuyTime[i] = nNowTime;
-                        }
-                        else if (stTradeData.nState[i] == 3)
-                        {
-                            stTradeData.nBuyQty[i] = nBuyQty;
-                            stTradeData.nBuyPrice[i] = nBuyPrice;
-                            stTradeData.nBuyTime[i] = nNowTime;
-                        }
-
-                        //if (stTradeData.nOrderQty[i] != stTradeData.nBuyQty[i])
-                        //    stTradeData.nState[i] = 1;
                     }
                     else if (nState > 3)
                     {
@@ -2795,10 +2760,10 @@ namespace KOASampleCS
 
                         if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
                         {
-                            stTradeData.nState[i] = 1;
+                            //stTradeData.nState[i] = 1;
                         }
 
-                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i] && nTimeCount > 0)
+                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i])
                         {
                             stTradeData.nState[i] = 11;
                         }
