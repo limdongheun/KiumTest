@@ -2769,7 +2769,7 @@ namespace KOASampleCS
                         }
                         else if ((stTradeData.nState[i] == 11 || stTradeData.nState[i] == 12 ) && stTradeData.nStandardPrice[i] * 1.02 < stTradeData.nNowPrice[i])
                         {
-                            stTradeData.nState[i] = 15;
+                            //stTradeData.nState[i] = 15;
                         }
 
 
@@ -2794,7 +2794,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 12;
                             }
-                            else if (stTradeData.nState[i] == 12 && stTradeData.nMHighPrice[i, nTimeCount-1] < stTradeData.nStandardPrice[i])
+                            else if (stTradeData.nState[i] == 12 && stTradeData.nMHighPrice[i, nTimeCount-1] > stTradeData.nMHighPrice[i, nTimeCount - 2])
                             {
                                 stTradeData.nState[i] = 100;
                             }
