@@ -2242,10 +2242,14 @@ namespace KOASampleCS
                         string sCheckTime = System.DateTime.Now.ToString("yyyyMMdd") + "091000";
                         string sCheckDay = System.DateTime.Now.ToString("dd");
                         string sNowTime = System.DateTime.Now.ToString("HHmm");
+                        int nNowTimeCount = (System.DateTime.Now.Hour - 9) * 60 + System.DateTime.Now.Minute;
+                        if (nNowTimeCount > 0)
+                        {
+                            nNowTimeCount = nNowTimeCount / 5;
+                        }
+
                         int nHighPrice = 0;
                         int nHighPrice2 = 0;
-                        int nNowPrice = 0;
-                        int nBuyPrice = 0;
                         int nHighPrice10 = 0;
                         bool bUnderPivot = false;
                         bool bOverPivot = false;
@@ -2409,6 +2413,14 @@ namespace KOASampleCS
                                 stTradeData.lMTradVol[nCodeCount, nTimeCount] = Convert.ToInt32(sTradeVol);
                                 //stTradeData.lMTradVolAll[i, nTimeCount] = 0;
 
+                                if(nNowTimeCount-1 > nTimeCount)
+                                {
+                                    if(nHighPrice < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                    {
+                                        nHighPrice = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
+                                    }
+                                }
+
                                 if (bOverPivot == false && stTradeData.nMHighPrice[nCodeCount, nTimeCount] < stTradeData.nPivot2[nCodeCount])
                                 {
                                     bUnderPivot = true;
@@ -2475,11 +2487,16 @@ namespace KOASampleCS
                                     LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + "\t" + stTradeData.nMHighPrice[i, 451].ToString());
                                     if (nHighPrice10 < stTradeData.nMHighPrice[i, 451])
                                     {
-                                        stTradeData.nMHighPrice[i, 450] = 0;
+                                        stTradeData.nMHighPrice[nCodeCount, 450] = 0;
                                     }
                                     else
                                     {
-                                        stTradeData.nMHighPrice[i, 450] = nHighPrice10;
+                                        stTradeData.nMHighPrice[nCodeCount, 450] = nHighPrice10;
+                                    }
+
+                                    if(nHighPrice > stTradeData.nStandardPrice[nCodeCount] && stTradeData.nStandardPrice[nCodeCount] > 0)
+                                    {
+                                        stTradeData.nState[nCodeCount] = 100;
                                     }
 
                                     //LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
@@ -2525,7 +2542,7 @@ namespace KOASampleCS
                             stTradeData.nState2[nCodeCount] = 40;
                         }
 
-                        stTradeData.nState[nCodeCount] = 31;
+                        //stTradeData.nState[nCodeCount] = 31;
                     }
 
 
@@ -2880,11 +2897,13 @@ namespace KOASampleCS
                             stTradeData.nMStartPrice[i, 0] = 0;
                         }
 
-                        if (stTradeData.nState[i] != 1 && stTradeData.nPivot2[i] > 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextMinChcek == true && nNowTime > 901)
+                        if (stTradeData.nState[i] != 1 && stTradeData.nPivot2[i] > 0 && stTradeData.nMStartPrice[i, 0] == 0 && m_bNextDayChcek == true && m_bNextMinChcek == true && nNowTime > 901)
                         {
                             if(nNowTime < 1500)
                             {
-                                stTradeData.nState[i] = 1;
+                                //stTradeData.nState[i] = 1;
+
+                                stTradeData.nMStartPrice[i, 0] = 1;
 
                                 axKHOpenAPI.SetInputValue("종목코드", stTradeData.sCode[i]);
                                 axKHOpenAPI.SetInputValue("기준일자", System.DateTime.Now.ToString("yyyyMMdd"));
