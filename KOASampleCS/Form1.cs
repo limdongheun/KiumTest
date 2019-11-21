@@ -951,7 +951,7 @@ namespace KOASampleCS
                         bLoadFile = true;
 
                         string line;
-                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20191114.txt";
+                        string filename = "C:\\Source\\KOASampleCS_ver_1_2\\KOASampleCS_ver\\KOASampleCS\\bin\\20191121.txt";
                         System.IO.StreamReader file = new System.IO.StreamReader(filename);
                         while ((line = file.ReadLine()) != null)
                         {
@@ -2452,7 +2452,7 @@ namespace KOASampleCS
                                         break;
                                     }
 
-                                    if(nTimeCount < 12 && nHighPrice10 < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && stTradeData.nMHighPrice[i, 451] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
+                                    if(nTimeCount < 12 && nHighPrice10 < stTradeData.nMHighPrice[nCodeCount, nTimeCount] && stTradeData.nMHighPrice[nCodeCount, 451] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
                                     {
                                         nHighPrice10 = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
                                     }
@@ -2484,7 +2484,7 @@ namespace KOASampleCS
 
                                 if (nTimeCount == 0)
                                 {
-                                    LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + "\t" + stTradeData.nMHighPrice[i, 451].ToString());
+                                    LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nMHighPrice[nCodeCount, 450].ToString() + "\t" + stTradeData.nMHighPrice[nCodeCount, 451].ToString());
                                     if (nHighPrice10 < stTradeData.nMHighPrice[i, 451])
                                     {
                                         stTradeData.nMHighPrice[nCodeCount, 450] = 0;
@@ -2773,7 +2773,10 @@ namespace KOASampleCS
                             nTimeCount = nTimeCount / 5;
                         }
 
-
+                        if(nNowTime > 1000 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        {
+                            LogManager.WriteLine("U자형 돌파 : " + stTradeData.sCode[i]);
+                        }
 
                         if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
                         {
