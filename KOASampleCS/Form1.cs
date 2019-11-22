@@ -2776,6 +2776,7 @@ namespace KOASampleCS
                         if(nNowTime > 1000 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("U자형 돌파 : " + stTradeData.sCode[i]);
+                            stTradeData.nState[i] = 13;
                         }
 
                         if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
