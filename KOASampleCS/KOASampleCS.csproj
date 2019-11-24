@@ -426,6 +426,7 @@
     <Content Include="log\DB\20191119.txt" />
     <Content Include="log\DB\20191120.txt" />
     <Content Include="log\DB\20191121.txt" />
+    <Content Include="log\DB\20191122.txt" />
     <Content Include="log\DB\DayCheck.txt" />
     <Content Include="log\DB\종목1.txt" />
     <Content Include="log\DB\종목2.txt" />
