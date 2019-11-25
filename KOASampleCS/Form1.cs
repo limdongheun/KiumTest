@@ -2739,9 +2739,10 @@ namespace KOASampleCS
                             nTimeCount = nTimeCount / 5;
                         }
 
-                        if(nNowTime > 1000 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        if(nNowTime > 930 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("U자형 돌파 : " + stTradeData.sCode[i]);
+                            stTradeData.bHighPriceCheck[i] = true;
                             //stTradeData.nState[i] = 14;
                         }
 
@@ -3703,6 +3704,14 @@ namespace KOASampleCS
                                 string[] item = line.Split('\t');
                                 AddTradeList(item[1] + ";", 0, 0, 0);
                             }
+
+                            /*
+                            if (line.Contains("U자형 돌파 :"))
+                            {
+                                string aa = line.Substring(line.Length - 6);
+                                AddTradeList(aa + ";", 0, 0, 0);
+                            }
+                            */
                         }
                         else
                         {
