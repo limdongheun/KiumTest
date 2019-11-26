@@ -2446,6 +2446,11 @@ namespace KOASampleCS
                                 
                                 if (nTimeCount == 0)
                                 {
+                                    if(nHighPrice > stTradeData.nStandardPrice[nCodeCount])
+                                    {
+                                        stTradeData.nState[nCodeCount] = 100;
+                                    }
+
                                     //LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + nHighPrice10.ToString() + "\t" + stTradeData.nMHighPrice[nCodeCount, 451].ToString());
                                                                                                           
                                     //LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
@@ -2782,6 +2787,10 @@ namespace KOASampleCS
                             else if (stTradeData.nState[i] == 13 && stTradeData.nMLowPrice[i, nTimeCount - 1] < stTradeData.nMLowPrice[i, nTimeCount - 3])
                             {
                                 stTradeData.nState[i] = 100;
+                            }
+                            else if (stTradeData.nState[i] == 13 && stTradeData.nMHighPrice[i, nTimeCount - 1] > stTradeData.nMHighPrice[i, nTimeCount - 2])
+                            {
+                                stTradeData.nState[i] = 13;
                             }
                             else if (stTradeData.nState[i] == 13)
                             {
