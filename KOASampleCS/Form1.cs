@@ -2288,7 +2288,7 @@ namespace KOASampleCS
                             sTradeVol = sTradeVol.Replace("+", "");
                             sTradeVol = sTradeVol.Replace("-", "");
 
-                            if (stTradeData.nState2[nCodeCount] == 50 || Convert.ToInt32(sNowTime) < 905)
+                            if (stTradeData.nState2[nCodeCount] == 50)
                             {
                                 if (Convert.ToInt32(sStartPrice) * 1.03 < Convert.ToInt32(sEndPrice) && Convert.ToInt32(sNowTime) > 1530)
                                 {
@@ -2443,30 +2443,11 @@ namespace KOASampleCS
                                         LogManager.WriteLine("체크포인트 : " + stTradeData.sCode[nCodeCount] + "\t" + nTimeCount.ToString());
                                     }
                                 }
-
-                                if (nTimeCount < 6 && nHighPrice10 < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
-                                {
-                                    nHighPrice10 = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
-                                }
-                                else if (nTimeCount >= 6 && stTradeData.nMHighPrice[i, 451] < stTradeData.nMHighPrice[nCodeCount, nTimeCount])
-                                {
-                                    stTradeData.nMHighPrice[i, 451] = stTradeData.nMHighPrice[nCodeCount, nTimeCount];
-                                }
                                 
                                 if (nTimeCount == 0)
                                 {
-                                    LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + nHighPrice10.ToString() + "\t" + stTradeData.nMHighPrice[nCodeCount, 451].ToString());
-                                    if (nHighPrice10 < stTradeData.nMHighPrice[i, 451])
-                                    {
-                                        stTradeData.nMHighPrice[nCodeCount, 450] = 0;
-                                    }
-                                    else
-                                    {
-                                        stTradeData.nMHighPrice[nCodeCount, 450] = nHighPrice10;
-                                        stTradeData.bHighPriceCheck[nCodeCount] = true;
-                                    }
-                                                                       
-
+                                    //LogManager.WriteLine("최고가체크 : " + stTradeData.sCode[nCodeCount] + "\t" + nHighPrice10.ToString() + "\t" + stTradeData.nMHighPrice[nCodeCount, 451].ToString());
+                                                                                                          
                                     //LogManager.WriteLine("최고가 : " + stTradeData.sCode[nCodeCount] + "\t" + stTradeData.nHighPrice2[nCodeCount]);
                                     break;
                                 }
@@ -2741,10 +2722,20 @@ namespace KOASampleCS
                             nTimeCount = nTimeCount / 5;
                         }
 
-                        if(nNowTime > 930 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        if(nNowTime >= 910 && stTradeData.nMHighPrice[i, 0] > 0 && stTradeData.nMHighPrice[i, 450] == 0 && stTradeData.nMHighPrice[i, 451] == 0)
                         {
-                            LogManager.WriteLine("U자형 돌파 : " + stTradeData.sCode[i]);
+                            stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[i, 0];
+                            if(stTradeData.nMHighPrice[i, 0] < stTradeData.nMHighPrice[i, 1])
+                            {
+                                stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[i, 1];
+                            }
+                        }
+
+                        if (nNowTime > 930 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        {
+                            LogManager.WriteLine("U자형 돌파 : \t" + stTradeData.sCode[i]);
                             stTradeData.bHighPriceCheck[i] = false;
+                            stTradeData.nMHighPrice[i, 450] = -1;
                             //stTradeData.nState[i] = 14;
                         }
 
@@ -2855,6 +2846,37 @@ namespace KOASampleCS
                             stTradeData.nMEndPrice[i, nTimeCount] = Convert.ToInt32(sNowPrice);
                             //stTradeData.lMTradVol[i, nTimeCount] += Convert.ToInt64(sNowTradeVol);
                             stTradeData.lMTradVolAll[i, nTimeCount] = Convert.ToInt64(sAddTradeVol);
+
+                            if (nNowTime >= 910 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 451] == 0)
+                            {
+                                for (int a = 2; a < nTimeCount; a++)
+                                {
+                                    if(stTradeData.nMHighPrice[i, 451] == 0)
+                                    {
+                                        stTradeData.nMHighPrice[i, 451] = stTradeData.nMLowPrice[i, nTimeCount];
+                                    }
+
+                                    if (stTradeData.nMLowPrice[i, nTimeCount] < stTradeData.nMHighPrice[i, 451])
+                                    {
+                                        stTradeData.nMHighPrice[i, 451] = stTradeData.nMLowPrice[i, nTimeCount];
+                                    }
+                                }
+                            }
+
+                            if (nNowTime >= 910 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 451] > 0  && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                            {
+                                stTradeData.nMHighPrice[i, 450] = -1;
+                            }
+
+                            if (nNowTime >= 910 && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMLowPrice[i, nTimeCount] < stTradeData.nMHighPrice[i, 451])
+                            {
+                                stTradeData.nMHighPrice[i, 451] = stTradeData.nMLowPrice[i, nTimeCount];
+
+                                if(stTradeData.nMHighPrice[i, 450] * 0.98 > stTradeData.nMHighPrice[i, 451])
+                                {
+                                    stTradeData.bHighPriceCheck[i] = true;
+                                }
+                            }
                         }
 
                         
