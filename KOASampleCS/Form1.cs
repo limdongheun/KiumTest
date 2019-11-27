@@ -2758,6 +2758,11 @@ namespace KOASampleCS
                             //stTradeData.nState[i] = 16;
                         }
 
+                        if ((stTradeData.nState[i] == 12 || stTradeData.nState[i] == 13) && stTradeData.nClosePrice[i] * 1.15 < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nState[i] = 100;
+                        }
+
 
                         if (stTradeData.nMTime[i, nTimeCount] == 0)
                         {
@@ -3001,7 +3006,7 @@ namespace KOASampleCS
                                 stTradeData.nBuyQty[i] = 0;
                                 stTradeData.nBuyTime[i] = nNowTime;
 
-                                int sellTime = stTradeData.nBuyTime[i] + 60;
+                                int sellTime = stTradeData.nBuyTime[i] + 30;
 
                                 if (sellTime % 100 >= 60)
                                 {
