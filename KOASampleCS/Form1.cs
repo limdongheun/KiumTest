@@ -2727,16 +2727,21 @@ namespace KOASampleCS
                             nTimeCount = nTimeCount / 5;
                         }
 
-                        if(nNowTime >= 910 && stTradeData.nMHighPrice[i, 0] > 0 && stTradeData.nMHighPrice[i, 450] == 0 && stTradeData.nMHighPrice[i, 451] == 0)
+                        if(nNowTime >= 915 && stTradeData.nMHighPrice[i, 0] > 0 && stTradeData.nMHighPrice[i, 450] == 0 && stTradeData.nMHighPrice[i, 451] == 0)
                         {
                             stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[i, 0];
                             if(stTradeData.nMHighPrice[i, 0] < stTradeData.nMHighPrice[i, 1])
                             {
                                 stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[i, 1];
                             }
+
+                            if (stTradeData.nMHighPrice[i, 450] < stTradeData.nMHighPrice[i, 2])
+                            {
+                                stTradeData.nMHighPrice[i, 450] = stTradeData.nMHighPrice[i, 2];
+                            }
                         }
 
-                        if (nNowTime > 930 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        if (nNowTime >= 920 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("U자형 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
                             stTradeData.bHighPriceCheck[i] = false;
@@ -2877,12 +2882,12 @@ namespace KOASampleCS
                                 }
                             }
 
-                            if (nNowTime >= 910 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 451] > 0  && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                            if (nNowTime >= 915 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 451] > 0  && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                             {
                                 stTradeData.nMHighPrice[i, 450] = -1;
                             }
 
-                            if (nNowTime >= 910 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMLowPrice[i, nTimeCount] < stTradeData.nMHighPrice[i, 451])
+                            if (nNowTime >= 915 && stTradeData.bHighPriceCheck[i] == false && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMLowPrice[i, nTimeCount] < stTradeData.nMHighPrice[i, 451])
                             {
                                 stTradeData.nMHighPrice[i, 451] = stTradeData.nMLowPrice[i, nTimeCount];
 
