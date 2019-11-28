@@ -2763,6 +2763,11 @@ namespace KOASampleCS
                             //stTradeData.nState[i] = 16;
                         }
 
+                        if (stTradeData.nState[i] == 12 && stTradeData.nMHighPrice[i, nTimeCount-1] < stTradeData.nNowPrice[i])
+                        {
+                            stTradeData.nState[i] = 14;
+                        }
+
                         if ((stTradeData.nState[i] == 12 || stTradeData.nState[i] == 13) && stTradeData.nClosePrice[i] * 1.15 < stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState[i] = 100;
