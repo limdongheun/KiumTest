@@ -2746,7 +2746,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("U자형 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
                             stTradeData.bHighPriceCheck[i] = false;
                             stTradeData.nMHighPrice[i, 450] = -1;
-                            //stTradeData.nState[i] = 14;
+                            stTradeData.nState[i] = 11;
                         }
 
                         if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
@@ -2765,7 +2765,7 @@ namespace KOASampleCS
 
                         if (stTradeData.nState[i] == 12 && stTradeData.nMHighPrice[i, nTimeCount-1] < stTradeData.nNowPrice[i])
                         {
-                            stTradeData.nState[i] = 14;
+                            //stTradeData.nState[i] = 14;
                         }
 
                         if ((stTradeData.nState[i] == 12 || stTradeData.nState[i] == 13) && stTradeData.nClosePrice[i] * 1.15 < stTradeData.nNowPrice[i])
@@ -2804,6 +2804,10 @@ namespace KOASampleCS
                                 stTradeData.nState[i] = 100;
                             }
                             else if (stTradeData.nState[i] == 13 && stTradeData.nMHighPrice[i, nTimeCount - 1] > stTradeData.nMHighPrice[i, nTimeCount - 2])
+                            {
+                                stTradeData.nState[i] = 100;
+                            }
+                            else if (stTradeData.nState[i] == 13 && stTradeData.nMLowPrice[i, nTimeCount - 1] < stTradeData.nMLowPrice[i, nTimeCount - 2])
                             {
                                 stTradeData.nState[i] = 13;
                             }
@@ -3046,7 +3050,7 @@ namespace KOASampleCS
 
                             stTradeData.nSellTime[i] = sellTime;
                         }
-                        else if (stTradeData.nState[i] == 30 && stTradeData.nSellTime[i] < nNowTime && stTradeData.nBuyPrice[i] > stTradeData.nNowPrice[i])
+                        else if (stTradeData.nState[i] == 30 && stTradeData.nSellTime[i] < nNowTime && stTradeData.nBuyPrice[i] * 0.98 > stTradeData.nNowPrice[i])
                         {
                             stTradeData.nState[i] = 31;
 
