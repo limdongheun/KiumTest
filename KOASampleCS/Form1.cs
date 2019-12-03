@@ -2916,7 +2916,7 @@ namespace KOASampleCS
                                 stTradeData.lMTradVol[i, nTimeCount - 1] = stTradeData.lMTradVolAll[i, nTimeCount - 1] - stTradeData.lMTradVolAll[i, nTimeCount - 2];
                             }
 
-                            if(nNowTime > 1000 && stTradeData.lMTradVol[i, nTimeCount-1] > stTradeData.lMTradVol[i, nTimeCount - 2] * 10)
+                            if(nNowTime > 930 && stTradeData.lMTradVol[i, nTimeCount - 1] > 300000 && stTradeData.lMTradVol[i, nTimeCount-1] > stTradeData.lMTradVol[i, nTimeCount - 2] * 10)
                             {
                                 int nHighP = 0;
                                 for(int a = 0; a < nTimeCount - 2; a++)
@@ -2929,7 +2929,7 @@ namespace KOASampleCS
 
                                 if(nHighP < stTradeData.nMHighPrice[i, nTimeCount-1] && stTradeData.nMStartPrice[i, nTimeCount-1] < stTradeData.nMEndPrice[i, nTimeCount-1])
                                 {
-                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString() + "\t" + (stTradeData.lMTradVol[i, nTimeCount - 2]).ToString() + "/" + (stTradeData.lMTradVol[i, nTimeCount - 1]).ToString());
+                                    //LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMHighPrice[i, nTimeCount - 1].ToString() + "\t" + (stTradeData.lMTradVol[i, nTimeCount - 2]).ToString() + "/" + (stTradeData.lMTradVol[i, nTimeCount - 1]).ToString());
                                 }
                             }
 
@@ -2981,6 +2981,24 @@ namespace KOASampleCS
                                 if(stTradeData.nMHighPrice[i, 450] * 0.98 > stTradeData.nMHighPrice[i, 451])
                                 {
                                     stTradeData.bHighPriceCheck[i] = true;
+                                }
+                            }
+
+                            if(nNowTime > 930 && stTradeData.nMStartPrice[i, nTimeCount] * 1.02 < stTradeData.nNowPrice[i])
+                            {
+                                int nHighP = 0;
+                                for (int a = 0; a < nTimeCount - 2; a++)
+                                {
+                                    if (nHighP < stTradeData.nMHighPrice[i, a])
+                                    {
+                                        nHighP = stTradeData.nMHighPrice[i, a];
+                                    }
+                                }
+
+                                if (nHighP < stTradeData.nNowPrice[i])
+                                {
+                                    LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMStartPrice[i, nTimeCount].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
+                                    stTradeData.nState[i] = 14;
                                 }
                             }
                         }
