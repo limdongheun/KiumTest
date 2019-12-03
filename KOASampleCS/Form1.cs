@@ -2819,7 +2819,7 @@ namespace KOASampleCS
                             }
                         }
 
-                        if (nNowTime >= 920 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
+                        if (nNowTime >= 920 && stTradeData.nState[i] == 0 && stTradeData.bHighPriceCheck[i] == true && stTradeData.nMHighPrice[i, 450] > 0 && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("U자형 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
                             stTradeData.bHighPriceCheck[i] = false;
