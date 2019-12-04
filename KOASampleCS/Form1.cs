@@ -2984,7 +2984,7 @@ namespace KOASampleCS
                                 }
                             }
 
-                            if(nNowTime > 930 && stTradeData.nMStartPrice[i, nTimeCount] * 1.02 < stTradeData.nNowPrice[i])
+                            if(nNowTime > 930 && stTradeData.nState[i] == 0 && stTradeData.nMStartPrice[i, nTimeCount] * 1.02 < stTradeData.nNowPrice[i])
                             {
                                 int nHighP = 0;
                                 for (int a = 0; a < nTimeCount - 2; a++)
