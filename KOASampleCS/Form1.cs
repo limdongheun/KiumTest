@@ -3022,7 +3022,7 @@ namespace KOASampleCS
                                     }
                                 }
 
-                                if (nHighP > 0 && nHighP < stTradeData.nNowPrice[i])
+                                if (nNowTime > 1200 && nHighP > 0 && nHighP < stTradeData.nNowPrice[i])
                                 {
                                     LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMStartPrice[i, nTimeCount].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                                     stTradeData.nState[i] = 14;
