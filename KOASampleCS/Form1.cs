@@ -868,6 +868,32 @@ namespace KOASampleCS
                                     stTradeData.nSellTime[i] = sellTime;
                                 }
                             }
+                            else if (stTradeData.nState[i] == 15)
+                            {
+                                int endTime = stTradeData.nBuyTime[i] + 10;
+
+                                if (endTime % 100 >= 60)
+                                {
+                                    endTime = endTime + 40;
+                                }
+
+                                if(endTime < nNowTime)
+                                {
+                                    LogManager.WriteLine("매수취소 :\t" + stTradeData.sCode[i] + "\t" + stTradeData.sName[i]);
+
+                                    int lRet = SendOrder(stTradeData.sCode[i], stTradeData.nOrderQty[i], 3, "00", 0, stTradeData.sOrderNo[i]);
+
+                                    if (lRet == 0)
+                                    {
+                                        stTradeData.nState[i] = 100;
+
+                                        stTradeData.nBuyQty[i] = 0;
+                                        stTradeData.nBuyPrice[i] = 0;
+                                        stTradeData.nBuyTime[i] = 0;
+                                        stTradeData.nSellTime[i] = nNowTime;
+                                    }
+                                }
+                            }
                             else if (stTradeData.nState[i] == 30 && stTradeData.nBuyPrice[i] * 1.015 < stTradeData.nNowPrice[i])
                             {
                                 stTradeData.nState[i] = 31;
@@ -2824,6 +2850,7 @@ namespace KOASampleCS
                             LogManager.WriteLine("U자형 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nMHighPrice[i, 450].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
                             stTradeData.bHighPriceCheck[i] = false;
                             stTradeData.nMHighPrice[i, 450] = -1;
+
                             stTradeData.nState[i] = 14;
                         }
 
@@ -2995,7 +3022,7 @@ namespace KOASampleCS
                                     }
                                 }
 
-                                if (nHighP < stTradeData.nNowPrice[i])
+                                if (nHighP > 0 && nHighP < stTradeData.nNowPrice[i])
                                 {
                                     LogManager.WriteLine("급상승 : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + nHighP.ToString() + "/" + stTradeData.nMStartPrice[i, nTimeCount].ToString() + "/" + stTradeData.nNowPrice[i].ToString());
                                     stTradeData.nState[i] = 14;
