@@ -2922,7 +2922,7 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 13;
                             }
-                            else if (stTradeData.nState[i] == 13)
+                            else if (stTradeData.nState[i] == 13 && stTradeData.nMLowPrice[i, nTimeCount - 1] >= stTradeData.nMLowPrice[i, nTimeCount - 2] && stTradeData.nMLowPrice[i, nTimeCount - 2] > stTradeData.nMLowPrice[i, nTimeCount - 3])
                             {
                                 stTradeData.nState[i] = 14;
                             }
