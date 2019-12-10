@@ -838,16 +838,24 @@ namespace KOASampleCS
                             {
                                 stTradeData.nState[i] = 15;
 
-                                int nQty = 1;
+                                int nBuyPrice = (int)(stTradeData.nNowPrice[i] * 0.99);
 
-                                if (stTradeData.nNowPrice[i] > 0)
-                                {
-                                    nQty = 150000 / stTradeData.nNowPrice[i];
-                                }
+                                if (nBuyPrice >= 1000 && nBuyPrice < 5000)
+                                    nBuyPrice = nBuyPrice - (nBuyPrice % 5);
+                                else if (nBuyPrice >= 5000 && nBuyPrice < 10000)
+                                    nBuyPrice = nBuyPrice - (nBuyPrice % 10);
+                                else if (nBuyPrice >= 10000 && nBuyPrice < 50000)
+                                    nBuyPrice = nBuyPrice - (nBuyPrice % 50);
+                                else if (nBuyPrice >= 50000 && nBuyPrice < 100000)
+                                    nBuyPrice = nBuyPrice - (nBuyPrice % 100);
+                                else if (nBuyPrice >= 100000 && nBuyPrice < 500000)
+                                    nBuyPrice = nBuyPrice - (nBuyPrice % 500);
+
+                                int nQty = 150000 / nBuyPrice;
 
                                 int lRet = 10;
 
-                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
+                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "00", nBuyPrice, "");
                                 LogManager.WriteLine("돌파 매수 : " + stTradeData.sCode[i] + " 기준 : " + stTradeData.nStandardPrice[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
 
                                 if (lRet == 0)
@@ -870,7 +878,7 @@ namespace KOASampleCS
                             }
                             else if (stTradeData.nState[i] == 15)
                             {
-                                int endTime = stTradeData.nBuyTime[i] + 10;
+                                int endTime = stTradeData.nBuyTime[i] + 20;
 
                                 if (endTime % 100 >= 60)
                                 {
