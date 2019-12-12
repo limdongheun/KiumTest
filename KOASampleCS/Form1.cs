@@ -902,14 +902,14 @@ namespace KOASampleCS
                                     }
                                 }
                             }
-                            else if (stTradeData.nState[i] == 30 && stTradeData.nBuyPrice[i] * 1.015 < stTradeData.nNowPrice[i])
+                            else if (stTradeData.nState[i] == 30 && stTradeData.nBuyPrice[i] * 1.02 < stTradeData.nNowPrice[i])
                             {
                                 stTradeData.nState[i] = 31;
 
                                 int nQty = stTradeData.nOrderQty[i];
 
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
-                                LogManager.WriteLine("돌파 매도(1.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
+                                LogManager.WriteLine("돌파 매도(2%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                             }
                             else if (stTradeData.nState[i] == 30 && stTradeData.nSellTime[i] < nNowTime && stTradeData.nBuyPrice[i] < stTradeData.nNowPrice[i])
                             {
