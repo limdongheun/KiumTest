@@ -2880,7 +2880,15 @@ namespace KOASampleCS
                         if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i])
                         {
                             LogManager.WriteLine("기준선 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
-                            stTradeData.nState[i] = 11;
+
+                            if(nNowTime > 1300)
+                            {
+                                stTradeData.nState[i] = 14;
+                            }
+                            else
+                            {
+                                stTradeData.nState[i] = 11;
+                            }
                         }
                         else if ((stTradeData.nState[i] == 11 || stTradeData.nState[i] == 12 ) && stTradeData.nStandardPrice[i] * 1.02 < stTradeData.nNowPrice[i])
                         {
