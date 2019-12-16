@@ -902,7 +902,7 @@ namespace KOASampleCS
                                     }
                                 }
                             }
-                            else if (stTradeData.nState[i] == 30 && stTradeData.nBuyPrice[i] * 1.025 < stTradeData.nNowPrice[i])
+                            else if (stTradeData.nState[i] == 30 && nNowTime < 1400 && stTradeData.nBuyPrice[i] * 1.025 < stTradeData.nNowPrice[i])
                             {
                                 stTradeData.nState[i] = 31;
 
@@ -910,6 +910,15 @@ namespace KOASampleCS
 
                                 int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
                                 LogManager.WriteLine("돌파 매도(2.5%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
+                            }
+                            else if (stTradeData.nState[i] == 30 && nNowTime >= 1400 && stTradeData.nBuyPrice[i] * 1.013 < stTradeData.nNowPrice[i])
+                            {
+                                stTradeData.nState[i] = 31;
+
+                                int nQty = stTradeData.nOrderQty[i];
+
+                                int lRet = SendOrder(stTradeData.sCode[i], nQty, 2, "07", 0, "");
+                                LogManager.WriteLine("돌파 매도(1.3%) : " + stTradeData.sCode[i] + "\t" + stTradeData.sName[i] + "\t" + stTradeData.nNowPrice[i].ToString());
                             }
                             else if (stTradeData.nState[i] == 30 && stTradeData.nSellTime[i] < nNowTime && stTradeData.nBuyPrice[i] < stTradeData.nNowPrice[i])
                             {
