@@ -2877,7 +2877,7 @@ namespace KOASampleCS
                             //stTradeData.nState[i] = 1;
                         }
 
-                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i])
+                        if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i] && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("기준선 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
 
@@ -2890,9 +2890,9 @@ namespace KOASampleCS
                                 stTradeData.nState[i] = 11;
                             }
                         }
-                        else if ((stTradeData.nState[i] == 11 || stTradeData.nState[i] == 12 ) && stTradeData.nStandardPrice[i] * 1.02 < stTradeData.nNowPrice[i])
+                        else if ((stTradeData.nState[i] == 11 || stTradeData.nState[i] == 12 ) && stTradeData.nMHighPrice[i, 450] * 0.97 > stTradeData.nNowPrice[i])
                         {
-                            //stTradeData.nState[i] = 16;
+                            stTradeData.nState[i] = 100;
                         }
 
                         if (stTradeData.nState[i] == 12 && stTradeData.nMHighPrice[i, nTimeCount-1] < stTradeData.nNowPrice[i])
