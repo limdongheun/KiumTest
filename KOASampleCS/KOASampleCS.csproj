@@ -372,6 +372,7 @@
     <Content Include="log\20191213.txt" />
     <Content Include="log\20191216.txt" />
     <Content Include="log\20191217.txt" />
+    <Content Include="log\20191218.txt" />
     <Content Include="log\DB\20190830.txt" />
     <Content Include="log\DB\20190902-1.txt" />
     <Content Include="log\DB\20190902.txt" />
@@ -462,6 +463,7 @@
     <Content Include="log\DB\20191213.txt" />
     <Content Include="log\DB\20191216.txt" />
     <Content Include="log\DB\20191217.txt" />
+    <Content Include="log\DB\20191218.txt" />
     <Content Include="log\DB\DayCheck.txt" />
     <Content Include="log\DB\종목1.txt" />
     <Content Include="log\DB\종목2.txt" />
