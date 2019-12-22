@@ -796,16 +796,25 @@ namespace KOASampleCS
 
                                 int lRet = 10;
 
-                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "03", 0, "");
-                                LogManager.WriteLine("시초가 돌파(3%) : " + stTradeData.sCode[i] + " 기준 : " + stTradeData.nStandardPrice[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
+                                lRet = SendOrder(stTradeData.sCode[i], nQty, 1, "07", 0, "");
+                                //LogManager.WriteLine("시초가 돌파(3%) : " + stTradeData.sCode[i] + " 기준 : " + stTradeData.nStandardPrice[i].ToString() + " 현재가 : " + stTradeData.nNowPrice[i].ToString());
 
                                 if (lRet == 0)
                                 {
                                     lRet = 10;
-                                    stTradeData.nState[i] = 2;
+                                    stTradeData.nState[i] = 15;
                                     stTradeData.nOrderQty[i] = nQty;
                                     stTradeData.nBuyQty[i] = 0;
                                     stTradeData.nBuyTime[i] = nNowTime;
+
+                                    int sellTime = stTradeData.nBuyTime[i] + 10;
+
+                                    if (sellTime % 100 >= 60)
+                                    {
+                                        sellTime = sellTime + 40;
+                                    }
+
+                                    stTradeData.nSellTime[i] = sellTime;
                                 }
                             }
                             else if (stTradeData.nState[i] == 3 && nNowTime >= 905)
@@ -2869,7 +2878,7 @@ namespace KOASampleCS
                             stTradeData.nMHighPrice[i, 450] = -1;
                             stTradeData.nNowStartPrice[i] = stTradeData.nMLowPrice[i, nTimeCount];
 
-                            stTradeData.nState[i] = 11;
+                            stTradeData.nState[i] = 1;
                         }
 
                         if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
