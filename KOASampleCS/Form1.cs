@@ -785,7 +785,7 @@ namespace KOASampleCS
 
                             if (stTradeData.nState[i] == 1)
                             {
-                                stTradeData.nState[i] = 2;
+                                stTradeData.nState[i] = 15;
 
                                 int nQty = 1;
 
