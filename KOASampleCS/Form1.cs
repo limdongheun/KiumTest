@@ -2881,16 +2881,15 @@ namespace KOASampleCS
                             stTradeData.nState[i] = 1;
                         }
 
-                        if(stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nClosePrice[i] * 1.03 < stTradeData.nNowPrice[i] && nTimeCount == 0)
-                        {
-                            //stTradeData.nState[i] = 1;
-                        }
-
                         if (stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nStandardPrice[i] < stTradeData.nNowPrice[i] && stTradeData.nMStartPrice[i, nTimeCount] > 0 && stTradeData.nMStartPrice[i, nTimeCount] < stTradeData.nStandardPrice[i] && stTradeData.nMHighPrice[i, 450] < stTradeData.nNowPrice[i])
                         {
                             LogManager.WriteLine("기준선 돌파 : \t" + stTradeData.sCode[i] + "\t" + stTradeData.nStandardPrice[i].ToString() + " / " + stTradeData.nNowPrice[i].ToString());
 
-                            if(nNowTime > 1300)
+                            if (nNowTime < 910)
+                            {
+                                stTradeData.nState[i] = 100;
+                            }
+                            else if (nNowTime > 1300)
                             {
                                 stTradeData.nState[i] = 14;
                             }
@@ -2932,7 +2931,14 @@ namespace KOASampleCS
                                 nTimeCount = 100;
                             }
 
-                            if(stTradeData.nState[i] == 11)
+                            if (nNowTime >= 920 && stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nMLowPrice[i, nTimeCount - 4] > stTradeData.nMLowPrice[i, nTimeCount - 3] && stTradeData.nMLowPrice[i, nTimeCount - 3] > stTradeData.nMLowPrice[i, nTimeCount - 2] && stTradeData.nMLowPrice[i, nTimeCount - 2] > stTradeData.nMLowPrice[i, nTimeCount - 1] && stTradeData.nMLowPrice[i, nTimeCount - 2] <= stTradeData.nMLowPrice[i, nTimeCount - 1])
+                            {
+                                LogManager.WriteLine("U자형 상승 : \t" + stTradeData.sCode[i]);
+
+                                stTradeData.nState[i] = 1;
+                            }
+
+                            if (stTradeData.nState[i] == 11)
                             {
                                 stTradeData.nState[i] = 12;
                             }
