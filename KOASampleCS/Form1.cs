@@ -2931,7 +2931,7 @@ namespace KOASampleCS
                                 nTimeCount = 100;
                             }
 
-                            if (nNowTime >= 920 && stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nMLowPrice[i, nTimeCount - 4] > stTradeData.nMLowPrice[i, nTimeCount - 3] && stTradeData.nMLowPrice[i, nTimeCount - 3] > stTradeData.nMLowPrice[i, nTimeCount - 2] && stTradeData.nMLowPrice[i, nTimeCount - 2] <= stTradeData.nMLowPrice[i, nTimeCount - 1])
+                            if (nNowTime >= 920 && stTradeData.nState[i] == 0 && stTradeData.nStandardPrice[i] > 0 && stTradeData.nMHighPrice[i, nTimeCount - 4] * 0.97 > stTradeData.nMLowPrice[i, nTimeCount - 2] && stTradeData.nMLowPrice[i, nTimeCount - 4] > stTradeData.nMLowPrice[i, nTimeCount - 3] && stTradeData.nMLowPrice[i, nTimeCount - 3] > stTradeData.nMLowPrice[i, nTimeCount - 2] && stTradeData.nMLowPrice[i, nTimeCount - 2] <= stTradeData.nMLowPrice[i, nTimeCount - 1])
                             {
                                 LogManager.WriteLine("U자형 상승 : \t" + stTradeData.sCode[i]);
 
